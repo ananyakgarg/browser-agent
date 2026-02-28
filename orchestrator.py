@@ -1,4 +1,4 @@
-"""Orchestrator: parse task spec, read CSV, dispatch workers concurrently."""
+"""Orchestrator: plan task via LLM, read CSV, dispatch workers concurrently."""
 
 from __future__ import annotations
 
@@ -7,14 +7,14 @@ import csv
 import json
 import logging
 import time
-from pathlib import Path
 from typing import Any
 
+import anthropic
 from playwright.async_api import async_playwright
 
 from browser_tools import create_browser_provider
 from compiler import compile_results
-from config import TaskSpec
+from config import TaskConfig, TaskSpec
 from progress import ProgressTracker, SampleStatus
 from tool_registry import ToolRegistry
 from validator import validate_sample, write_metadata
@@ -22,6 +22,108 @@ from worker import run_worker
 
 logger = logging.getLogger(__name__)
 
+PLAN_MODEL = "claude-sonnet-4-5-20250929"
+
+# ---------------------------------------------------------------------------
+# Planning call — replaces the JSON task spec
+# ---------------------------------------------------------------------------
+
+PLAN_SYSTEM = """\
+You are a planning assistant for a browser automation system. Given a user's \
+natural-language instruction and a preview of their CSV data, you must decide:
+
+1. Which CSV column identifies each sample (the one with URLs, ticket numbers, \
+names, or other unique identifiers that the browser agent will act on).
+2. What output fields the user wants extracted.
+3. Clear, actionable per-sample instructions for a browser agent. Use \
+{column_name} template variables so the agent gets the actual value from \
+each CSV row at runtime.
+4. A short snake_case task name for the output folder.
+
+Call the task_plan tool with your decisions. Do NOT add output columns the \
+user didn't ask for. Keep per_sample_instructions concise and actionable.\
+"""
+
+PLAN_TOOL = {
+    "name": "task_plan",
+    "description": "Output the structured task plan based on the user's instruction and CSV.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "task_name": {
+                "type": "string",
+                "description": "Short snake_case name for the output folder (e.g. 'jira_ticket_scrape').",
+            },
+            "sample_column": {
+                "type": "string",
+                "description": "The CSV column that identifies each sample.",
+            },
+            "output_columns": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "List of field names to extract per sample.",
+            },
+            "per_sample_instructions": {
+                "type": "string",
+                "description": "Instructions for the browser agent per sample. Use {column_name} templates.",
+            },
+        },
+        "required": ["task_name", "sample_column", "output_columns", "per_sample_instructions"],
+    },
+}
+
+
+def _csv_preview(csv_path: str, max_rows: int = 3) -> tuple[list[str], list[dict[str, str]]]:
+    """Read CSV headers and first N rows for the planning prompt."""
+    with open(csv_path, newline="", encoding="utf-8-sig") as f:
+        reader = csv.DictReader(f)
+        headers = list(reader.fieldnames or [])
+        rows = []
+        for i, row in enumerate(reader):
+            if i >= max_rows:
+                break
+            rows.append(row)
+    return headers, rows
+
+
+def plan_task(instruction: str, csv_path: str) -> dict[str, Any]:
+    """Make one LLM call to turn a natural-language instruction into a structured plan."""
+    headers, preview_rows = _csv_preview(csv_path)
+
+    user_msg = (
+        f"## User instruction\n{instruction}\n\n"
+        f"## CSV columns\n{headers}\n\n"
+        f"## First rows\n```json\n{json.dumps(preview_rows, indent=2)}\n```"
+    )
+
+    client = anthropic.Anthropic()
+    response = client.messages.create(
+        model=PLAN_MODEL,
+        max_tokens=1024,
+        system=PLAN_SYSTEM,
+        tools=[PLAN_TOOL],
+        tool_choice={"type": "tool", "name": "task_plan"},
+        messages=[{"role": "user", "content": user_msg}],
+    )
+
+    for block in response.content:
+        if block.type == "tool_use" and block.name == "task_plan":
+            plan = block.input
+            logger.info(f"Plan: {json.dumps(plan, indent=2)}")
+            # Validate sample_column exists in CSV
+            if plan["sample_column"] not in headers:
+                raise ValueError(
+                    f"Planning call chose sample_column='{plan['sample_column']}' "
+                    f"but CSV columns are: {headers}"
+                )
+            return plan
+
+    raise RuntimeError("Planning call did not return a task_plan tool use")
+
+
+# ---------------------------------------------------------------------------
+# CSV reading
+# ---------------------------------------------------------------------------
 
 def read_csv_rows(csv_path: str, sample_id_column: str) -> list[dict[str, Any]]:
     """Read CSV and return list of row dicts. Validates sample_id_column exists."""
@@ -36,6 +138,10 @@ def read_csv_rows(csv_path: str, sample_id_column: str) -> list[dict[str, Any]]:
             )
         return list(reader)
 
+
+# ---------------------------------------------------------------------------
+# Per-sample processing
+# ---------------------------------------------------------------------------
 
 async def process_sample(
     spec: TaskSpec,
@@ -54,15 +160,12 @@ async def process_sample(
 
         registry = ToolRegistry()
         try:
-            # Create browser provider and register it
             browser_provider = await create_browser_provider(
                 browser,
                 output_dir=sample_dir,
-                cookies_path=spec.auth.cookies_path,
+                cookies_path=spec.cookies_path,
             )
             registry.register(browser_provider)
-            # Future: registry.register(CodeExecProvider(...))
-            # Future: registry.register(ApiCallProvider(...))
 
             instructions = spec.render_instructions(row)
 
@@ -104,10 +207,45 @@ async def process_sample(
             await registry.close()
 
 
-async def run_orchestrator(spec: TaskSpec):
-    """Main orchestration loop."""
+# ---------------------------------------------------------------------------
+# Main entry point
+# ---------------------------------------------------------------------------
+
+async def run_orchestrator(
+    instruction: str,
+    csv_path: str,
+    cookies_path: str | None = None,
+    max_workers: int = 3,
+    output_dir_override: str | None = None,
+):
+    """Plan the task, then dispatch workers."""
     start = time.time()
 
+    # 1. Planning call
+    logger.info("Running planning call...")
+    plan = plan_task(instruction, csv_path)
+
+    # 2. Build TaskSpec from plan + CLI args
+    task_name = plan["task_name"]
+    spec = TaskSpec(
+        task_name=task_name,
+        per_sample_instructions=plan["per_sample_instructions"],
+        input_csv=csv_path,
+        sample_id_column=plan["sample_column"],
+        csv_columns=plan["output_columns"],
+        config=TaskConfig(max_workers=max_workers),
+        cookies_path=cookies_path,
+        output_dir_override=output_dir_override,
+    )
+
+    logger.info(
+        f"Task: {spec.task_name} | "
+        f"Sample column: {spec.sample_id_column} | "
+        f"Output columns: {spec.csv_columns} | "
+        f"Workers: {spec.config.max_workers}"
+    )
+
+    # 3. Setup
     spec.output_dir.mkdir(parents=True, exist_ok=True)
     spec.samples_dir.mkdir(parents=True, exist_ok=True)
 
@@ -127,6 +265,7 @@ async def run_orchestrator(spec: TaskSpec):
         logger.info(f"Results: {results_path}")
         return
 
+    # 4. Dispatch workers
     semaphore = asyncio.Semaphore(spec.config.max_workers)
 
     async with async_playwright() as pw:
@@ -164,6 +303,7 @@ async def run_orchestrator(spec: TaskSpec):
         finally:
             await browser.close()
 
+    # 5. Compile results
     results_path = compile_results(spec.output_dir, spec.csv_columns)
 
     elapsed = time.time() - start

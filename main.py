@@ -1,4 +1,12 @@
-"""CLI entry point: python main.py --task path/to/spec.json"""
+"""CLI entry point for natural-language browser automation.
+
+Usage:
+    python main.py \
+        --instruction "Go to each Jira ticket URL, take a screenshot, ..." \
+        --csv tickets.csv \
+        --cookies auth/jira_cookies.json \
+        --workers 1
+"""
 
 from __future__ import annotations
 
@@ -7,18 +15,38 @@ import asyncio
 import logging
 import sys
 
-from config import load_task_spec
 from orchestrator import run_orchestrator
 
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Browser automation agent — processes CSV items via LLM-controlled browser"
+        description="Browser automation agent — give it an instruction and a CSV"
     )
     parser.add_argument(
-        "--task",
+        "--instruction", "-i",
         required=True,
-        help="Path to the task specification JSON file",
+        help="Natural language instruction describing what to do per CSV row",
+    )
+    parser.add_argument(
+        "--csv",
+        required=True,
+        help="Path to the input CSV file",
+    )
+    parser.add_argument(
+        "--cookies",
+        default=None,
+        help="Path to a cookies JSON file for authenticated sessions",
+    )
+    parser.add_argument(
+        "--workers", "-w",
+        type=int,
+        default=3,
+        help="Max concurrent browser workers (default: 3)",
+    )
+    parser.add_argument(
+        "--output-dir", "-o",
+        default=None,
+        help="Output directory (default: auto-generated from task name)",
     )
     parser.add_argument(
         "--verbose", "-v",
@@ -33,20 +61,13 @@ def main():
         datefmt="%H:%M:%S",
     )
 
-    try:
-        spec = load_task_spec(args.task)
-    except (FileNotFoundError, ValueError) as e:
-        print(f"Error loading task spec: {e}", file=sys.stderr)
-        sys.exit(1)
-
-    logging.getLogger(__name__).info(
-        f"Task: {spec.task_name} | "
-        f"Workers: {spec.config.max_workers} | "
-        f"Retries: {spec.config.max_retries} | "
-        f"Timeout: {spec.config.timeout_per_sample_sec}s"
-    )
-
-    asyncio.run(run_orchestrator(spec))
+    asyncio.run(run_orchestrator(
+        instruction=args.instruction,
+        csv_path=args.csv,
+        cookies_path=args.cookies,
+        max_workers=args.workers,
+        output_dir_override=args.output_dir,
+    ))
 
 
 if __name__ == "__main__":
