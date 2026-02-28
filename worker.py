@@ -5,6 +5,7 @@ from __future__ import annotations
 import base64
 import json
 import logging
+import time
 from pathlib import Path
 from typing import Any
 
@@ -81,8 +82,38 @@ async def run_worker(
         {"role": "user", "content": user_prompt},
     ]
 
+    # Trace log — records every step for debugging/review
+    trace: list[dict[str, Any]] = []
+    trace_path = output_dir / "trace.json"
+    audit_path = output_dir / "audit.json"
+    start_time = time.time()
+    total_input_tokens = 0
+    total_output_tokens = 0
+    api_calls = 0
+
+    def _save_trace():
+        with open(trace_path, "w") as f:
+            json.dump(trace, f, indent=2, default=str)
+
+    def _save_audit():
+        audit = {
+            "model": MODEL,
+            "total_input_tokens": total_input_tokens,
+            "total_output_tokens": total_output_tokens,
+            "total_tokens": total_input_tokens + total_output_tokens,
+            "api_calls": api_calls,
+            "iterations": len(trace),
+            "elapsed_sec": round(time.time() - start_time, 2),
+        }
+        with open(audit_path, "w") as f:
+            json.dump(audit, f, indent=2)
+
     for iteration in range(max_iterations):
         logger.info(f"  Iteration {iteration + 1}/{max_iterations}")
+        step: dict[str, Any] = {
+            "iteration": iteration + 1,
+            "timestamp": round(time.time() - start_time, 2),
+        }
 
         try:
             response = client.messages.create(
@@ -93,15 +124,40 @@ async def run_worker(
                 messages=messages,
             )
         except anthropic.APIError as e:
-            logger.error(f"  API error: {e}")
+            step["error"] = str(e)
+            trace.append(step)
+            _save_trace()
+            _save_audit()
             raise
+
+        api_calls += 1
+        total_input_tokens += response.usage.input_tokens
+        total_output_tokens += response.usage.output_tokens
+        step["usage"] = {
+            "input_tokens": response.usage.input_tokens,
+            "output_tokens": response.usage.output_tokens,
+        }
 
         assistant_content = response.content
         messages.append({"role": "assistant", "content": assistant_content})
 
+        # Extract reasoning text from the response
+        reasoning = []
+        for block in assistant_content:
+            if block.type == "text":
+                reasoning.append(block.text)
+        if reasoning:
+            step["reasoning"] = "\n".join(reasoning)
+
         tool_uses = [block for block in assistant_content if block.type == "tool_use"]
 
         if not tool_uses:
+            step["action"] = "no_tool_call"
+            step["stop_reason"] = response.stop_reason
+            trace.append(step)
+            _save_trace()
+            _save_audit()
+
             if response.stop_reason == "end_turn":
                 logger.warning("  Agent ended without calling complete tool. Prompting to complete.")
                 messages.append({
@@ -112,6 +168,8 @@ async def run_worker(
             break
 
         tool_results = []
+        step_tools: list[dict[str, Any]] = []
+
         for tool_use in tool_uses:
             tool_name = tool_use.name
             tool_input = tool_use.input
@@ -119,12 +177,24 @@ async def run_worker(
 
             logger.info(f"  Tool: {tool_name}({json.dumps(tool_input, default=str)[:120]})")
 
+            tool_trace: dict[str, Any] = {
+                "tool": tool_name,
+                "input": tool_input,
+            }
+
             # Intercept complete — handled here, not dispatched to providers
             if tool_name == "complete":
                 data = tool_input.get("data", {})
                 notes = tool_input.get("notes", "")
                 logger.info(f"  Task complete. Notes: {notes}")
-                # Take a final screenshot via the registry (browser provider handles it)
+
+                tool_trace["result"] = "TASK COMPLETE"
+                step_tools.append(tool_trace)
+                step["tools"] = step_tools
+                trace.append(step)
+                _save_trace()
+                _save_audit()
+
                 try:
                     await registry.execute("screenshot", {"filename": "final.png"})
                 except Exception:
@@ -138,16 +208,15 @@ async def run_worker(
                 result = f"Error executing {tool_name}: {e}"
                 logger.error(f"  {result}")
 
+            # Save truncated result to trace (full page state is too verbose)
+            tool_trace["result"] = result[:2000]
+            step_tools.append(tool_trace)
+
             # Build tool result content
             content: list[dict[str, Any]] = []
 
             # If screenshot, include image in the response
             if tool_name == "screenshot":
-                for png in output_dir.glob("*.png"):
-                    if png.stat().st_mtime > 0:
-                        # Find the most recently written screenshot
-                        pass
-                # Simpler: parse the path from the result text
                 if "saved to" in result:
                     screenshot_path = Path(result.split("saved to ")[-1])
                     if screenshot_path.exists():
@@ -169,6 +238,12 @@ async def run_worker(
                 "content": content,
             })
 
+        step["tools"] = step_tools
+        trace.append(step)
+        _save_trace()
+
         messages.append({"role": "user", "content": tool_results})
 
+    _save_trace()
+    _save_audit()
     raise RuntimeError(f"Agent did not complete within {max_iterations} iterations")
