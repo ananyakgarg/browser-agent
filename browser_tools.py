@@ -591,20 +591,18 @@ class BrowserToolProvider(ToolProvider):
 async def create_browser_provider(
     browser: Browser,
     output_dir: Path,
-    cookies_path: str | None = None,
+    storage_state_path: str | None = None,
 ) -> BrowserToolProvider:
     """Create an isolated browser context wrapped in a BrowserToolProvider."""
-    context = await browser.new_context(
-        viewport={"width": 1280, "height": 900},
-        accept_downloads=True,
-    )
+    ctx_kwargs: dict[str, Any] = {
+        "viewport": {"width": 1280, "height": 900},
+        "accept_downloads": True,
+    }
 
-    if cookies_path:
-        cookies_file = Path(cookies_path)
-        if cookies_file.exists():
-            with open(cookies_file) as f:
-                cookies = json.load(f)
-            await context.add_cookies(cookies)
-            logger.info(f"Loaded {len(cookies)} cookies from {cookies_path}")
+    # Load full session state (cookies + localStorage) saved from interactive login
+    if storage_state_path and Path(storage_state_path).exists():
+        ctx_kwargs["storage_state"] = storage_state_path
+        logger.info(f"Loading session state from {storage_state_path}")
 
+    context = await browser.new_context(**ctx_kwargs)
     return BrowserToolProvider(context=context, output_dir=output_dir)

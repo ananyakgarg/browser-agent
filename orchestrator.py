@@ -7,6 +7,7 @@ import csv
 import json
 import logging
 import time
+from pathlib import Path
 from typing import Any
 
 import anthropic
@@ -121,6 +122,7 @@ def plan_task(instruction: str, csv_path: str) -> dict[str, Any]:
     raise RuntimeError("Planning call did not return a task_plan tool use")
 
 
+
 # ---------------------------------------------------------------------------
 # CSV reading
 # ---------------------------------------------------------------------------
@@ -163,7 +165,7 @@ async def process_sample(
             browser_provider = await create_browser_provider(
                 browser,
                 output_dir=sample_dir,
-                cookies_path=spec.cookies_path,
+                storage_state_path=spec.storage_state_path,
             )
             registry.register(browser_provider)
 
@@ -214,9 +216,9 @@ async def process_sample(
 async def run_orchestrator(
     instruction: str,
     csv_path: str,
-    cookies_path: str | None = None,
     max_workers: int = 3,
     output_dir_override: str | None = None,
+    session_state_path: str | None = None,
 ):
     """Plan the task, then dispatch workers."""
     start = time.time()
@@ -234,7 +236,6 @@ async def run_orchestrator(
         sample_id_column=plan["sample_column"],
         csv_columns=plan["output_columns"],
         config=TaskConfig(max_workers=max_workers),
-        cookies_path=cookies_path,
         output_dir_override=output_dir_override,
     )
 
@@ -251,6 +252,11 @@ async def run_orchestrator(
 
     rows = read_csv_rows(spec.input_csv, spec.sample_id_column)
     logger.info(f"Loaded {len(rows)} rows from {spec.input_csv}")
+
+    # 3b. Load session state if provided (from login.py)
+    if session_state_path and Path(session_state_path).exists():
+        spec.storage_state_path = session_state_path
+        logger.info(f"Using session state from {session_state_path}")
 
     all_ids = [str(r[spec.sample_id_column]) for r in rows]
     id_to_row = {str(r[spec.sample_id_column]): r for r in rows}

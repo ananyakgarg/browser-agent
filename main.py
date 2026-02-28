@@ -4,7 +4,6 @@ Usage:
     python main.py \
         --instruction "Go to each Jira ticket URL, take a screenshot, ..." \
         --csv tickets.csv \
-        --cookies auth/jira_cookies.json \
         --workers 1
 """
 
@@ -13,7 +12,6 @@ from __future__ import annotations
 import argparse
 import asyncio
 import logging
-import sys
 
 from orchestrator import run_orchestrator
 
@@ -33,15 +31,15 @@ def main():
         help="Path to the input CSV file",
     )
     parser.add_argument(
-        "--cookies",
-        default=None,
-        help="Path to a cookies JSON file for authenticated sessions",
-    )
-    parser.add_argument(
         "--workers", "-w",
         type=int,
         default=3,
         help="Max concurrent browser workers (default: 3)",
+    )
+    parser.add_argument(
+        "--session", "-s",
+        default=None,
+        help="Path to session_state.json from login.py (for authenticated sites)",
     )
     parser.add_argument(
         "--output-dir", "-o",
@@ -64,9 +62,9 @@ def main():
     asyncio.run(run_orchestrator(
         instruction=args.instruction,
         csv_path=args.csv,
-        cookies_path=args.cookies,
         max_workers=args.workers,
         output_dir_override=args.output_dir,
+        session_state_path=args.session,
     ))
 
 

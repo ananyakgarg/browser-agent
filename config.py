@@ -23,7 +23,7 @@ class TaskSpec:
     sample_id_column: str
     csv_columns: list[str]
     config: TaskConfig = field(default_factory=TaskConfig)
-    cookies_path: str | None = None
+    storage_state_path: str | None = None
     output_dir_override: str | None = None
 
     @property
