@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://ananyakgarg25.atlassian.net/browse/SCRUM-9",
+  "input_row": {
+    "ticket_url": "https://ananyakgarg25.atlassian.net/browse/SCRUM-9"
+  },
+  "extracted_data": {
+    "ticket_number": "SCRUM-9",
+    "assignee": "Unassigned",
+    "due_date": "None"
+  },
+  "notes": "",
+  "screenshots": [
+    "final.png",
+    "jira_ticket.png"
+  ]
+}

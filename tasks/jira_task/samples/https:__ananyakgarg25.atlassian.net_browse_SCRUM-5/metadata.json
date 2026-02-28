@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://ananyakgarg25.atlassian.net/browse/SCRUM-5",
+  "input_row": {
+    "ticket_url": "https://ananyakgarg25.atlassian.net/browse/SCRUM-5"
+  },
+  "extracted_data": {
+    "ticket_number": "SCRUM-5",
+    "assignee": "Ananya Garg",
+    "due_date": "Feb 28, 2026"
+  },
+  "notes": "",
+  "screenshots": [
+    "final.png",
+    "jira_ticket.png"
+  ]
+}
