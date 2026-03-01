@@ -1,0 +1,29 @@
+{
+  "sample_id": "def percentile(a q axis",
+  "input_row": {
+    "repo_url": "https://github.com/numpy/numpy",
+    "code_string": "def percentile(a q axis"
+  },
+  "extracted_data": {
+    "file_path": "numpy/lib/_function_base_impl.py",
+    "line_number": 4054,
+    "commit_hash": "cd7a02a4db7e760b881f3feeb832ffd84fa8645a",
+    "commit_author": "abel",
+    "commit_date": "2021-11-04",
+    "blame_url": "https://github.com/numpy/numpy/blame/main/numpy/lib/_function_base_impl.py#L4054",
+    "modified_within_year": false,
+    "material_change_flag": true,
+    "material_change_explanation": "While the `def percentile(a,` line itself (line 4054) was last blamed to a commit from November 2021 (outside the past year), a nearby line within the function signature (line 4062) was modified by commit aedb6922d33fcb62c715e438234732b9798b352d on October 15, 2025 (within the past year). This commit removed the deprecated `interpolation` parameter from `percentile` (and `quantile`), along with the runtime logic that mapped it to the `method=` argument. This is a material change: it permanently removes a previously-accepted parameter and the associated computation `if interpolation is not None: method = _check_interpolation_as_method(method, interpolation, 'percentile')`. Code that passed `interpolation=` to `np.percentile()` will now raise a TypeError instead of being silently redirected.",
+    "material_change_evidence": "--- numpy/lib/_function_base_impl.py (+6 -45) ---\n@@ -4103,8 +4103,7 @@ def percentile(a,\n                method=\"linear\",\n                keepdims=False,\n                *,\n-               weights=None,\n-               interpolation=None):\n+               weights=None):\n\n@@ -4268,10 +4268,6 @@ def percentile(a,\n    The American Statistician, 50(4), pp. 361-365, 1996\n\n    \"\"\"\n-    if interpolation is not None:\n-        method = _check_interpolation_as_method(\n-            method, interpolation, \"percentile\")\n-\n    a = np.asanyarray(a)",
+    "evidence_screenshots": [
+      "blame_view_initial.png",
+      "blame_line4054.png"
+    ]
+  },
+  "notes": "",
+  "screenshots": [
+    "blame_view_initial.png",
+    "blame_line4054.png"
+  ],
+  "playbook_used": true
+}

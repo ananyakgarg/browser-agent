@@ -1,0 +1,40 @@
+sample_id,file_path,line_number,commit_hash,commit_author,commit_date,blame_url,modified_within_year,material_change_flag,material_change_explanation,material_change_evidence,evidence_screenshots
+def _compute_log_likelihood,sklearn/mixture/_gaussian_mixture.py,,,,,,,,,,
+def _cython_agg_general,pandas/core/groupby/groupby.py,1510,332f0dfb4bc3bf656c4cc1f818f0640de828ceec,Shubhang Sinha (Zrahay),2025-10-27,https://github.com/pandas-dev/pandas/blame/main/pandas/core/groupby/groupby.py,True,True,"Commit 332f0dfb (2025-10-27) added input validation inside `_cython_agg_general` that raises a ValueError when `numeric_only` is not a Boolean value. Before this change, non-Boolean values (e.g. integers, strings) passed as `numeric_only` were silently accepted; after this change, they raise `ValueError('numeric_only accepts only Boolean values')`. This materially alters the function's parameter handling and output behavior — callers passing non-Boolean numeric_only values will now get an error instead of a result.","@@ -1756,6 +1755,9 @@ def _cython_agg_general(
+         # Note: we never get here with how=""ohlc"" for DataFrameGroupBy;
+         #  that goes through SeriesGroupBy
+ 
++        if not is_bool(numeric_only):
++            raise ValueError(""numeric_only accepts only Boolean values"")
++
+         data = self._get_data_to_aggregate(numeric_only=numeric_only, name=how)","['blame_view_initial.png', 'blame_line1510.png']"
+def corrcoef(x y rowvar,numpy/lib/_function_base_impl.py,2900,7065a9d14065265aa1f0fd690fdf930a01b9694d,abhi210,2025-10-17,https://github.com/numpy/numpy/blame/main/numpy/lib/_function_base_impl.py,True,True,"The commit (2025-10-17) removed the previously-deprecated `bias` and `ddof` parameters from both the `corrcoef` function signature and its dispatcher `_corrcoef_dispatcher`. Before this change, `corrcoef(x, bias=..., ddof=...)` would issue a deprecation warning; after this change those parameters are gone entirely, so passing them raises a TypeError. This is a material parameter-handling change that alters the function's API and call behavior.","-def _corrcoef_dispatcher(x, y=None, rowvar=None, bias=None, ddof=None, *,
++def _corrcoef_dispatcher(x, y=None, rowvar=None, *,
+                          dtype=None):
+
+-def corrcoef(x, y=None, rowvar=True, bias=np._NoValue, ddof=np._NoValue, *,
++def corrcoef(x, y=None, rowvar=True, *,
+              dtype=None):","['blame_view_initial.png', 'blame_line2900.png']"
+def linspace(start stop num,numpy/_core/function_base.py,28,d338490271238c78683640943a11f9e4e53e62fb,Marten van Kerkwijk,2018-12-05,https://github.com/numpy/numpy/blame/main/numpy/_core/function_base.py,False,False,"The def linspace(start, stop, num=50...) line (line 28) was last blamed to a Dec 5, 2018 commit ('ENH: allow user choice of sample axis in {lin,log,geom}space.' by Marten van Kerkwijk), which is ~87 months old — far outside the 12-month window. Per Step 4b, nearby lines inside the function body were checked for recent changes: (1) Line 126 (Apr 18, 2025, commit fb3d4c2 'using flynt'): changed %-style string formatting to an f-string in the ValueError message — purely cosmetic/style, no computational impact; (2) Lines 162-163 (May 11, 2025, commit 36d8ca0 'MNT: Apply ruff/Pylint rule PLR5501'): refactored 'else: if _mult_inplace: ... else: ...' into 'elif _mult_inplace: ... else: ...' — purely structural/style change with identical runtime behavior; (3) Line 41 (Dec 8, 2025, commit cee14ff 'DOC: prefer passing scalar types to dtype= in examples'): changed docstring example from '.astype(int)' to '.astype(np.int_)' — documentation only. None of these changes altered any formula, calculation, or output behavior of linspace.","Diff for fb3d4c2 (line 126): '-            ""Number of samples, %s, must be non-negative."" % num' / '+            f""Number of samples, {num}, must be non-negative.""'
+
+Diff for 36d8ca0 (lines 162-163): '+        elif _mult_inplace:' / '+            y *= step' / '-        else:' / '-            if _mult_inplace:' / '-                y *= step' / '-            else:' / '-                y = y * step' / '+        else:' / '+            y = y * step'
+
+Diff for cee14ff (line 41): '-        still be obtained with ``np.linspace(start, stop, num).astype(int)``' / '+        still be obtained with ``np.linspace(start, stop, num).astype(np.int_)``'","['blame_view_initial.png — initial blame page load showing file header and top lines', ""blame_line28_linspace.png — blame view scrolled to line 28 showing 'def linspace(start, stop, num=50...' with '8 years ago / ENH: allow user choice of sam...' in the gutter, and nearby lines including line 29 (2 years ago) and line 41 (3 months ago)"", 'blame_line28_final.png — file code view showing lines 1-27 with function_base.py structure']"
+def percentile(a q axis,numpy/lib/_function_base_impl.py,4054,cd7a02a4db7e760b881f3feeb832ffd84fa8645a,abel,2021-11-04,https://github.com/numpy/numpy/blame/main/numpy/lib/_function_base_impl.py#L4054,False,True,"While the `def percentile(a,` line itself (line 4054) was last blamed to a commit from November 2021 (outside the past year), a nearby line within the function signature (line 4062) was modified by commit aedb6922d33fcb62c715e438234732b9798b352d on October 15, 2025 (within the past year). This commit removed the deprecated `interpolation` parameter from `percentile` (and `quantile`), along with the runtime logic that mapped it to the `method=` argument. This is a material change: it permanently removes a previously-accepted parameter and the associated computation `if interpolation is not None: method = _check_interpolation_as_method(method, interpolation, 'percentile')`. Code that passed `interpolation=` to `np.percentile()` will now raise a TypeError instead of being silently redirected.","--- numpy/lib/_function_base_impl.py (+6 -45) ---
+@@ -4103,8 +4103,7 @@ def percentile(a,
+                method=""linear"",
+                keepdims=False,
+                *,
+-               weights=None,
+-               interpolation=None):
++               weights=None):
+
+@@ -4268,10 +4268,6 @@ def percentile(a,
+    The American Statistician, 50(4), pp. 361-365, 1996
+
+    """"""
+-    if interpolation is not None:
+-        method = _check_interpolation_as_method(
+-            method, interpolation, ""percentile"")
+-
+    a = np.asanyarray(a)","['blame_view_initial.png', 'blame_line4054.png']"

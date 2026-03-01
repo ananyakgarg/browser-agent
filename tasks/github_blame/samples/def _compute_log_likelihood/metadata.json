@@ -1,0 +1,27 @@
+{
+  "sample_id": "def _compute_log_likelihood",
+  "input_row": {
+    "repo_url": "https://github.com/scikit-learn/scikit-learn",
+    "code_string": "def _compute_log_likelihood"
+  },
+  "extracted_data": {
+    "function_found": false,
+    "function_name": "def _compute_log_likelihood",
+    "file_path": "sklearn/mixture/_gaussian_mixture.py",
+    "repo": "https://github.com/scikit-learn/scikit-learn",
+    "exists_in_file": "No \u2014 the function `def _compute_log_likelihood` does not exist anywhere in `sklearn/mixture/_gaussian_mixture.py` (confirmed by exhaustive search of 35,776-char / 1005-line raw file). It also does not exist in `_base.py` or `_bayesian_mixture.py`.",
+    "modified_within_past_year": "Yes \u2014 the file `sklearn/mixture/_gaussian_mixture.py` had 9 commits since 2025-03-01 (past year relative to audit date 2026-03-01)",
+    "most_recent_commits": "1) 5a07bfc (2025-11-15): DOC Add link to plot_gmm_pdf.py; 2) 7cf4fcb (2025-11-10): DOC Improve formatting of sklearn.mixture API docs; 3) 1fe6595 (2025-07-29): MNT Switch to absolute imports; 4) 298b03e (2025-07-18): MNT Add tags to GaussianMixture array API; 5) bde701d (2025-06-20): MNT Use _add_to_diagonal in GaussianMixture; 6) cc526ee (2025-06-19): FEA Add array API support for GaussianMixture (+543/-158 lines); 7) 8eabbed (2025-06-13): MAINT remove unused local vars; 8) ed9bcc7 (2025-05-06): DOC add link to plot_gmm_covariances; 9) 0dbbac9 (2025-03-27): Gaussian mixture lower bounds",
+    "material_change": "Yes \u2014 commit cc526ee76c (2025-06-19, 'FEA Add array API support for GaussianMixture') is material: it modified +172/-108 lines in _gaussian_mixture.py, refactoring all major functions to support array API namespaces (replacing numpy calls with xp-namespace equivalents, adding xp=None parameters to all functions). This changed the computational logic of functions like _estimate_log_gaussian_prob, _compute_precision_cholesky, _compute_log_det_cholesky, and related log-probability computation functions throughout the file.",
+    "material_commit_hash": "cc526ee76c38a5b1522da9172d5332f952cd4cac",
+    "material_commit_date": "2025-06-19",
+    "material_commit_author": "Lo\u00efc Est\u00e8ve",
+    "material_commit_message": "FEA Add array API support for GaussianMixture (#30777)",
+    "audit_note": "The exact string 'def _compute_log_likelihood' was not found in the specified file. The audit was performed on the file as specified (sklearn/mixture/_gaussian_mixture.py). The file contains related log-likelihood functions: _estimate_log_gaussian_prob (line 490), _estimate_log_prob (line 903), and _compute_lower_bound (line 912). All were materially modified by the array API support commit within the past year."
+  },
+  "notes": "",
+  "screenshots": [
+    "blame_view_initial.png"
+  ],
+  "playbook_used": true
+}

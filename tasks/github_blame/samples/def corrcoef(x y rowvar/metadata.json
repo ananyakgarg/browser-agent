@@ -1,0 +1,29 @@
+{
+  "sample_id": "def corrcoef(x y rowvar",
+  "input_row": {
+    "repo_url": "https://github.com/numpy/numpy",
+    "code_string": "def corrcoef(x y rowvar"
+  },
+  "extracted_data": {
+    "file_path": "numpy/lib/_function_base_impl.py",
+    "line_number": 2900,
+    "commit_hash": "7065a9d14065265aa1f0fd690fdf930a01b9694d",
+    "commit_author": "abhi210",
+    "commit_date": "2025-10-17",
+    "blame_url": "https://github.com/numpy/numpy/blame/main/numpy/lib/_function_base_impl.py",
+    "modified_within_year": true,
+    "material_change_flag": true,
+    "material_change_explanation": "The commit (2025-10-17) removed the previously-deprecated `bias` and `ddof` parameters from both the `corrcoef` function signature and its dispatcher `_corrcoef_dispatcher`. Before this change, `corrcoef(x, bias=..., ddof=...)` would issue a deprecation warning; after this change those parameters are gone entirely, so passing them raises a TypeError. This is a material parameter-handling change that alters the function's API and call behavior.",
+    "material_change_evidence": "-def _corrcoef_dispatcher(x, y=None, rowvar=None, bias=None, ddof=None, *,\n+def _corrcoef_dispatcher(x, y=None, rowvar=None, *,\n                          dtype=None):\n\n-def corrcoef(x, y=None, rowvar=True, bias=np._NoValue, ddof=np._NoValue, *,\n+def corrcoef(x, y=None, rowvar=True, *,\n              dtype=None):",
+    "evidence_screenshots": [
+      "blame_view_initial.png",
+      "blame_line2900.png"
+    ]
+  },
+  "notes": "",
+  "screenshots": [
+    "blame_view_initial.png",
+    "blame_line2900.png"
+  ],
+  "playbook_used": true
+}

@@ -1,0 +1,9 @@
+{
+  "model": "claude-sonnet-4-6",
+  "total_input_tokens": 349933,
+  "total_output_tokens": 4379,
+  "total_tokens": 354312,
+  "api_calls": 16,
+  "iterations": 16,
+  "elapsed_sec": 168.79
+}

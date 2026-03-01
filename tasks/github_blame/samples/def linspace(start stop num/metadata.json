@@ -1,0 +1,32 @@
+{
+  "sample_id": "def linspace(start stop num",
+  "input_row": {
+    "repo_url": "https://github.com/numpy/numpy",
+    "code_string": "def linspace(start stop num"
+  },
+  "extracted_data": {
+    "file_path": "numpy/_core/function_base.py",
+    "line_number": 28,
+    "commit_hash": "d338490271238c78683640943a11f9e4e53e62fb",
+    "commit_author": "Marten van Kerkwijk",
+    "commit_date": "2018-12-05",
+    "blame_url": "https://github.com/numpy/numpy/blame/main/numpy/_core/function_base.py",
+    "modified_within_year": false,
+    "material_change_flag": false,
+    "material_change_explanation": "The def linspace(start, stop, num=50...) line (line 28) was last blamed to a Dec 5, 2018 commit ('ENH: allow user choice of sample axis in {lin,log,geom}space.' by Marten van Kerkwijk), which is ~87 months old \u2014 far outside the 12-month window. Per Step 4b, nearby lines inside the function body were checked for recent changes: (1) Line 126 (Apr 18, 2025, commit fb3d4c2 'using flynt'): changed %-style string formatting to an f-string in the ValueError message \u2014 purely cosmetic/style, no computational impact; (2) Lines 162-163 (May 11, 2025, commit 36d8ca0 'MNT: Apply ruff/Pylint rule PLR5501'): refactored 'else: if _mult_inplace: ... else: ...' into 'elif _mult_inplace: ... else: ...' \u2014 purely structural/style change with identical runtime behavior; (3) Line 41 (Dec 8, 2025, commit cee14ff 'DOC: prefer passing scalar types to dtype= in examples'): changed docstring example from '.astype(int)' to '.astype(np.int_)' \u2014 documentation only. None of these changes altered any formula, calculation, or output behavior of linspace.",
+    "material_change_evidence": "Diff for fb3d4c2 (line 126): '-            \"Number of samples, %s, must be non-negative.\" % num' / '+            f\"Number of samples, {num}, must be non-negative.\"'\n\nDiff for 36d8ca0 (lines 162-163): '+        elif _mult_inplace:' / '+            y *= step' / '-        else:' / '-            if _mult_inplace:' / '-                y *= step' / '-            else:' / '-                y = y * step' / '+        else:' / '+            y = y * step'\n\nDiff for cee14ff (line 41): '-        still be obtained with ``np.linspace(start, stop, num).astype(int)``' / '+        still be obtained with ``np.linspace(start, stop, num).astype(np.int_)``'",
+    "evidence_screenshots": [
+      "blame_view_initial.png \u2014 initial blame page load showing file header and top lines",
+      "blame_line28_linspace.png \u2014 blame view scrolled to line 28 showing 'def linspace(start, stop, num=50...' with '8 years ago / ENH: allow user choice of sam...' in the gutter, and nearby lines including line 29 (2 years ago) and line 41 (3 months ago)",
+      "blame_line28_final.png \u2014 file code view showing lines 1-27 with function_base.py structure"
+    ],
+    "playbook": "1. Navigate to https://github.com/numpy/numpy/blame/main/numpy/_core/function_base.py (replace 'main' with 'master' if 404). Take a screenshot.\n2. Use search_page('def linspace(start') to find the matching line. Note the file line number shown in context (e.g. '28').\n3. Use execute_js to extract blame info for that line:\n   - Find element: document.querySelector('[data-line-number=\"28\"]')\n   - Walk up to '.react-blame-segment-wrapper'\n   - Extract: commitLinks (href contains /commit/), timeEls ([datetime] attribute)\n   - Example: segText, commitLinks[0].href, timeEls[0].getAttribute('datetime')\n4. Use GitHub API to get author: fetch https://api.github.com/repos/numpy/numpy/commits/{commit_hash} and read commit.author.name.\n5. Compare commit date to today. If >12 months ago, set modified_within_year=false and proceed to Step 4b.\n6. For Step 4b: use execute_js to scan all '.react-blame-segment-wrapper' elements, filter by datetime >= 12 months ago, collect line numbers and commit hashes.\n7. For each recent nearby commit, use get_commit_diff(repo_url, commit_hash, file_path) to inspect changes. Assess if computational/formula changes exist (ignore style, docstring, f-string, elif refactors).\n8. Set material_change_flag=true only if a diff shows changed formulas, parameter logic, or output behavior.\n9. Call complete with all fields."
+  },
+  "notes": "",
+  "screenshots": [
+    "blame_view_initial.png",
+    "blame_line28_final.png",
+    "blame_line28_linspace.png"
+  ],
+  "playbook_used": false
+}

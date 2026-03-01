@@ -1,0 +1,29 @@
+{
+  "sample_id": "def _cython_agg_general",
+  "input_row": {
+    "repo_url": "https://github.com/pandas-dev/pandas",
+    "code_string": "def _cython_agg_general"
+  },
+  "extracted_data": {
+    "file_path": "pandas/core/groupby/groupby.py",
+    "line_number": 1510,
+    "commit_hash": "332f0dfb4bc3bf656c4cc1f818f0640de828ceec",
+    "commit_author": "Shubhang Sinha (Zrahay)",
+    "commit_date": "2025-10-27",
+    "blame_url": "https://github.com/pandas-dev/pandas/blame/main/pandas/core/groupby/groupby.py",
+    "modified_within_year": true,
+    "material_change_flag": true,
+    "material_change_explanation": "Commit 332f0dfb (2025-10-27) added input validation inside `_cython_agg_general` that raises a ValueError when `numeric_only` is not a Boolean value. Before this change, non-Boolean values (e.g. integers, strings) passed as `numeric_only` were silently accepted; after this change, they raise `ValueError('numeric_only accepts only Boolean values')`. This materially alters the function's parameter handling and output behavior \u2014 callers passing non-Boolean numeric_only values will now get an error instead of a result.",
+    "material_change_evidence": "@@ -1756,6 +1755,9 @@ def _cython_agg_general(\n         # Note: we never get here with how=\"ohlc\" for DataFrameGroupBy;\n         #  that goes through SeriesGroupBy\n \n+        if not is_bool(numeric_only):\n+            raise ValueError(\"numeric_only accepts only Boolean values\")\n+\n         data = self._get_data_to_aggregate(numeric_only=numeric_only, name=how)",
+    "evidence_screenshots": [
+      "blame_view_initial.png",
+      "blame_line1510.png"
+    ]
+  },
+  "notes": "",
+  "screenshots": [
+    "blame_view_initial.png",
+    "blame_line1510.png"
+  ],
+  "playbook_used": true
+}
