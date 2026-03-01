@@ -1,0 +1,19 @@
+{
+  "sample_id": "https://en.wikipedia.org/wiki/Basel_III",
+  "input_row": {
+    "article_url": "https://en.wikipedia.org/wiki/Basel_III"
+  },
+  "extracted_data": {
+    "oldest_reference_title": "Basel II Comprehensive version part 2: The First Pillar \u2013 Minimum Capital Requirements",
+    "oldest_reference_authors": "Basel Committee on Banking Supervision",
+    "oldest_reference_publication_date": "November 2005",
+    "oldest_reference_source_url": "https://www.bis.org/publ/bcbs128b.pdf",
+    "url_status": "live",
+    "wayback_machine_url": "N/A",
+    "citation_claim": "Advocates a change in the accounting standards towards an expected loss (EL) approach (usually, EL amount := LGD*PD*EAD).[38]",
+    "citation_accuracy_assessment": "partially accurate \u2014 The referenced Basel II document (p. 86) defines the expected loss formula EL = LGD\u00d7PD\u00d7EAD, which supports the mathematical notation in the claim. However, the source is a Basel II document being cited in the context of Basel III's advocacy for an EL-based accounting approach, making it a supporting definitional reference rather than a direct Basel III source."
+  },
+  "notes": "",
+  "screenshots": [],
+  "playbook_used": true
+}

@@ -1,0 +1,19 @@
+{
+  "sample_id": "https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)",
+  "input_row": {
+    "article_url": "https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)"
+  },
+  "extracted_data": {
+    "oldest_reference_title": "The correlation theory of brain function",
+    "oldest_reference_authors": "Christoph von der Malsburg",
+    "oldest_reference_publication_date": "1981",
+    "oldest_reference_source_url": "http://cogprints.org/1380/1/vdM_correlation.pdf",
+    "url_status": "live",
+    "wayback_machine_url": "N/A",
+    "citation_claim": "One of its two networks has \"fast weights\" or \"dynamic links\" (1981).[17][18][19] \u2014 in context: \"The linearly scaling fast weight controller (1992) learns to compute a weight matrix for further processing depending on the input. One of its two networks has 'fast weights' or 'dynamic links' (1981).\"",
+    "citation_accuracy_assessment": "accurate \u2014 The von der Malsburg (1981) paper on the correlation theory of brain function introduced the concept of 'dynamic links' (dynamic connections) in neural networks, which is exactly what the Wikipedia article cites it for. The reference correctly supports the claim about the historical origin of the 'dynamic links' concept used in the fast weight controller architecture."
+  },
+  "notes": "",
+  "screenshots": [],
+  "playbook_used": true
+}

@@ -1,0 +1,19 @@
+{
+  "sample_id": "https://en.wikipedia.org/wiki/Sarbanes%E2%80%93Oxley_Act",
+  "input_row": {
+    "article_url": "https://en.wikipedia.org/wiki/Sarbanes%E2%80%93Oxley_Act"
+  },
+  "extracted_data": {
+    "oldest_reference_title": "18 U.S. Code \u00a7 1350 - Failure of corporate officers to certify financial reports | U.S. Code | US Law | LII / Legal Information Institute",
+    "oldest_reference_authors": "No named authors (U.S. federal statute published on LII / Legal Information Institute)",
+    "oldest_reference_publication_date": "July 30, 2002",
+    "oldest_reference_source_url": "https://www.law.cornell.edu/uscode/18/1350.html",
+    "url_status": "live",
+    "wayback_machine_url": "N/A",
+    "citation_claim": "(2) willfully certifies any statement as set forth in subsections (a) and (b) of this section knowing that the periodic report accompanying the statement does not comport with all the requirements set forth in this section shall be fined not more than $5,000,000, or imprisoned not more than 20 years, or both.[68]",
+    "citation_accuracy_assessment": "accurate \u2014 The reference links directly to 18 U.S.C. \u00a7 1350 on the LII website, which is the exact statutory provision being quoted in the article. The article reproduces the legal text of the law verbatim, and the reference correctly points to that authoritative source."
+  },
+  "notes": "",
+  "screenshots": [],
+  "playbook_used": true
+}

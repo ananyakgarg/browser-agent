@@ -1,0 +1,194 @@
+[
+  {
+    "iteration": 1,
+    "timestamp": 0.0,
+    "usage": {
+      "input_tokens": 4562,
+      "output_tokens": 93
+    },
+    "reasoning": "I'll follow the playbook to complete this task. Let me start by navigating to the article and extracting all references.",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://en.wikipedia.org/wiki/RSA_(cryptosystem)"
+        },
+        "result": "URL: https://en.wikipedia.org/wiki/RSA_cryptosystem\nTitle: RSA cryptosystem - Wikipedia\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#bodyContent\" \"Jump to content\"\n[1] <input> role=button type=checkbox value=\"on\" aria-label=\"Main menu\" checked=False\n[2] <a> href=\"/wiki/Main_Page\"\n[3] <input> type=search name=\"search\" placeholder=\"Search Wikipedia\" aria-label=\"Search Wikipedia\"\n[4] <button> \"Search\"\n[5] <a> href=\"https://donate.wikimedia.org/?wmf_source=donate&wmf_medium=sidebar&wmf_campaign=\" \"Donate\"\n[6] <a> href=\"/w/index.php?title=Special:CreateAccount&returnto=RSA+cryptosystem\" \"Create account\"\n[7] <a> href=\"/w/index.php?title=Special:UserLogin&returnto=RSA+cryptosystem\" \"Log in\"\n[8] <button> \"hide\"\n[9] <a> href=\"#\" \"(Top)\"\n[10] <a> href=\"#History\" \"History\"\n[11] <a> href=\"#Patent\" \"Patent\"\n[12] <a> href=\"#Operation\" \"Operation\"\n[13] <button> \"Toggle Operation subsection\"\n[14] <a> href=\"#Proofs_of_correctness\" \"Proofs of correctness\"\n[15] <button> \"Toggle Proofs of correctness subsection\"\n[16] <a> href=\"#Padding\" \"Padding\"\n[17] <button> \"Toggle Padding subsection\"\n[18] <a> href=\"#Security_and_practical_considerations\" \"Security and practical considerations\"\n[19] <button> \"Toggle Security and practical considerations subsection\"\n[20] <a> href=\"#Implementations\" \"Implementations\"\n[21] <a> href=\"#See_also\" \"See also\"\n[22] <a> href=\"#Notes_2\" \"Notes\"\n[23] <a> href=\"#References\" \"References\"\n[24] <a> href=\"#Further_reading\" \"Further reading\"\n[25] <a> href=\"#External_links\" \"External links\"\n[26] <input> role=button type=checkbox value=\"on\" aria-label=\"Go to an article in another language. Available in 52 languages\" checked=False\n[27] <a> href=\"/wiki/RSA_cryptosystem\" \"Article\"\n[28] <a> href=\"/wiki/Talk:RSA_cryptosystem\" \"Talk\"\n[29] <a> href=\"/wiki/RSA_cryptosystem\" \"Read\"\n[30] <a> href=\"/w/index.php?title=RSA_cryptosystem&action=edit\" \"Edit\"\n[31] <a> href=\"/w/index.php?title=RSA_cryptosystem&action=history\" \"View history\"\n[32] <input> role=button type=che"
+      }
+    ]
+  },
+  {
+    "iteration": 2,
+    "timestamp": 247.96,
+    "usage": {
+      "input_tokens": 9550,
+      "output_tokens": 132
+    },
+    "reasoning": "Now let me extract all references with publication dates:",
+    "tools": [
+      {
+        "tool": "execute_js",
+        "input": {
+          "expression": "\nconst refList = [...document.querySelectorAll('.references li')];\nconsole.log('Total refs:', refList.length);\nrefList.slice(0, 30).map(li => ({ id: li.id, text: li.innerText.substring(0, 300) }));\n"
+        },
+        "result": "[\n  {\n    \"id\": \"cite_note-41\",\n    \"text\": \"^ We cannot trivially break RSA by applying the theorem (mod pq) because pq is not prime.\"\n  },\n  {\n    \"id\": \"cite_note-42\",\n    \"text\": \"^ In particular, the statement above holds for any e and d that satisfy ed \\u2261 1 (mod (p \\u2212 1)(q \\u2212 1)), since (p \\u2212 1)(q \\u2212 1) is divisible by \\u03bb(pq), and thus trivially also by p \\u2212 1 and q \\u2212 1. However, in modern implementations of RSA, it is common to use a reduced private exponent d that only satisfies\"\n  },\n  {\n    \"id\": \"cite_note-43\",\n    \"text\": \"^ This is part of the Chinese remainder theorem, although it is not the significant part of that theorem.\"\n  },\n  {\n    \"id\": \"cite_note-31\",\n    \"text\": \"^ e = 2 is also possible (and even faster) but qualitatively different because squaring is not a permutation; this is the basis of the Rabin signature algorithm.\"\n  },\n  {\n    \"id\": \"cite_note-34\",\n    \"text\": \"^ Namely, the values of m which are equal to \\u22121, 0, or 1 modulo p while also equal to \\u22121, 0, or 1 modulo q. There will be more values of m having c = m if p\\u00a0\\u2212\\u00a01 or q\\u00a0\\u2212\\u00a01 has other divisors in common with e\\u00a0\\u2212\\u00a01 besides 2 because this gives more values of m such that \\n\\ud835\\udc5a\\n\\ud835\\udc52\\n\\u2212\\n1\\nmod\\n\\ud835\\udc5d\\n=\\n1\\n or \\n\\ud835\\udc5a\\n\\ud835\\udc52\\n\\u2212\"\n  },\n  {\n    \"id\": \"cite_note-36\",\n    \"text\": \"^ The parameters used here are artificially small, but one can also OpenSSL can also be used to generate and examine a real keypair.\"\n  },\n  {\n    \"id\": \"cite_note-51\",\n    \"text\": \"^ If \\n\\ud835\\udc5a\\n1\\n<\\n\\ud835\\udc5a\\n2\\n, then some[clarification needed] libraries compute h as \\n\\ud835\\udc5e\\ninv\\n[\\n(\\n\\ud835\\udc5a\\n1\\n+\\n\\u2308\\n\\ud835\\udc5e\\n\\ud835\\udc5d\\n\\u2309\\n\\ud835\\udc5d\\n)\\n\\u2212\\n\\ud835\\udc5a\\n2\\n]\\n(\\nmod\\n\\ud835\\udc5d\\n)\\n.\"\n  },\n  {\n    \"id\": \"cite_note-rsa1977tr-1\",\n    \"text\": \"^ Rivest, R.L.; Shamir, A.; Adleman, L. (1977). A Method for Obtaining Digital "
+      }
+    ]
+  },
+  {
+    "iteration": 3,
+    "timestamp": 255.72,
+    "usage": {
+      "input_tokens": 12966,
+      "output_tokens": 105
+    },
+    "tools": [
+      {
+        "tool": "execute_js",
+        "input": {
+          "expression": "\nconst refList = [...document.querySelectorAll('.references li')];\nrefList.slice(30).map(li => ({ id: li.id, text: li.innerText.substring(0, 300) }));\n"
+        },
+        "result": "[\n  {\n    \"id\": \"cite_note-24\",\n    \"text\": \"^ Margaret Cozzens and Steven J. Miller. \\\"The Mathematics of Encryption: An Elementary Introduction\\\". p. 180.\"\n  },\n  {\n    \"id\": \"cite_note-25\",\n    \"text\": \"^ Alasdair McAndrew. \\\"Introduction to Cryptography with Open-Source Software\\\". p. 12.\"\n  },\n  {\n    \"id\": \"cite_note-26\",\n    \"text\": \"^ Surender R. Chiluka. \\\"Public key Cryptography\\\".\"\n  },\n  {\n    \"id\": \"cite_note-27\",\n    \"text\": \"^ Neal Koblitz. \\\"Cryptography As a Teaching Tool\\\". Cryptologia, Vol. 21, No. 4 (1997).\"\n  },\n  {\n    \"id\": \"cite_note-28\",\n    \"text\": \"^ \\\"RSA Security Releases RSA Encryption Algorithm into Public Domain\\\". Archived from the original on June 21, 2007. Retrieved 2010-03-03.\"\n  },\n  {\n    \"id\": \"cite_note-svenda2016mkq-29\",\n    \"text\": \"^ \\u0160venda, Petr; Nemec, Mat\\u00fa\\u0161; Sekan, Peter; Kva\\u0161\\u0148ovsk\\u00fd, Rudolf; Form\\u00e1nek, David; Kom\\u00e1rek, David; Maty\\u00e1\\u0161, Vashek (August 2016). The Million-Key Question\\u2014Investigating the Origins of RSA Public Keys. 25th USENIX Security Symposium. Austin, TX, United States: USENIX Association. pp.\\u00a0893\\u2013910. ISBN\\u00a0978-1\"\n  },\n  {\n    \"id\": \"cite_note-Boneh99-30\",\n    \"text\": \"^ \\nJump up to:\\na b Boneh, Dan (1999). \\\"Twenty Years of attacks on the RSA Cryptosystem\\\". Notices of the American Mathematical Society. 46 (2): 203\\u2013213.\"\n  },\n  {\n    \"id\": \"cite_note-32\",\n    \"text\": \"^ Applied Cryptography, John Wiley & Sons, New York, 1996. Bruce Schneier, p. 467.\"\n  },\n  {\n    \"id\": \"cite_note-pkcs1-33\",\n    \"text\": \"^ \\nJump up to:\\na b Johnson, J.; Kaliski, B. (February 2003). Public-Key Cryptography Standards (PKCS) #1: RSA Cryptography Specifications Version 2.1. Network Working Group. doi:10.17487/RFC3447. RFC 3447. Retrieved 9 March 2016.\"\n  },\n  {\n    \"id\": \"cite_note-Bleichenbacher1998-35\",\n    \"text\": \"^ \\nJump up to:\\na b Bleichenbacher, Daniel (1998). Krawczyk, Hugo (ed.). Chosen ciphertext attacks against protocols based on the RSA encr"
+      }
+    ]
+  },
+  {
+    "iteration": 4,
+    "timestamp": 258.3,
+    "usage": {
+      "input_tokens": 16225,
+      "output_tokens": 272
+    },
+    "reasoning": "Now let me identify the oldest reference. I can see several with years:\n- cite_note-22: Cocks, C. C. (20 November **1973**)\n- cite_note-18: Diffie & Hellman (November **1976**)\n- cite_note-rsa1977tr-1: Rivest et al. (**1977**)\n- cite_note-Gardner1977-2: Gardner, Martin (August **1977**)\n\nThe oldest is cite_note-22 from **1973**. Let me get its full details:",
+    "tools": [
+      {
+        "tool": "execute_js",
+        "input": {
+          "expression": "\nconst ref = document.getElementById('cite_note-22');\nJSON.stringify({\n    fullText: ref ? ref.innerText : 'not found',\n    links: ref ? [...ref.querySelectorAll('a')].map(a => ({\n        href: a.href,\n        text: a.innerText.trim()\n    })) : []\n});\n"
+        },
+        "result": "\"{\\\"fullText\\\":\\\"^ Cocks, C. C. (20 November 1973). \\\\\\\"A Note on Non-Secret Encryption\\\\\\\" (PDF). www.gchq.gov.uk. Archived from the original (PDF) on 28 September 2018. Retrieved 2017-05-30.\\\",\\\"links\\\":[{\\\"href\\\":\\\"https://en.wikipedia.org/wiki/RSA_cryptosystem#cite_ref-22\\\",\\\"text\\\":\\\"^\\\"},{\\\"href\\\":\\\"https://en.wikipedia.org/wiki/Clifford_Cocks\\\",\\\"text\\\":\\\"Cocks, C. C.\\\"},{\\\"href\\\":\\\"https://web.archive.org/web/20180928121748/https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf\\\",\\\"text\\\":\\\"\\\\\\\"A Note on Non-Secret Encryption\\\\\\\"\\\"},{\\\"href\\\":\\\"https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf\\\",\\\"text\\\":\\\"the original\\\"}]}\""
+      }
+    ]
+  },
+  {
+    "iteration": 5,
+    "timestamp": 263.59,
+    "usage": {
+      "input_tokens": 16796,
+      "output_tokens": 205
+    },
+    "reasoning": "I found the details. Now let me find the inline claim for this reference:",
+    "tools": [
+      {
+        "tool": "execute_js",
+        "input": {
+          "expression": "\nconst markers = document.querySelectorAll('sup a[href=\"#cite_note-22\"]');\nconst results = [];\nfor (let marker of markers) {\n    let el = marker;\n    for (let i = 0; i < 5; i++) {\n        if (el.tagName === 'P' || el.tagName === 'LI') break;\n        el = el.parentElement;\n    }\n    results.push(el ? el.innerText.substring(0, 800) : 'not found');\n}\nJSON.stringify(results);\n"
+        },
+        "result": "\"[\\\"Clifford Cocks, an English mathematician working for the British intelligence agency Government Communications Headquarters (GCHQ), described a similar system in an internal document in 1973.[22] However, given the relatively expensive computers needed to implement it at the time, it was considered to be mostly a curiosity and, as far as is publicly known, was never deployed. His ideas and concepts were not revealed until 1997 due to its top-secret classification.\\\"]\""
+      }
+    ]
+  },
+  {
+    "iteration": 6,
+    "timestamp": 267.26,
+    "usage": {
+      "input_tokens": 17115,
+      "output_tokens": 118
+    },
+    "reasoning": "Now let me check the source URL status:",
+    "tools": [
+      {
+        "tool": "http_request",
+        "input": {
+          "url": "https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf",
+          "method": "GET"
+        },
+        "result": "HTTP 404 Not Found\n\nHeaders:\n  Date: Sun, 01 Mar 2026 05:03:28 GMT\n  Content-Type: text/html; charset=UTF-8\n  Transfer-Encoding: chunked\n  Connection: keep-alive\n  Content-Encoding: gzip\n  CF-Ray: 9d559d832fe6ed3c-SJC\n  CF-Cache-Status: EXPIRED\n  Cache-Control: public, max-age=2678400\n  Content-Language: en\n  Expires: Wed, 01 Apr 2026 05:03:28 GMT\n  Last-Modified: Sun, 01 Mar 2026 05:03:27 GMT\n  Strict-Transport-Security: max-age=31556952; includeSubDomains\n  Vary: Cookie, Accept-Encoding\n  From-Origin: same\n  Referrer-Policy: strict-origin-when-cross-origin\n  X-Content-Type-Options: nosniff\n  X-Drupal-Cache: MISS\n  X-Frame-Options: DENY\n  X-Generator: Drupal 11 (https://www.drupal.org)\n  speculation-rules: \"/cdn-cgi/speculation\"\n  Server: cloudflare\n  alt-svc: h3=\":443\"; ma=86400\n\nBody:\n<!DOCTYPE html><html lang=\"en\" dir=\"ltr\" prefix=\"og: https://ogp.me/ns#\"><head><meta charset=\"utf-8\" /><meta name=\"description\" content=\"404 Page Not Found\" /><link rel=\"canonical\" href=\"https://www.gchq.gov.uk/sorry-the-page-youre-looking-for-isnt-here\" /><meta property=\"og:site_name\" content=\"GCHQ - GCHQ.GOV.UK\" /><meta property=\"og:url\" content=\"https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%2520Cocks%2520paper%252019731120.pdf\" /><meta property=\"og:title\" content=\"Sorry - the page you&#039;re looking for isn&#039;t here\" /><meta property=\"og:description\" content=\"404 Page Not Found\" /><meta name=\"twitter:card\" content=\"summary_large_image\" /><meta name=\"twitter:title\" content=\"Sorry - the page you&#039;re looking for isn&#039;t here\" /><meta name=\"Generator\" content=\"Drupal 11 (https://www.drupal.org)\" /><meta name=\"MobileOptimized\" content=\"width\" /><meta name=\"HandheldFriendly\" content=\"true\" /><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /><link rel=\"preconnect\" href=\"https://challenges.cloudflare.com\" /><script type=\"application/ld+json\">{\"@context\": \"https://schema.org\",\"@graph\": [{\"@type\": \"Organization\",\"name\": \"GCHQ - GCHQ.GOV.U"
+      }
+    ]
+  },
+  {
+    "iteration": 7,
+    "timestamp": 272.51,
+    "usage": {
+      "input_tokens": 21661,
+      "output_tokens": 149
+    },
+    "reasoning": "The URL is dead (404). I already have the Wayback Machine URL from the links extracted earlier. Let me verify it:",
+    "tools": [
+      {
+        "tool": "http_request",
+        "input": {
+          "url": "https://archive.org/wayback/available?url=https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf",
+          "method": "GET"
+        },
+        "result": "HTTP 200 OK\n\nHeaders:\n  Server: nginx/1.24.0\n  Date: Sun, 01 Mar 2026 05:03:50 GMT\n  Content-Type: application/json\n  Content-Length: 126\n  Connection: keep-alive\n  Access-Control-Allow-Credentials: true\n  Access-Control-Allow-Origin: *\n  x-app-server: nomad-api4\n  x-ts: 200\n  x-tr: 5025\n  server-timing: TR;dur=0,Tw;dur=0,Tc;dur=2\n  Set-Cookie: wb-api-SERVER=; Expires=Thu, 01-Jan-1970 00:00:01 GMT; path=/\n  X-location: available\n  X-IP: 108.238.129.1\n  X-RL: 0\n  X-NA: 0\n  X-Page-Cache: MISS\n  Server-Timing: TR;dur=0,Tw;dur=0,Tc;dur=2\n  X-NID: INTERNET-ARCHIVE\n  Referrer-Policy: no-referrer-when-downgrade\n  Permissions-Policy: interest-cohort=()\n  Strict-Transport-Security: max-age=15724800\n  Onion-Location: https://archivep75mbjunhxc6x4j5mwjmomyxb573v42baldlqu56ruil2oiad.onion/wayback/available?url=https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf\n  Content-Security-Policy: report-uri https://archive.org/services/csp-report; default-src *; img-src * data: blob:;\n  ... (truncated)\n\nBody:\n{\"url\": \"https://www.gchq.gov.uk/sites/default/files/document_files/Cliff Cocks paper 19731120.pdf\", \"archived_snapshots\": {}}"
+      }
+    ]
+  },
+  {
+    "iteration": 8,
+    "timestamp": 299.07,
+    "usage": {
+      "input_tokens": 22322,
+      "output_tokens": 217
+    },
+    "reasoning": "No Wayback Machine snapshot found via that API. But I already saw in the reference links that there's a Wayback Machine URL: `https://web.archive.org/web/20180928121748/https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf`. Let me verify it works:",
+    "tools": [
+      {
+        "tool": "http_request",
+        "input": {
+          "url": "https://web.archive.org/web/20180928121748/https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf",
+          "method": "HEAD"
+        },
+        "result": "HTTP 200 OK\n\nHeaders:\n  Server: nginx\n  Date: Sun, 01 Mar 2026 05:04:00 GMT\n  Content-Type: application/pdf\n  Content-Length: 309922\n  Connection: keep-alive\n  x-archive-orig-content-length: 309922\n  x-archive-orig-connection: close\n  x-archive-orig-accept-ranges: bytes\n  x-archive-orig-content-security-policy: default-src 'self' https:; frame-src 'self' https://www.google.com/recaptcha/ https://www.youtube.com https://vimeo.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' https://www.google.com/recaptcha/ https://www.gstatic.com/recaptcha/ 'unsafe-eval' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data:;\n  x-archive-orig-date: Fri, 28 Sep 2018 12:17:49 GMT\n  x-archive-orig-etag: \"57fd2109-4baa2\"\n  x-archive-orig-last-modified: Tue, 11 Oct 2016 17:27:37 GMT\n  x-archive-orig-server: nginx\n  x-archive-orig-strict-transport-security: max-age=63072000; includeSubdomains; preload\n  x-archive-orig-x-content-type-options: nosniff\n  x-archive-orig-x-frame-op\n  ... (truncated)\n\nBody:\n"
+      }
+    ]
+  },
+  {
+    "iteration": 9,
+    "timestamp": 303.36,
+    "usage": {
+      "input_tokens": 22964,
+      "output_tokens": 489
+    },
+    "reasoning": "The Wayback Machine snapshot is live and returns 200. Now I have all the information needed. Let me compile the final results:",
+    "tools": [
+      {
+        "tool": "run_python",
+        "input": {
+          "code": "\n# Summary of findings\nprint(\"=== OLDEST REFERENCE ===\")\nprint(\"Title: A Note on Non-Secret Encryption\")\nprint(\"Authors: Cocks, C. C.\")\nprint(\"Date: 20 November 1973\")\nprint(\"Source URL: https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf\")\nprint(\"URL Status: dead (HTTP 404)\")\nprint(\"Wayback URL: https://web.archive.org/web/20180928121748/https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf\")\nprint()\nprint(\"=== INLINE CLAIM ===\")\nclaim = \"Clifford Cocks, an English mathematician working for the British intelligence agency Government Communications Headquarters (GCHQ), described a similar system in an internal document in 1973.[22] However, given the relatively expensive computers needed to implement it at the time, it was considered to be mostly a curiosity and, as far as is publicly known, was never deployed. His ideas and concepts were not revealed until 1997 due to its top-secret classification.\"\nprint(claim)\nprint()\nprint(\"=== CITATION ACCURACY ===\")\nprint(\"The reference is 'A Note on Non-Secret Encryption' by C.C. Cocks (1973), which is the internal GCHQ document describing a similar public-key encryption system.\")\nprint(\"The claim states that Clifford Cocks described a similar system in an internal document in 1973.\")\nprint(\"This is accurate - the reference IS that 1973 internal document.\")\n"
+        },
+        "result": "=== OLDEST REFERENCE ===\nTitle: A Note on Non-Secret Encryption\nAuthors: Cocks, C. C.\nDate: 20 November 1973\nSource URL: https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf\nURL Status: dead (HTTP 404)\nWayback URL: https://web.archive.org/web/20180928121748/https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf\n\n=== INLINE CLAIM ===\nClifford Cocks, an English mathematician working for the British intelligence agency Government Communications Headquarters (GCHQ), described a similar system in an internal document in 1973.[22] However, given the relatively expensive computers needed to implement it at the time, it was considered to be mostly a curiosity and, as far as is publicly known, was never deployed. His ideas and concepts were not revealed until 1997 due to its top-secret classification.\n\n=== CITATION ACCURACY ===\nThe reference is 'A Note on Non-Secret Encryption' by C.C. Cocks (1973), which is the internal GCHQ document describing a similar public-key encryption system.\nThe claim states that Clifford Cocks described a similar system in an internal document in 1973.\nThis is accurate - the reference IS that 1973 internal document.\n"
+      }
+    ]
+  },
+  {
+    "iteration": 10,
+    "timestamp": 312.96,
+    "usage": {
+      "input_tokens": 23821,
+      "output_tokens": 488
+    },
+    "reasoning": "All information has been gathered. Let me now call complete with all required fields:",
+    "tools": [
+      {
+        "tool": "complete",
+        "input": {
+          "data": {
+            "oldest_reference_title": "A Note on Non-Secret Encryption",
+            "oldest_reference_authors": "Cocks, C. C.",
+            "oldest_reference_publication_date": "20 November 1973",
+            "oldest_reference_source_url": "https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf",
+            "url_status": "dead",
+            "wayback_machine_url": "https://web.archive.org/web/20180928121748/https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf",
+            "citation_claim": "Clifford Cocks, an English mathematician working for the British intelligence agency Government Communications Headquarters (GCHQ), described a similar system in an internal document in 1973. However, given the relatively expensive computers needed to implement it at the time, it was considered to be mostly a curiosity and, as far as is publicly known, was never deployed. His ideas and concepts were not revealed until 1997 due to its top-secret classification.",
+            "citation_accuracy_assessment": "accurate"
+          },
+          "notes": "The oldest reference is Cocks (1973), an internal GCHQ document predating the public RSA paper. The source URL at gchq.gov.uk returns HTTP 404 (dead), but a Wayback Machine archive exists from September 2018. The citation directly supports the claim that Clifford Cocks described a similar public-key encryption system in an internal document in 1973 \u2014 this is the exact document being referenced, making the citation accurate."
+        },
+        "result": "TASK COMPLETE"
+      }
+    ]
+  }
+]

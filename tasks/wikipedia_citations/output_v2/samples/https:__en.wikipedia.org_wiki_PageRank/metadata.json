@@ -1,0 +1,19 @@
+{
+  "sample_id": "https://en.wikipedia.org/wiki/PageRank",
+  "input_row": {
+    "article_url": "https://en.wikipedia.org/wiki/PageRank"
+  },
+  "extracted_data": {
+    "oldest_reference_title": "Zur relativen Wertbemessung der Turnierresultate",
+    "oldest_reference_authors": "Landau, Edmund",
+    "oldest_reference_publication_date": "1895",
+    "oldest_reference_source_url": "no_url",
+    "url_status": "no_url",
+    "wayback_machine_url": "N/A",
+    "citation_claim": "The eigenvalue problem behind PageRank's algorithm was independently rediscovered and reused in many scoring problems. In 1895, Edmund Landau suggested using it for determining the winner of a chess tournament.",
+    "citation_accuracy_assessment": "accurate \u2014 The reference is an 1895 paper by Edmund Landau in Deutsches Wochenschach proposing the use of eigenvalue-based ranking for chess tournament results, which directly and correctly supports the article's claim that Landau applied this concept to determining chess tournament winners in 1895."
+  },
+  "notes": "",
+  "screenshots": [],
+  "playbook_used": true
+}

@@ -1,0 +1,20 @@
+{
+  "sample_id": "https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model",
+  "input_row": {
+    "article_url": "https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model"
+  },
+  "extracted_data": {
+    "oldest_reference_title": "Th\u00e9orie de la Sp\u00e9culation [Theory of Speculation]",
+    "oldest_reference_authors": "Bachelier, Louis",
+    "oldest_reference_publication_date": "1900",
+    "oldest_reference_source_url": "http://www.radio.goldseek.com/bachelier-thesis-theory-of-speculation-en.pdf",
+    "url_status": "live",
+    "wayback_machine_url": "N/A (URL is live)",
+    "citation_claim": "Louis Bachelier's thesis[3] in 1900 was the earliest publication to apply Brownian motion to derivative pricing, though his work had little impact for many years and included important limitations for its application to modern markets.",
+    "citation_accuracy_assessment": "accurate \u2014 The reference is Bachelier's actual 1900 doctoral thesis, which is universally recognized as the first work to apply Brownian motion (random walk) to financial derivative pricing. Historical consensus confirms that: (1) it was indeed the earliest such publication, predating Einstein's 1905 paper on Brownian motion; (2) it had little impact for decades until rediscovered by Paul Samuelson in the late 1950s; and (3) it included limitations (e.g., allowed negative asset prices) that restrict its direct applicability to modern markets. The reference directly and accurately supports all aspects of the claim.",
+    "playbook": "## Playbook for Finding Oldest Reference in a Wikipedia Finance Article\n\n### Steps\n\n1. **Navigate** to the Wikipedia article URL (e.g., https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model)\n\n2. **Extract all references** with their publication dates using:\n   ```js\n   const refList = document.querySelectorAll('.references li');\n   const refs = [];\n   for (let li of refList) {\n       refs.push({id: li.id, text: li.innerText.substring(0, 300)});\n   }\n   refs.map(r => r.id + ': ' + r.text);\n   ```\n   - Run this in batches (slice(0, 30), slice(30)) if there are many references\n\n3. **Identify the oldest reference** by scanning years in the text. Look for 4-digit years after author names.\n\n4. **Get full details of the oldest reference** by its ID:\n   ```js\n   const ref = document.getElementById('cite_note-3');\n   JSON.stringify({\n       fullText: ref ? ref.innerText : 'not found',\n       links: ref ? [...ref.querySelectorAll('a')].map(a => ({href: a.href, text: a.innerText.trim()})) : []\n   });\n   ```\n   - The external URL is in the links array (not the internal '#cite_ref-X' link)\n\n5. **Find the in-article citation claim** using:\n   ```js\n   const marker = document.querySelector('sup a[href=\"#cite_note-3\"]');\n   const parentP = marker.parentElement.parentElement;\n   JSON.stringify({paragraph: parentP.innerText.substring(0, 800)});\n   ```\n   - The pattern is: sup > a[href=\"#cite_note-X\"] \u2192 go up 2 levels to get the paragraph\n\n6. **Check URL status** using http_request with the extracted URL:\n   - HTTP 200 = 'live'\n   - HTTP 4xx/5xx or connection error = 'dead'\n   - No URL in reference = 'no_url'\n\n7. **If dead**, search Wayback Machine:\n   - Navigate to https://web.archive.org/web/*/[URL]\n   - Or use http_request to check https://archive.org/wayback/available?url=[URL]\n\n8. **Assess citation accuracy** by comparing:\n   - The claim made in the article (surrounding sentence of the citation marker)\n   - What the reference actually is/contains\n   - Historical/factual accuracy of the claim\n\n### Key Gotchas\n- References section uses class `.references li` - works for both 'Notes' and 'References'\n- Some references lack direct URLs (just DOIs or print sources)\n- The `cite_note-X` IDs correspond to the `[X]` superscript numbers in text\n- Wikipedia uses `sup > a[href='#cite_note-X']` for citation markers in text\n- The PDF link in the reference may be the English translation, not the original language version"
+  },
+  "notes": "",
+  "screenshots": [],
+  "playbook_used": false
+}

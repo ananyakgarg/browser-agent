@@ -1,0 +1,19 @@
+{
+  "sample_id": "https://en.wikipedia.org/wiki/CRISPR_gene_editing",
+  "input_row": {
+    "article_url": "https://en.wikipedia.org/wiki/CRISPR_gene_editing"
+  },
+  "extracted_data": {
+    "oldest_reference_title": "Toward the therapeutic editing of mutated RNA sequences",
+    "oldest_reference_authors": "Woolf TM, Chase JM, Stinchcomb DT",
+    "oldest_reference_publication_date": "August 1995",
+    "oldest_reference_source_url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC41144",
+    "url_status": "live",
+    "wayback_machine_url": "N/A",
+    "citation_claim": "Directing edits to correct mutated sequences was first proposed and demonstrated in 1995. This initial work used synthetic RNA antisense oligonucleotides complementary to a pre-mature stop codon mutation in a dystrophin sequence to activate A-to-I editing of the stop codon to a read through codon in a model xenopus cell system.",
+    "citation_accuracy_assessment": "accurate"
+  },
+  "notes": "",
+  "screenshots": [],
+  "playbook_used": true
+}

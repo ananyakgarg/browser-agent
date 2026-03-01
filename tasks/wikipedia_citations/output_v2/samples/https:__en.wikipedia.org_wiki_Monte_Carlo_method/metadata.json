@@ -1,0 +1,19 @@
+{
+  "sample_id": "https://en.wikipedia.org/wiki/Monte_Carlo_method",
+  "input_row": {
+    "article_url": "https://en.wikipedia.org/wiki/Monte_Carlo_method"
+  },
+  "extracted_data": {
+    "oldest_reference_title": "Note on census-taking in Monte Carlo calculations",
+    "oldest_reference_authors": "Fermi, Enrique; Richtmyer, Robert D.",
+    "oldest_reference_publication_date": "1948",
+    "oldest_reference_source_url": "http://scienze-como.uninsubria.it/bressanini/montecarlo-history/fermi-1948.pdf",
+    "url_status": "live",
+    "wayback_machine_url": "N/A",
+    "citation_claim": "The origins of Quantum Monte Carlo methods are often attributed to Enrico Fermi and Robert Richtmyer who developed in 1948 a mean-field particle interpretation of neutron-chain reactions.[37]",
+    "citation_accuracy_assessment": "accurate \u2014 The reference is Fermi and Richtmyer's 1948 Los Alamos report on Monte Carlo calculations (census-taking methods for neutron-chain reactions), which directly supports the article's claim that they developed a mean-field particle interpretation of neutron-chain reactions in 1948."
+  },
+  "notes": "",
+  "screenshots": [],
+  "playbook_used": true
+}

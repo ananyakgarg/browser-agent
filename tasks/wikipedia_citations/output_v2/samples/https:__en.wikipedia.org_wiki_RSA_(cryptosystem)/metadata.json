@@ -1,0 +1,19 @@
+{
+  "sample_id": "https://en.wikipedia.org/wiki/RSA_(cryptosystem)",
+  "input_row": {
+    "article_url": "https://en.wikipedia.org/wiki/RSA_(cryptosystem)"
+  },
+  "extracted_data": {
+    "oldest_reference_title": "A Note on Non-Secret Encryption",
+    "oldest_reference_authors": "Cocks, C. C.",
+    "oldest_reference_publication_date": "20 November 1973",
+    "oldest_reference_source_url": "https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf",
+    "url_status": "dead",
+    "wayback_machine_url": "https://web.archive.org/web/20180928121748/https://www.gchq.gov.uk/sites/default/files/document_files/Cliff%20Cocks%20paper%2019731120.pdf",
+    "citation_claim": "Clifford Cocks, an English mathematician working for the British intelligence agency Government Communications Headquarters (GCHQ), described a similar system in an internal document in 1973. However, given the relatively expensive computers needed to implement it at the time, it was considered to be mostly a curiosity and, as far as is publicly known, was never deployed. His ideas and concepts were not revealed until 1997 due to its top-secret classification.",
+    "citation_accuracy_assessment": "accurate"
+  },
+  "notes": "",
+  "screenshots": [],
+  "playbook_used": true
+}
