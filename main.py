@@ -51,6 +51,11 @@ def main():
         help="Output directory (default: auto-generated from task name)",
     )
     parser.add_argument(
+        "--model", "-m",
+        default=None,
+        help="Model for the worker agent (default: claude-sonnet-4-5-20250929)",
+    )
+    parser.add_argument(
         "--verbose", "-v",
         action="store_true",
         help="Enable verbose logging",
@@ -69,6 +74,7 @@ def main():
         max_workers=args.workers,
         output_dir_override=args.output_dir,
         session_state_path=args.session,
+        model_override=args.model,
     ))
 
 

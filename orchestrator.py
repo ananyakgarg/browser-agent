@@ -14,8 +14,10 @@ import anthropic
 from playwright.async_api import async_playwright
 
 from browser_tools import create_browser_provider
+from code_tools import CodeToolProvider
 from compiler import compile_results
 from config import TaskConfig, TaskSpec
+from http_tools import HttpToolProvider
 from progress import ProgressTracker, SampleStatus
 from tool_registry import ToolRegistry
 from validator import validate_sample, write_metadata
@@ -23,7 +25,7 @@ from worker import run_worker
 
 logger = logging.getLogger(__name__)
 
-PLAN_MODEL = "claude-sonnet-4-5-20250929"
+PLAN_MODEL = "claude-sonnet-4-6"
 
 # ---------------------------------------------------------------------------
 # Planning call — replaces the JSON task spec
@@ -151,6 +153,7 @@ async def process_sample(
     browser,
     progress: ProgressTracker,
     semaphore: asyncio.Semaphore,
+    model_override: str | None = None,
 ) -> bool:
     """Process a single sample. Returns True on success."""
     sample_id = str(row[spec.sample_id_column])
@@ -168,6 +171,9 @@ async def process_sample(
                 storage_state_path=spec.storage_state_path,
             )
             registry.register(browser_provider)
+            registry.register(CodeToolProvider())
+            http_provider = HttpToolProvider()
+            registry.register(http_provider)
 
             instructions = spec.render_instructions(row)
 
@@ -179,6 +185,7 @@ async def process_sample(
                     row=row,
                     output_dir=sample_dir,
                     max_iterations=spec.config.max_iterations,
+                    model_override=model_override,
                 ),
                 timeout=spec.config.timeout_per_sample_sec,
             )
@@ -219,6 +226,7 @@ async def run_orchestrator(
     max_workers: int = 3,
     output_dir_override: str | None = None,
     session_state_path: str | None = None,
+    model_override: str | None = None,
 ):
     """Plan the task, then dispatch workers."""
     start = time.time()
@@ -247,6 +255,10 @@ async def run_orchestrator(
     )
 
     # 3. Setup
+    import shutil
+    free_mb = shutil.disk_usage(Path.cwd()).free // (1024 * 1024)
+    if free_mb < 500:
+        raise RuntimeError(f"Only {free_mb}MB disk space free. Need at least 500MB to run safely.")
     spec.output_dir.mkdir(parents=True, exist_ok=True)
     spec.samples_dir.mkdir(parents=True, exist_ok=True)
 
@@ -290,7 +302,8 @@ async def run_orchestrator(
                         if attempt > 0:
                             logger.info(f"  Retry {attempt}/{max_retries} for {sample_id}")
                         success = await process_sample(
-                            spec, sample_row, browser, progress, semaphore
+                            spec, sample_row, browser, progress, semaphore,
+                            model_override=model_override,
                         )
                         if success:
                             return True

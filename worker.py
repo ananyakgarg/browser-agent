@@ -15,7 +15,7 @@ from tool_registry import ToolRegistry
 
 logger = logging.getLogger(__name__)
 
-MODEL = "claude-sonnet-4-5-20250929"
+MODEL = "claude-sonnet-4-6"
 MAX_TOKENS = 4096
 
 SYSTEM_PROMPT = """\
@@ -31,6 +31,11 @@ To interact with elements, use their ID number (shown in square brackets like [0
 Guidelines:
 - Be methodical: navigate to the right page, find the right elements, extract the data.
 - Prefer get_text and the page state text for data extraction — text is faster and cheaper than screenshots.
+- Use execute_js for targeted DOM extraction — e.g. getting specific elements, table data, attributes, or any structured data. Much more precise than scrolling and reading page text.
+- Use run_python to process data, parse HTML/JSON, do calculations, or validate results before completing.
+- Use http_request for quick URL checks (status codes, API calls, link verification) without full browser navigation.
+- Use hover to reveal dropdown menus, tooltips, or hover-triggered UI before interacting.
+- Use press_key for keyboard shortcuts: Escape to close modals, Tab to navigate, Enter to submit.
 - Only take screenshots if the task instructions explicitly ask for screenshots or if an output field requires an image. Never take screenshots just to "see" a page — the text representation already shows you the content.
 - If a page is loading slowly, use the wait tool.
 - If you get stuck, try scrolling, going back, or finding elements by text/selector.
@@ -67,6 +72,7 @@ async def run_worker(
     row: dict[str, Any],
     output_dir: Path,
     max_iterations: int = 30,
+    model_override: str | None = None,
 ) -> dict[str, Any]:
     """
     Run the LLM agent loop for a single sample.
@@ -75,6 +81,11 @@ async def run_worker(
     Raises on failure (timeout, max iterations, API error).
     """
     client = anthropic.Anthropic(max_retries=25)
+    model = model_override or MODEL
+
+    # Compaction beta — Claude auto-summarizes old context when it gets large
+    COMPACTION_BETA = "compact-2026-01-12"
+    COMPACTION_TRIGGER_TOKENS = 50_000
 
     tools = registry.get_tool_schemas()
     user_prompt = build_user_prompt(instructions, csv_columns, row)
@@ -101,7 +112,7 @@ async def run_worker(
 
     def _save_audit():
         audit = {
-            "model": MODEL,
+            "model": model,
             "total_input_tokens": total_input_tokens,
             "total_output_tokens": total_output_tokens,
             "total_tokens": total_input_tokens + total_output_tokens,
@@ -120,12 +131,19 @@ async def run_worker(
         }
 
         try:
-            response = client.messages.create(
-                model=MODEL,
+            response = client.beta.messages.create(
+                betas=[COMPACTION_BETA],
+                model=model,
                 max_tokens=MAX_TOKENS,
                 system=SYSTEM_PROMPT,
                 tools=tools,
                 messages=messages,
+                context_management={
+                    "edits": [{
+                        "type": "compact_20260112",
+                        "trigger": {"type": "input_tokens", "value": COMPACTION_TRIGGER_TOKENS},
+                    }]
+                },
             )
         except anthropic.APIError as e:
             step["error"] = str(e)
@@ -135,8 +153,14 @@ async def run_worker(
             raise
 
         api_calls += 1
-        total_input_tokens += response.usage.input_tokens
-        total_output_tokens += response.usage.output_tokens
+        # Track tokens across all iterations (including compaction)
+        if hasattr(response.usage, "iterations") and response.usage.iterations:
+            for it in response.usage.iterations:
+                total_input_tokens += it.input_tokens
+                total_output_tokens += it.output_tokens
+        else:
+            total_input_tokens += response.usage.input_tokens
+            total_output_tokens += response.usage.output_tokens
         step["usage"] = {
             "input_tokens": response.usage.input_tokens,
             "output_tokens": response.usage.output_tokens,
@@ -145,15 +169,21 @@ async def run_worker(
         assistant_content = response.content
         messages.append({"role": "assistant", "content": assistant_content})
 
+        # Log compaction events
+        for block in assistant_content:
+            if hasattr(block, "type") and block.type == "compaction":
+                logger.info("  Context compacted — old messages summarized")
+                step["compaction"] = True
+
         # Extract reasoning text from the response
         reasoning = []
         for block in assistant_content:
-            if block.type == "text":
+            if hasattr(block, "type") and block.type == "text":
                 reasoning.append(block.text)
         if reasoning:
             step["reasoning"] = "\n".join(reasoning)
 
-        tool_uses = [block for block in assistant_content if block.type == "tool_use"]
+        tool_uses = [block for block in assistant_content if hasattr(block, "type") and block.type == "tool_use"]
 
         if not tool_uses:
             step["action"] = "no_tool_call"
@@ -168,6 +198,9 @@ async def run_worker(
                     "role": "user",
                     "content": "You must call the `complete` tool with the extracted data. Please do so now.",
                 })
+                continue
+            # Compaction stop reason — just continue the loop
+            if response.stop_reason == "compaction":
                 continue
             break
 

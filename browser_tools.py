@@ -249,6 +249,64 @@ _WAIT_SCHEMA = {
     },
 }
 
+_EXECUTE_JS_SCHEMA = {
+    "name": "execute_js",
+    "description": (
+        "Execute a JavaScript expression in the browser and return the result. "
+        "Use for targeted data extraction from the DOM — e.g. "
+        "'document.querySelector(\"h1\").innerText', "
+        "'[...document.querySelectorAll(\"table tr\")].map(r => r.innerText)', "
+        "'document.querySelector(\".status\").getAttribute(\"data-value\")'. "
+        "The result is JSON-serialized. Much more precise than get_text."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "expression": {
+                "type": "string",
+                "description": "JavaScript expression to evaluate. Should return a serializable value.",
+            },
+        },
+        "required": ["expression"],
+    },
+}
+
+_HOVER_SCHEMA = {
+    "name": "hover",
+    "description": "Hover over an interactive element by its ID number. Use for dropdown menus, tooltips, and hover-triggered UI.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "element_id": {
+                "type": "integer",
+                "description": "The ID number of the element to hover over.",
+            },
+        },
+        "required": ["element_id"],
+    },
+}
+
+_PRESS_KEY_SCHEMA = {
+    "name": "press_key",
+    "description": (
+        "Press a keyboard key or key combination. "
+        "Key names: Enter, Escape, Tab, Backspace, Delete, Space, "
+        "ArrowDown, ArrowUp, ArrowLeft, ArrowRight, Home, End, PageUp, PageDown. "
+        "Modifier combos with '+': Control+a, Meta+c, Shift+Tab, Alt+F4. "
+        "Use Meta for Cmd on Mac."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "key": {
+                "type": "string",
+                "description": "Key or combo to press (e.g. 'Escape', 'Control+a', 'Shift+Tab').",
+            },
+        },
+        "required": ["key"],
+    },
+}
+
 
 # ---------------------------------------------------------------------------
 # Provider
@@ -283,6 +341,9 @@ class BrowserToolProvider(ToolProvider):
         self.register_tool(_SWITCH_TAB_SCHEMA, self._handle_switch_tab)
         self.register_tool(_FIND_ELEMENT_SCHEMA, self._handle_find_element)
         self.register_tool(_WAIT_SCHEMA, self._handle_wait)
+        self.register_tool(_EXECUTE_JS_SCHEMA, self._handle_execute_js)
+        self.register_tool(_HOVER_SCHEMA, self._handle_hover)
+        self.register_tool(_PRESS_KEY_SCHEMA, self._handle_press_key)
 
     async def close(self) -> None:
         try:
@@ -577,6 +638,41 @@ class BrowserToolProvider(ToolProvider):
                 return f"Waited {seconds} seconds."
         except Exception as e:
             return f"Wait error: {e}"
+
+    async def _handle_execute_js(self, tool_input: dict[str, Any]) -> str:
+        page = await self._ensure_page()
+        expression = tool_input["expression"]
+        try:
+            result = await page.evaluate(expression)
+        except Exception as e:
+            return f"JS execution error: {e}"
+        try:
+            serialized = json.dumps(result, indent=2, default=str)
+        except (TypeError, ValueError):
+            serialized = str(result)
+        if len(serialized) > FULL_TEXT_LIMIT:
+            serialized = serialized[:FULL_TEXT_LIMIT] + "\n... (truncated)"
+        return serialized
+
+    async def _handle_hover(self, tool_input: dict[str, Any]) -> str:
+        el = self._get_element(tool_input["element_id"])
+        try:
+            await el.handle.scroll_into_view_if_needed(timeout=3000)
+            await el.handle.hover(timeout=5000)
+            await self.page.wait_for_timeout(500)
+        except Exception as e:
+            return f"Hover error on element {tool_input['element_id']}: {e}"
+        return (await self.get_page_state()).to_text()
+
+    async def _handle_press_key(self, tool_input: dict[str, Any]) -> str:
+        page = await self._ensure_page()
+        key = tool_input["key"]
+        try:
+            await page.keyboard.press(key)
+            await page.wait_for_timeout(500)
+        except Exception as e:
+            return f"Key press error: {e}"
+        return (await self.get_page_state()).to_text()
 
 
 # ---------------------------------------------------------------------------
