@@ -13,7 +13,11 @@ import argparse
 import asyncio
 import logging
 
+from dotenv import load_dotenv
+
 from orchestrator import run_orchestrator
+
+load_dotenv()
 
 
 def main():

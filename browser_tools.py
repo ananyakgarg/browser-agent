@@ -147,7 +147,7 @@ _TYPE_TEXT_SCHEMA = {
 
 _SCREENSHOT_SCHEMA = {
     "name": "screenshot",
-    "description": "Take a screenshot of the current page. Use this to see visual content that isn't captured in the text representation.",
+    "description": "Take a screenshot of the current viewport. Only use when the task instructions explicitly require a screenshot or an output field requires an image. Use get_text for all other data extraction.",
     "input_schema": {
         "type": "object",
         "properties": {
@@ -155,11 +155,6 @@ _SCREENSHOT_SCHEMA = {
                 "type": "string",
                 "description": "Filename for the screenshot (without path). Defaults to 'screenshot.png'.",
                 "default": "screenshot.png",
-            },
-            "full_page": {
-                "type": "boolean",
-                "description": "Capture the full scrollable page. Defaults to false.",
-                "default": False,
             },
         },
         "required": [],
@@ -461,7 +456,7 @@ class BrowserToolProvider(ToolProvider):
         path = self.output_dir / filename
         try:
             page = await self._ensure_page()
-            await page.screenshot(path=str(path), full_page=tool_input.get("full_page", False))
+            await page.screenshot(path=str(path))
             return f"Screenshot saved to {path}"
         except Exception as e:
             return f"Screenshot error: {e}"

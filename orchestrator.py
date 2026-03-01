@@ -97,7 +97,7 @@ def plan_task(instruction: str, csv_path: str) -> dict[str, Any]:
         f"## First rows\n```json\n{json.dumps(preview_rows, indent=2)}\n```"
     )
 
-    client = anthropic.Anthropic()
+    client = anthropic.Anthropic(max_retries=10)
     response = client.messages.create(
         model=PLAN_MODEL,
         max_tokens=1024,

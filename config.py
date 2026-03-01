@@ -10,8 +10,8 @@ from typing import Any
 @dataclass
 class TaskConfig:
     max_workers: int = 3
-    max_retries: int = 2
-    timeout_per_sample_sec: int = 120
+    max_retries: int = 3
+    timeout_per_sample_sec: int = 600
     max_iterations: int = 30
 
 

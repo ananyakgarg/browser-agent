@@ -30,8 +30,9 @@ To interact with elements, use their ID number (shown in square brackets like [0
 
 Guidelines:
 - Be methodical: navigate to the right page, find the right elements, extract the data.
+- Prefer get_text and the page state text for data extraction — text is faster and cheaper than screenshots.
+- Only take screenshots if the task instructions explicitly ask for screenshots or if an output field requires an image. Never take screenshots just to "see" a page — the text representation already shows you the content.
 - If a page is loading slowly, use the wait tool.
-- Take screenshots when you need to see visual content not captured in text.
 - If you get stuck, try scrolling, going back, or finding elements by text/selector.
 - When you have gathered all required information, call the complete tool with the extracted data.
 - The data keys in your complete call MUST match the required output columns exactly.
@@ -73,7 +74,7 @@ async def run_worker(
     Returns the extracted data dict from the complete tool call.
     Raises on failure (timeout, max iterations, API error).
     """
-    client = anthropic.Anthropic()
+    client = anthropic.Anthropic(max_retries=25)
 
     tools = registry.get_tool_schemas()
     user_prompt = build_user_prompt(instructions, csv_columns, row)
@@ -81,6 +82,9 @@ async def run_worker(
     messages: list[dict[str, Any]] = [
         {"role": "user", "content": user_prompt},
     ]
+
+    # Ensure output dir exists before writing any trace/audit files
+    output_dir.mkdir(parents=True, exist_ok=True)
 
     # Trace log — records every step for debugging/review
     trace: list[dict[str, Any]] = []
@@ -195,10 +199,7 @@ async def run_worker(
                 _save_trace()
                 _save_audit()
 
-                try:
-                    await registry.execute("screenshot", {"filename": "final.png"})
-                except Exception:
-                    pass
+                # No auto-screenshot on complete — agent takes them only when needed
                 return data
 
             # Dispatch to the registry
@@ -215,20 +216,23 @@ async def run_worker(
             # Build tool result content
             content: list[dict[str, Any]] = []
 
-            # If screenshot, include image in the response
+            # If screenshot, include image in the response (skip if >4.5MB)
             if tool_name == "screenshot":
                 if "saved to" in result:
                     screenshot_path = Path(result.split("saved to ")[-1])
                     if screenshot_path.exists():
                         img_data = screenshot_path.read_bytes()
-                        content.append({
-                            "type": "image",
-                            "source": {
-                                "type": "base64",
-                                "media_type": "image/png",
-                                "data": base64.b64encode(img_data).decode(),
-                            },
-                        })
+                        if len(img_data) <= 4_500_000:
+                            content.append({
+                                "type": "image",
+                                "source": {
+                                    "type": "base64",
+                                    "media_type": "image/png",
+                                    "data": base64.b64encode(img_data).decode(),
+                                },
+                            })
+                        else:
+                            logger.warning(f"  Screenshot too large ({len(img_data)} bytes), sending text-only result")
 
             content.append({"type": "text", "text": result[:12000]})
 

@@ -3,3 +3,6 @@ __pycache__/
 .venv/
 output/
 session_state.json
+.env
+*.log
+run_wiki_task.sh
