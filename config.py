@@ -13,6 +13,8 @@ class TaskConfig:
     max_retries: int = 3
     timeout_per_sample_sec: int = 600
     max_iterations: int = 30
+    pioneer_enabled: bool = True
+    num_pioneers: int = 1  # tournament: run N pioneers, judge picks best
 
 
 @dataclass
@@ -22,6 +24,7 @@ class TaskSpec:
     input_csv: str
     sample_id_column: str
     csv_columns: list[str]
+    resolve_instructions: str = ""
     config: TaskConfig = field(default_factory=TaskConfig)
     storage_state_path: str | None = None
     output_dir_override: str | None = None

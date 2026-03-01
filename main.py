@@ -56,6 +56,23 @@ def main():
         help="Model for the worker agent (default: claude-sonnet-4-5-20250929)",
     )
     parser.add_argument(
+        "--max-iterations",
+        type=int,
+        default=30,
+        help="Max iterations per sample (default: 30)",
+    )
+    parser.add_argument(
+        "--pioneers", "-p",
+        type=int,
+        default=1,
+        help="Number of pioneer agents for tournament mode (default: 1, no tournament)",
+    )
+    parser.add_argument(
+        "--browserbase", "-bb",
+        action="store_true",
+        help="Use Browserbase cloud browsers with session replay",
+    )
+    parser.add_argument(
         "--verbose", "-v",
         action="store_true",
         help="Enable verbose logging",
@@ -75,6 +92,9 @@ def main():
         output_dir_override=args.output_dir,
         session_state_path=args.session,
         model_override=args.model,
+        num_pioneers=args.pioneers,
+        max_iterations=args.max_iterations,
+        browserbase=args.browserbase,
     ))
 
 

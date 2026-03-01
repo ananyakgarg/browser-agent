@@ -50,6 +50,7 @@ class ElementInfo:
     text: str
     attributes: dict[str, str]
     handle: ElementHandle
+    depth: int = 0  # DOM nesting depth for indentation
 
 
 @dataclass
@@ -68,8 +69,20 @@ class PageState:
             "",
             "=== Interactive Elements ===",
         ]
+
+        # Normalize depths: find min depth and subtract so shallowest = 0
+        depths = [el.get("depth", 0) for el in self.elements]
+        min_depth = min(depths) if depths else 0
+
         for el in self.elements:
-            parts = [f"[{el['id']}]", f"<{el['tag']}>"]
+            indent_level = max(0, el.get("depth", 0) - min_depth)
+            indent = "\t" * min(indent_level, 4)  # cap at 4 levels
+
+            # *[ prefix for new elements
+            is_new = el.get("is_new", False)
+            id_prefix = f"*[{el['id']}]" if is_new else f"[{el['id']}]"
+
+            parts = [f"{indent}{id_prefix}", f"<{el['tag']}>"]
             if el.get("role"):
                 parts.append(f"role={el['role']}")
             if el.get("type"):
@@ -94,6 +107,11 @@ class PageState:
 
         if not self.elements:
             lines.append("(no interactive elements found)")
+
+        # Count new elements for quick summary
+        new_count = sum(1 for el in self.elements if el.get("is_new"))
+        if new_count > 0:
+            lines.append(f"\n({new_count} new elements marked with *)")
 
         lines.extend(["", "=== Page Text (truncated) ===", self.visible_text])
         return "\n".join(lines)
@@ -286,6 +304,32 @@ _HOVER_SCHEMA = {
     },
 }
 
+_SEARCH_PAGE_SCHEMA = {
+    "name": "search_page",
+    "description": (
+        "Search the FULL page text for a string or regex pattern. Returns all matches "
+        "with surrounding context (±2 lines) and approximate character positions. "
+        "Free and instant — use this BEFORE scrolling or execute_js when looking for "
+        "specific text, code, dates, IDs, or error messages on a page. "
+        "Works even on content not visible in the viewport."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "query": {
+                "type": "string",
+                "description": "Text or regex pattern to search for (case-insensitive).",
+            },
+            "max_results": {
+                "type": "integer",
+                "description": "Max matches to return. Defaults to 10.",
+                "default": 10,
+            },
+        },
+        "required": ["query"],
+    },
+}
+
 _PRESS_KEY_SCHEMA = {
     "name": "press_key",
     "description": (
@@ -327,23 +371,26 @@ class BrowserToolProvider(ToolProvider):
         self._elements: dict[int, ElementInfo] = {}
         self._page: Page | None = None
         self._screenshot_count = 0
+        self._prev_element_sigs: set[str] = set()  # for new-element detection
 
-        # ----- register all browser tools -----
+        # ----- register browser tools -----
+        # Core interaction
         self.register_tool(_NAVIGATE_SCHEMA, self._handle_navigate)
         self.register_tool(_CLICK_SCHEMA, self._handle_click)
         self.register_tool(_TYPE_TEXT_SCHEMA, self._handle_type_text)
         self.register_tool(_SCREENSHOT_SCHEMA, self._handle_screenshot)
-        self.register_tool(_SCROLL_SCHEMA, self._handle_scroll)
-        self.register_tool(_GO_BACK_SCHEMA, self._handle_go_back)
-        self.register_tool(_GET_TEXT_SCHEMA, self._handle_get_text)
-        self.register_tool(_SELECT_OPTION_SCHEMA, self._handle_select_option)
-        self.register_tool(_DOWNLOAD_FILE_SCHEMA, self._handle_download_file)
-        self.register_tool(_SWITCH_TAB_SCHEMA, self._handle_switch_tab)
-        self.register_tool(_FIND_ELEMENT_SCHEMA, self._handle_find_element)
-        self.register_tool(_WAIT_SCHEMA, self._handle_wait)
-        self.register_tool(_EXECUTE_JS_SCHEMA, self._handle_execute_js)
         self.register_tool(_HOVER_SCHEMA, self._handle_hover)
         self.register_tool(_PRESS_KEY_SCHEMA, self._handle_press_key)
+        self.register_tool(_WAIT_SCHEMA, self._handle_wait)
+        # Data extraction & scripting
+        self.register_tool(_EXECUTE_JS_SCHEMA, self._handle_execute_js)
+        self.register_tool(_SEARCH_PAGE_SCHEMA, self._handle_search_page)
+        # File & tab management
+        self.register_tool(_DOWNLOAD_FILE_SCHEMA, self._handle_download_file)
+        self.register_tool(_SWITCH_TAB_SCHEMA, self._handle_switch_tab)
+        # Deprecated: scroll, go_back, get_text, select_option, find_element
+        # All subsumed by execute_js — these caused degenerate loops
+        # (find_element->find_element: 84x, scroll->scroll: 25x in traces)
 
     async def close(self) -> None:
         try:
@@ -393,6 +440,10 @@ class BrowserToolProvider(ToolProvider):
                 text_content = await handle.evaluate(
                     "el => (el.innerText || el.textContent || '').trim().substring(0, 100)"
                 )
+                # DOM depth for indentation (count parents up to body)
+                depth = await handle.evaluate(
+                    "el => { let d=0, n=el; while(n.parentElement && n.parentElement !== document.body) { d++; n=n.parentElement; } return d; }"
+                )
                 attrs: dict[str, str] = {}
 
                 for attr in ("type", "name", "placeholder", "value", "href", "aria-label", "id", "class"):
@@ -413,7 +464,7 @@ class BrowserToolProvider(ToolProvider):
                 if disabled:
                     attrs["disabled"] = "true"
 
-                info = ElementInfo(id=eid, tag=tag, role=role, text=text_content, attributes=attrs, handle=handle)
+                info = ElementInfo(id=eid, tag=tag, role=role, text=text_content, attributes=attrs, handle=handle, depth=depth)
                 self._elements[eid] = info
                 elements.append(info)
                 eid += 1
@@ -443,7 +494,7 @@ class BrowserToolProvider(ToolProvider):
 
         element_dicts = []
         for el in elements:
-            d: dict[str, Any] = {"id": el.id, "tag": el.tag}
+            d: dict[str, Any] = {"id": el.id, "tag": el.tag, "depth": el.depth}
             if el.role:
                 d["role"] = el.role
             if el.text:
@@ -456,6 +507,14 @@ class BrowserToolProvider(ToolProvider):
             if el.attributes.get("disabled") == "true":
                 d["disabled"] = True
             element_dicts.append(d)
+
+        # Detect new elements by comparing signatures with previous state
+        current_sigs: set[str] = set()
+        for el, d in zip(elements, element_dicts):
+            sig = f"{el.tag}|{el.role}|{el.text[:40]}|{el.attributes.get('href', '')}|{el.attributes.get('name', '')}"
+            current_sigs.add(sig)
+            d["is_new"] = sig not in self._prev_element_sigs
+        self._prev_element_sigs = current_sigs
 
         return PageState(
             url=url,
@@ -654,6 +713,48 @@ class BrowserToolProvider(ToolProvider):
             serialized = serialized[:FULL_TEXT_LIMIT] + "\n... (truncated)"
         return serialized
 
+    async def _handle_search_page(self, tool_input: dict[str, Any]) -> str:
+        """Search full page text for a pattern. Returns matches with context."""
+        import re
+        page = await self._ensure_page()
+        query = tool_input["query"]
+        max_results = tool_input.get("max_results", 10)
+
+        try:
+            full_text = await page.evaluate("document.body.innerText")
+        except Exception as e:
+            return f"Search error: {e}"
+
+        if not full_text:
+            return "Page has no text content."
+
+        lines = full_text.split("\n")
+        matches = []
+        try:
+            pattern = re.compile(query, re.IGNORECASE)
+        except re.error:
+            # Fall back to literal search
+            pattern = re.compile(re.escape(query), re.IGNORECASE)
+
+        for i, line in enumerate(lines):
+            if pattern.search(line):
+                # ±2 lines of context
+                start = max(0, i - 2)
+                end = min(len(lines), i + 3)
+                context = "\n".join(
+                    f"{'>>>' if j == i else '   '} L{j+1}: {lines[j]}"
+                    for j in range(start, end)
+                )
+                matches.append(context)
+                if len(matches) >= max_results:
+                    break
+
+        if not matches:
+            return f"No matches found for '{query}' on this page."
+
+        header = f"Found {len(matches)} match(es) for '{query}':\n\n"
+        return header + "\n---\n".join(matches)
+
     async def _handle_hover(self, tool_input: dict[str, Any]) -> str:
         el = self._get_element(tool_input["element_id"])
         try:
@@ -680,14 +781,30 @@ class BrowserToolProvider(ToolProvider):
 # ---------------------------------------------------------------------------
 
 async def create_browser_provider(
-    browser: Browser,
-    output_dir: Path,
+    browser: Browser | None = None,
+    output_dir: Path = Path("."),
     storage_state_path: str | None = None,
+    context: Any | None = None,
 ) -> BrowserToolProvider:
-    """Create an isolated browser context wrapped in a BrowserToolProvider."""
+    """Create a BrowserToolProvider.
+
+    Either pass a *browser* (local Chromium — a new context is created) or a
+    pre-existing *context* (e.g. from Browserbase CDP connection).
+    """
+    if context is not None:
+        return BrowserToolProvider(context=context, output_dir=output_dir)
+
+    if browser is None:
+        raise ValueError("Either browser or context must be provided")
+
     ctx_kwargs: dict[str, Any] = {
         "viewport": {"width": 1280, "height": 900},
         "accept_downloads": True,
+        "user_agent": (
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/131.0.0.0 Safari/537.36"
+        ),
     }
 
     # Load full session state (cookies + localStorage) saved from interactive login
@@ -695,5 +812,32 @@ async def create_browser_provider(
         ctx_kwargs["storage_state"] = storage_state_path
         logger.info(f"Loading session state from {storage_state_path}")
 
-    context = await browser.new_context(**ctx_kwargs)
-    return BrowserToolProvider(context=context, output_dir=output_dir)
+    ctx = await browser.new_context(**ctx_kwargs)
+
+    # Stealth: mask headless/automation fingerprints
+    await ctx.add_init_script("""
+        // Hide webdriver flag
+        Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+
+        // Realistic plugins array
+        Object.defineProperty(navigator, 'plugins', {
+            get: () => [1, 2, 3, 4, 5],
+        });
+
+        // Realistic languages
+        Object.defineProperty(navigator, 'languages', {
+            get: () => ['en-US', 'en'],
+        });
+
+        // Hide automation-related Chrome properties
+        window.chrome = { runtime: {} };
+
+        // Patch permissions query
+        const originalQuery = window.navigator.permissions.query;
+        window.navigator.permissions.query = (parameters) =>
+            parameters.name === 'notifications'
+                ? Promise.resolve({ state: Notification.permission })
+                : originalQuery(parameters);
+    """)
+
+    return BrowserToolProvider(context=ctx, output_dir=output_dir)

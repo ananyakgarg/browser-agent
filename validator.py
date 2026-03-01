@@ -50,6 +50,7 @@ def write_metadata(
     data: dict[str, Any],
     row: dict[str, Any],
     notes: str = "",
+    extra: dict[str, Any] | None = None,
 ) -> Path:
     """Write metadata.json for a completed sample."""
     sample_dir.mkdir(parents=True, exist_ok=True)
@@ -60,6 +61,8 @@ def write_metadata(
         "notes": notes,
         "screenshots": [p.name for p in sample_dir.glob("*.png")],
     }
+    if extra:
+        meta.update(extra)
     path = sample_dir / "metadata.json"
     with open(path, "w") as f:
         json.dump(meta, f, indent=2)

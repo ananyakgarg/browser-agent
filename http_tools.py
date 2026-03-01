@@ -47,6 +47,7 @@ _HTTP_REQUEST_SCHEMA = {
 
 BODY_LIMIT = 8000
 HEADER_LIMIT = 1000
+DEFAULT_USER_AGENT = "BrowserAgent/1.0 (research@example.com)"
 
 
 class HttpToolProvider(ToolProvider):
@@ -61,6 +62,7 @@ class HttpToolProvider(ToolProvider):
         if self._session is None or self._session.closed:
             self._session = aiohttp.ClientSession(
                 timeout=aiohttp.ClientTimeout(total=30),
+                headers={"User-Agent": DEFAULT_USER_AGENT},
             )
         return self._session
 
