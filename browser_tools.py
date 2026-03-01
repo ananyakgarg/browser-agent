@@ -22,9 +22,12 @@ from playwright.async_api import (
     Playwright,
 )
 
+from site_memory import SiteMemory
 from tool_registry import ToolProvider
 
 logger = logging.getLogger(__name__)
+
+_site_memory = SiteMemory()
 
 TEXT_TRUNCATE_LIMIT = 4000
 FULL_TEXT_LIMIT = 8000
@@ -351,6 +354,76 @@ _PRESS_KEY_SCHEMA = {
     },
 }
 
+_CONFIGURE_BROWSER_SCHEMA = {
+    "name": "configure_browser",
+    "description": (
+        "Modify browser configuration at runtime. Use this when you detect "
+        "that a site is blocking you (bot detection, CAPTCHA, 403 errors, "
+        "'automated tool' messages). You can change user-agent, enable stealth "
+        "mode, inject custom scripts, set extra headers, or clear cookies. "
+        "Changes apply to all future page loads in this session."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "action": {
+                "type": "string",
+                "enum": ["set_user_agent", "enable_stealth", "inject_script", "set_headers", "clear_cookies", "restart_context"],
+                "description": (
+                    "Action to take: "
+                    "set_user_agent — change the browser's user-agent string. "
+                    "enable_stealth — inject anti-detection scripts (webdriver=false, fake plugins, etc). "
+                    "inject_script — run custom JS on every page load. "
+                    "set_headers — add extra HTTP headers to all requests. "
+                    "clear_cookies — clear all cookies. "
+                    "restart_context — close and reopen browser context with clean state."
+                ),
+            },
+            "value": {
+                "type": "string",
+                "description": (
+                    "The value for the action. "
+                    "For set_user_agent: the user-agent string. "
+                    "For inject_script: JavaScript code to run on every page load. "
+                    "For set_headers: JSON object of header name-value pairs. "
+                    "For enable_stealth/clear_cookies/restart_context: not needed."
+                ),
+                "default": "",
+            },
+        },
+        "required": ["action"],
+    },
+}
+
+_SAVE_SITE_WORKAROUND_SCHEMA = {
+    "name": "save_site_workaround",
+    "description": (
+        "Save a workaround you discovered for a website so future agents "
+        "automatically apply it. Call this after you successfully work around "
+        "a site's bot detection, rate limiting, or other blocking. "
+        "The workaround is saved permanently and loaded for any future visits "
+        "to this domain."
+    ),
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "domain": {
+                "type": "string",
+                "description": "The domain (e.g. 'sec.gov', 'linkedin.com')",
+            },
+            "workaround": {
+                "type": "object",
+                "description": (
+                    "Key-value pairs describing the workaround. Common keys: "
+                    "blocks_headless (bool), needs_stealth (bool), needs_headers (object), "
+                    "rate_limited (bool), needs_auth (bool), workaround (string description)"
+                ),
+            },
+        },
+        "required": ["domain", "workaround"],
+    },
+}
+
 
 # ---------------------------------------------------------------------------
 # Provider
@@ -388,9 +461,9 @@ class BrowserToolProvider(ToolProvider):
         # File & tab management
         self.register_tool(_DOWNLOAD_FILE_SCHEMA, self._handle_download_file)
         self.register_tool(_SWITCH_TAB_SCHEMA, self._handle_switch_tab)
-        # Deprecated: scroll, go_back, get_text, select_option, find_element
-        # All subsumed by execute_js — these caused degenerate loops
-        # (find_element->find_element: 84x, scroll->scroll: 25x in traces)
+        # Self-healing: browser reconfiguration & site memory
+        self.register_tool(_CONFIGURE_BROWSER_SCHEMA, self._handle_configure_browser)
+        self.register_tool(_SAVE_SITE_WORKAROUND_SCHEMA, self._handle_save_site_workaround)
 
     async def close(self) -> None:
         try:
@@ -536,13 +609,91 @@ class BrowserToolProvider(ToolProvider):
     # ------------------------------------------------------------------
 
     async def _handle_navigate(self, tool_input: dict[str, Any]) -> str:
+        url = tool_input["url"]
+
+        # Check site memory and auto-apply known workarounds before navigating
+        hint = _site_memory.get_hint_for_url(url)
+        auto_applied = await self._auto_apply_workarounds(url)
+
         page = await self._ensure_page()
         try:
-            await page.goto(tool_input["url"], wait_until="domcontentloaded", timeout=30000)
+            response = await page.goto(url, wait_until="domcontentloaded", timeout=30000)
             await page.wait_for_timeout(500)
         except Exception as e:
             return f"Navigation error: {e}"
-        return (await self.get_page_state()).to_text()
+
+        state = await self.get_page_state()
+        result = state.to_text()
+
+        # Detect block pages by checking visible text for common patterns
+        block_warning = self._detect_block(state, response)
+
+        parts = []
+        if auto_applied:
+            parts.append(f"ℹ Auto-applied workarounds: {', '.join(auto_applied)}")
+        if hint:
+            parts.append(f"⚠ SITE MEMORY:\n{hint}\n")
+        if block_warning:
+            parts.append(block_warning)
+        parts.append(result)
+        return "\n".join(parts)
+
+    async def _auto_apply_workarounds(self, url: str) -> list[str]:
+        """Auto-apply known workarounds from site memory before navigation."""
+        applied = []
+        try:
+            from urllib.parse import urlparse
+            domain = urlparse(url).netloc
+            for d in [domain, ".".join(domain.split(".")[-2:])]:
+                mem = _site_memory.get(d)
+                if not mem:
+                    continue
+                if mem.get("needs_stealth"):
+                    await self.context.add_init_script(_STEALTH_SCRIPT)
+                    applied.append("stealth mode")
+                if mem.get("needs_headers"):
+                    headers = mem["needs_headers"]
+                    if isinstance(headers, dict):
+                        await self.context.set_extra_http_headers(headers)
+                        applied.append(f"custom headers ({list(headers.keys())})")
+                if applied:
+                    break  # applied from first matching domain
+        except Exception as e:
+            logger.debug(f"Auto-apply workarounds error: {e}")
+        return applied
+
+    def _detect_block(self, state: PageState, response: Any) -> str | None:
+        """Check if the page looks like a block/bot-detection page."""
+        signals = []
+
+        # Check HTTP status
+        if response and hasattr(response, "status"):
+            if response.status == 403:
+                signals.append("HTTP 403 Forbidden")
+            elif response.status == 429:
+                signals.append("HTTP 429 Too Many Requests")
+
+        # Check page text for block patterns
+        text_lower = state.visible_text.lower()
+        title_lower = state.title.lower()
+        for pattern in _BLOCK_PATTERNS:
+            if pattern in text_lower or pattern in title_lower:
+                signals.append(f"Page contains '{pattern}'")
+                break  # one match is enough
+
+        # Very few interactive elements + short text = likely a block page
+        if len(state.elements) < 3 and len(state.visible_text) < 500:
+            if any(s for s in signals):  # only flag if we also have another signal
+                signals.append("Minimal page content (likely not the real page)")
+
+        if signals:
+            return (
+                "⚠ POSSIBLE BLOCK DETECTED:\n"
+                + "\n".join(f"  - {s}" for s in signals)
+                + "\n\nTry: configure_browser(action='enable_stealth') then retry, "
+                "or save_site_workaround() if you find a fix.\n"
+            )
+        return None
 
     async def _handle_click(self, tool_input: dict[str, Any]) -> str:
         el = self._get_element(tool_input["element_id"])
@@ -775,6 +926,129 @@ class BrowserToolProvider(ToolProvider):
             return f"Key press error: {e}"
         return (await self.get_page_state()).to_text()
 
+    # ------------------------------------------------------------------
+    # Self-healing: configure_browser & save_site_workaround
+    # ------------------------------------------------------------------
+
+    async def _handle_configure_browser(self, tool_input: dict[str, Any]) -> str:
+        action = tool_input["action"]
+        value = tool_input.get("value", "")
+
+        if action == "enable_stealth":
+            try:
+                await self.context.add_init_script(_STEALTH_SCRIPT)
+                # Also inject into current page immediately
+                page = await self._ensure_page()
+                await page.evaluate(_STEALTH_SCRIPT)
+                return "Stealth mode enabled. Anti-detection scripts injected for all future page loads and current page."
+            except Exception as e:
+                return f"Stealth injection error: {e}"
+
+        elif action == "set_user_agent":
+            if not value:
+                return "Error: value required — provide the user-agent string."
+            # Can't change UA on existing context, but we can set it via init script
+            try:
+                await self.context.add_init_script(
+                    f"Object.defineProperty(navigator, 'userAgent', {{get: () => '{value}'}});"
+                )
+                return f"User-agent override set to: {value}. Takes effect on next navigation."
+            except Exception as e:
+                return f"Set user-agent error: {e}"
+
+        elif action == "inject_script":
+            if not value:
+                return "Error: value required — provide the JavaScript code."
+            try:
+                await self.context.add_init_script(value)
+                page = await self._ensure_page()
+                await page.evaluate(value)
+                return "Custom script injected for all future page loads and current page."
+            except Exception as e:
+                return f"Script injection error: {e}"
+
+        elif action == "set_headers":
+            if not value:
+                return "Error: value required — provide JSON object of headers."
+            try:
+                headers = json.loads(value)
+                await self.context.set_extra_http_headers(headers)
+                return f"Extra HTTP headers set: {list(headers.keys())}"
+            except json.JSONDecodeError:
+                return "Error: value must be valid JSON object (e.g. {\"Accept-Language\": \"en-US\"})"
+            except Exception as e:
+                return f"Set headers error: {e}"
+
+        elif action == "clear_cookies":
+            try:
+                await self.context.clear_cookies()
+                return "All cookies cleared."
+            except Exception as e:
+                return f"Clear cookies error: {e}"
+
+        elif action == "restart_context":
+            # Can't truly restart without the browser reference, but we can
+            # clear state and reload
+            try:
+                await self.context.clear_cookies()
+                page = await self._ensure_page()
+                await page.evaluate("window.localStorage.clear(); window.sessionStorage.clear();")
+                await page.reload(wait_until="domcontentloaded", timeout=15000)
+                self._elements.clear()
+                self._prev_element_sigs.clear()
+                return "Context reset: cookies cleared, storage cleared, page reloaded."
+            except Exception as e:
+                return f"Restart context error: {e}"
+
+        return f"Unknown action: {action}"
+
+    async def _handle_save_site_workaround(self, tool_input: dict[str, Any]) -> str:
+        domain = tool_input["domain"]
+        workaround = tool_input["workaround"]
+        try:
+            _site_memory.save_workaround(domain, workaround)
+            return f"Workaround saved for {domain}. Future agents will auto-apply this."
+        except Exception as e:
+            return f"Failed to save workaround: {e}"
+
+
+# ---------------------------------------------------------------------------
+# Common block-page patterns for failure detection
+# ---------------------------------------------------------------------------
+
+_BLOCK_PATTERNS = [
+    "access denied",
+    "automated tool",
+    "are you a robot",
+    "captcha",
+    "please verify you are a human",
+    "blocked",
+    "403 forbidden",
+    "bot detected",
+    "unusual traffic",
+    "rate limit",
+    "too many requests",
+    "please enable javascript",
+    "browser not supported",
+    "cloudflare",
+    "just a moment",  # Cloudflare waiting page
+    "checking your browser",
+    "attention required",
+    "pardon our interruption",
+]
+
+_STEALTH_SCRIPT = """
+    Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+    Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3, 4, 5] });
+    Object.defineProperty(navigator, 'languages', { get: () => ['en-US', 'en'] });
+    window.chrome = { runtime: {} };
+    const originalQuery = window.navigator.permissions.query;
+    window.navigator.permissions.query = (parameters) =>
+        parameters.name === 'notifications'
+            ? Promise.resolve({ state: Notification.permission })
+            : originalQuery(parameters);
+"""
+
 
 # ---------------------------------------------------------------------------
 # Factory
@@ -815,29 +1089,6 @@ async def create_browser_provider(
     ctx = await browser.new_context(**ctx_kwargs)
 
     # Stealth: mask headless/automation fingerprints
-    await ctx.add_init_script("""
-        // Hide webdriver flag
-        Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
-
-        // Realistic plugins array
-        Object.defineProperty(navigator, 'plugins', {
-            get: () => [1, 2, 3, 4, 5],
-        });
-
-        // Realistic languages
-        Object.defineProperty(navigator, 'languages', {
-            get: () => ['en-US', 'en'],
-        });
-
-        // Hide automation-related Chrome properties
-        window.chrome = { runtime: {} };
-
-        // Patch permissions query
-        const originalQuery = window.navigator.permissions.query;
-        window.navigator.permissions.query = (parameters) =>
-            parameters.name === 'notifications'
-                ? Promise.resolve({ state: Notification.permission })
-                : originalQuery(parameters);
-    """)
+    await ctx.add_init_script(_STEALTH_SCRIPT)
 
     return BrowserToolProvider(context=ctx, output_dir=output_dir)

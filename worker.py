@@ -50,13 +50,34 @@ browser navigation.
 If you clicked a button or submitted a form, screenshot to confirm it worked before \
 moving on.
 
+## Handling Blocked Sites
+If you see a block page (403, CAPTCHA, "automated tool detected", Cloudflare challenge):
+1. FIRST try: configure_browser(action="enable_stealth") then re-navigate to the same URL.
+2. If still blocked: configure_browser(action="set_headers", value='{"Accept-Language":"en-US"}') \
+and try again.
+3. If you find a workaround that works: call save_site_workaround to remember it for future runs.
+4. LAST resort: fall back to http_request or API endpoints for DATA extraction only.
+
+NEVER do the following workaround: fetching HTML via http_request, saving it to a \
+local file, and opening it with file:///. This produces fake screenshots of locally \
+rendered HTML, not the real website. If you cannot load a page in the browser, \
+extract the data you need via http_request/API and note that the screenshot could \
+not be taken. Partial results with honest notes are better than fake screenshots.
+
 ## Avoiding Loops
-- Many sites lazy-load content. If execute_js returns empty results, the content may \
-not be in the DOM yet. Use URL anchors (e.g. #L500), wait, or scroll to trigger loading.
-- Do NOT repeat the same query more than twice — try a different approach.
-- If you've tried the same approach 2-3 times and it's not working, STOP and try \
-something completely different: http_request to fetch raw content, run_python to \
-parse data you already have, or navigate to a different URL.
+- Track your STRATEGY, not just individual tool calls. Scrolling to position 85000 \
+and then 92000 is the SAME strategy (scroll-and-hope). If scroll+check doesn't \
+find your target in 2 attempts, the page is probably using virtual scrolling — \
+the content isn't in the DOM and more scrolling won't fix it.
+- When a browser approach hits a wall, switch to data access: use http_request to \
+hit the site's API, fetch raw file content, or use your code analysis tools. \
+APIs return ALL the data, not just what's rendered in a viewport.
+- Do NOT repeat the same strategy more than twice. Changing parameters (different \
+scroll offset, different selector) does NOT count as a different approach. A truly \
+different approach means a different data source or method entirely.
+- If you've been trying to extract data from the DOM for 3+ iterations and it's \
+not working, STOP and ask yourself: is there an API endpoint, a raw URL, or a \
+tool that gives me this data directly without browser rendering?
 
 ## Completing the Task
 - When done, call complete with all required output fields.

@@ -16,6 +16,7 @@ import anthropic
 from playwright.async_api import async_playwright
 
 from browser_tools import create_browser_provider
+from code_analysis import CodeAnalysisProvider
 from code_tools import CodeToolProvider
 from compiler import compile_results
 from config import TaskConfig, TaskSpec
@@ -317,6 +318,7 @@ async def process_sample(
                 )
             registry.register(browser_provider)
             registry.register(CodeToolProvider())
+            registry.register(CodeAnalysisProvider())
             http_provider = HttpToolProvider()
             registry.register(http_provider)
 
@@ -434,6 +436,7 @@ async def run_pioneer_tournament(
                 )
             registry.register(browser_provider)
             registry.register(CodeToolProvider())
+            registry.register(CodeAnalysisProvider())
             registry.register(HttpToolProvider())
 
             data = await asyncio.wait_for(
