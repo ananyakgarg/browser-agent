@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/20500",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/20500"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "The PR has 2 CI checks under the 'Pull Request' workflow (pr-update.yml, triggered on pull_request_target). Both checks PASSED: (1) 'Labeler' - completed successfully in 13s, (2) 'Add triage label' - completed successfully in 0s. Overall workflow status: Success. Note: The PR status is 'Closed' (not merged) - it was closed by the author (jim0987795064) without being merged. No failed checks were observed. The logs for the check runs have expired.",
+    "merged_despite_failed_checks": "No. The PR was NOT merged at all - it was closed by the author without merging. All CI checks (Labeler and Add triage label) passed successfully. The underlying Jira issue KAFKA-19614 was eventually resolved via a different PR (#20617).",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

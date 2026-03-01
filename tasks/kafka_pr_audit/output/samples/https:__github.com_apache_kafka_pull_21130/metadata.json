@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/21130",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/21130"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 33 checks passed. Checks include: Approve CI (passed), build / Configure Workflow (passed), Prepare (passed), Labeler (passed), Save PR Number x5 (all passed), Autovalidate (passed), build / Load Test Catalog (passed), Add triage label (passed), build / Compile and Check (Merge Ref) (passed), Agent (passed), CodeQL analysis (passed), build / JUnit tests Java 25 - flaky (passed), build / JUnit tests Java 25 - new (passed), build / JUnit tests Java 25 (passed), build / JUnit tests Java 17 - flaky (passed), build / JUnit tests Java 17 - new (passed), build / JUnit tests Java 17 (passed), build / Collate Test Catalog (passed), Upload results (passed), build / CI checks completed (passed), Cleanup artifacts (passed), build / Update Test Catalog (passed), Gradle Build Scan / Java 17 (passed), Gradle Build Scan / Java 17 / Flaky (passed), Gradle Build Scan / Java 17 / New (passed), Gradle Build Scan / Java 25 (passed), Gradle Build Scan / Java 25 / Flaky (passed), Gradle Build Scan / Java 25 / New (passed), PR Linter (passed - 'PR format looks good!'). No failed checks. All required checks were met.",
+    "merged_despite_failed_checks": "No. All 33 checks passed successfully. The PR was merged with all checks green. No failed required checks were present at the time of merge.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

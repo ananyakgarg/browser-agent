@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/17948",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/17948"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "No CI checks were executed for this PR. The Checks tab shows 'Checks 0' with 'Workflow runs completed with no jobs.' No checks passed or failed because none were run. The PR was labeled 'ci-approved' by committer chia7712, serving as a manual approval to bypass CI checks for this documentation-only change (README.md update). The reviewer chia7712 approved the changes and merged the PR.",
+    "merged_despite_failed_checks": "No. The PR was merged without any failed required checks because no CI checks ran at all (0 checks). The committer (chia7712) applied the 'ci-approved' label to bypass CI requirements, which is an accepted practice for trivial documentation-only changes. The PR was approved by reviewer chia7712 and merged on Nov 27, 2024.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

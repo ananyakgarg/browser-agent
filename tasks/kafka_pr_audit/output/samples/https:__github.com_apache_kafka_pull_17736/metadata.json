@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/17736",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/17736"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "No automated CI checks were recorded for this PR (Checks: 0, 'Workflow runs completed with no jobs'). The PR used the Apache Kafka project's manual CI approval process - FrankYang0529 added the 'ci-approved' label on Nov 11, 2024. chia7712 approved the code review and merged the PR on Nov 26, 2024. No passed or failed checks are listed since no automated workflow jobs ran on the final commit (34294cb).",
+    "merged_despite_failed_checks": "No. The PR was merged with no failed checks. There were no automated CI checks recorded (0 checks). The project uses a manual 'ci-approved' label workflow, which was applied before merge. No required checks appear to have been violated.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

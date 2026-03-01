@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/17586",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/17586"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "No CI checks were run for this PR. The Checks tab shows 'Checks 0' with 'Workflow runs completed with no jobs'. No checks passed or failed. The PR was labeled 'ci-approved' by maintainer chia7712, indicating manual CI approval. The PR received an approval review from chia7712.",
+    "merged_despite_failed_checks": "No. The PR was merged with no CI checks run at all (0 checks). There were no failed required checks. The maintainer (chia7712) manually approved the PR with a 'ci-approved' label and merged it into apache:trunk on Oct 24, 2024.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

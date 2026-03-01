@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/18400",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/18400"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 8 checks passed: (1) build / Load Test Catalog - passed, (2) Labeler - passed, (3) Approve CI - passed, (4) build / Compile and Check Java - passed, (5) Add triage label - passed, (6) build / JUnit tests Java 23 - passed, (7) build / JUnit tests Java 17 - passed, (8) build / Update Test Catalog - passed. No failed checks. All required checks were met.",
+    "merged_despite_failed_checks": "No. The PR was merged with all 8 checks passing. There were no failed required checks.",
+    "jira_ticket_screenshot": "N/A - No Jira ticket reference (KAFKA-XXXXX pattern) found in the PR title or description. The PR is titled 'MINOR: Use clear method to speed up removal' which indicates a minor change without an associated Jira ticket."
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png"
+  ]
+}

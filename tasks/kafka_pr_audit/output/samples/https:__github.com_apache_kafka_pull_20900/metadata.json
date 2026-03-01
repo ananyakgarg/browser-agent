@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/20900",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/20900"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All checks passed. 22 successful, 1 skipped, 0 failed. Successful checks: Pull Request / Add triage label, Pull Request / Labeler, Gradle Build Scan (Java 17, Java 17/Flaky, Java 17/New, Java 25, Java 25/Flaky, Java 25/New), PR Linter, Pull Request Reviewed / Save PR Number (pull_request), Pull Request Reviewed / Save PR Number (pull_request_review), CI / build / CI checks completed, CI / build / Collate Test Catalog, CI / build / Compile and Check (Merge Ref), CI / build / Configure Workflow, CI / build / JUnit tests Java 17, CI / build / JUnit tests Java 17 (flaky), CI / build / JUnit tests Java 17 (new), CI / build / JUnit tests Java 25, CI / build / JUnit tests Java 25 (flaky), CI / build / JUnit tests Java 25 (new), CI / build / Load Test Catalog. Skipped: CI / build / Update Test Catalog. Overall CI status: Success. No required checks failed.",
+    "merged_despite_failed_checks": "No. The PR was merged with all checks passing (22 successful, 1 skipped, 0 failed). No required checks failed. The CI workflow overall status was 'Success'.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

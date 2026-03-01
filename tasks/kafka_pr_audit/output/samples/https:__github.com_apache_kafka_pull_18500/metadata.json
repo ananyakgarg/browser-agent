@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/18500",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/18500"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "5 of 7 checks passed. Overall CI status: Failure. Passed checks: (1) Pull Request / Labeler, (2) Pull Request / Add triage label, (3) CI / build / Load Test Catalog (19s), (4) CI / build / Compile and Check Java (10m 37s), (5) CI / build / Update Test Catalog (0s). Failed checks: (1) CI / build / JUnit tests Java 23 - Process completed with exit code 1, (2) CI / build / JUnit tests Java 17 - Process completed with exit code 1. The Pull Request workflow (pr-update.yml) succeeded. The CI workflow (ci.yml) failed due to JUnit test failures in both Java 17 and Java 23. The reviewer (AndrewJSchofield) noted the test failures were unrelated to the PR - test timeouts appeared related to the consumer with a fix already in flight.",
+    "merged_despite_failed_checks": "Yes. The PR was merged by AndrewJSchofield despite 2 of 7 checks failing (JUnit tests Java 23 and JUnit tests Java 17). The reviewer explicitly noted: 'lgtm. I agree the test failures are not related. Test timeouts look related to the consumer and there is a fix in this area in flight.' The PR author (sjhajharia) also commented: 'The build is not green, but the tests look unrelated.' The PR had the 'ci-approved' label added by AndrewJSchofield, indicating the CI failures were acknowledged and deemed acceptable for merging.",
+    "jira_ticket_screenshot": "N/A - No KAFKA-XXXXX Jira ticket reference found in the PR title or description. The PR title references [KIP-932] which is a Kafka Improvement Proposal, not a JIRA ticket matching the KAFKA-XXXXX pattern."
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png"
+  ]
+}

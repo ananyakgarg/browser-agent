@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/18382",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/18382"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 7 checks passed. CI workflow (on: pull_request) had 5 jobs that all passed: build/Load Test Catalog, build/Compile and Check Java, build/JUnit tests Java 23, build/JUnit tests Java 17, build/Update Test Catalog. Pull Request workflow (on: pull_request_target) had 2 jobs that all passed: Labeler, Add triage label. There was 1 annotation warning noting 'The logs for this run have expired and are no longer available.' No failed checks were present at the time of merge.",
+    "merged_despite_failed_checks": "No. The PR was merged with all 7 checks passing. There were no failed required checks. chia7712 merged commit 7275dc1 into apache:trunk on Jan 9, 2025 after all checks passed successfully.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

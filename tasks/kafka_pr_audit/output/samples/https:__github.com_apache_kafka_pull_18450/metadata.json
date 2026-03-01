@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/18450",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/18450"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "6 of 7 checks passed. PASSED: (1) build/Load Test Catalog, (2) build/Compile and Check Java, (3) build/JUnit tests Java 23, (4) build/Update Test Catalog, (5) Labeler, (6) Add triage label. FAILED: (7) build/JUnit tests Java 17 - 'Process completed with exit code 1'. The CI workflow overall status was Failure. The reviewer chia7712 noted the failed tests were tracked by KAFKA-9655 and KAFKA-18456 (known flaky tests) and passed on local testing.",
+    "merged_despite_failed_checks": "Yes. The PR was merged by chia7712 into apache:trunk despite the 'build / JUnit tests Java 17' check failing (1 of 7 checks failed). The reviewer explicitly acknowledged the failures, stating they were tracked by existing Jira tickets KAFKA-9655 and KAFKA-18456, and that the tests passed locally. The failed check does not appear to have been a required/blocking check, as GitHub allowed the merge to proceed.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

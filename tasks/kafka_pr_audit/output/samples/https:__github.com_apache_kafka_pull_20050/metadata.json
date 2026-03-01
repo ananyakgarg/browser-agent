@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/20050",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/20050"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "No CI checks were run on this PR. The Checks tab shows 'Checks 0' with 'Workflow runs completed with no jobs.' No checks passed, failed, or were pending. The status checks on individual commits were not available/loading. There are no required checks results to evaluate since no workflow jobs were executed.",
+    "merged_despite_failed_checks": "No. The PR was NOT merged at all. It is in 'Closed' status (closed without merging by brandboat on Dec 3, 2025). The PR was originally auto-closed as stale by github-actions bot after 120 days of inactivity, then reopened by FrankYang0529 on Nov 11, 2025, and finally manually closed by brandboat on Dec 3, 2025. No CI checks ran and the PR was never merged.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

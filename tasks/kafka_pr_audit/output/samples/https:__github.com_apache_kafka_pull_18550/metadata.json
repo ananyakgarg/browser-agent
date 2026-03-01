@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/18550",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/18550"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "CI workflow (ci.yml) overall status: Failure. Individual checks: (1) build/Load Test Catalog: PASSED (12s), (2) build/Compile and Check Java: PASSED (6m 23s), (3) build/JUnit tests Java 23: PASSED (2h 1m), (4) build/JUnit tests Java 17: FAILED (2h 4m, error: 'Process completed with exit code 1'), (5) build/Update Test Catalog: PASSED (0s). Pull Request workflow (pr-update.yml) overall status: Success. Individual checks: (1) Labeler: PASSED (11s), (2) Add triage label: PASSED (0s). Total: 7 checks - 6 passed, 1 failed (JUnit tests Java 17). The logs for the run have expired. 4 warnings about ubuntu-latest pipeline migration to ubuntu-24.04.",
+    "merged_despite_failed_checks": "Yes. The PR was merged by chia7712 on Jan 15, 2025 despite the CI workflow failing due to 'build / JUnit tests Java 17' check failing with exit code 1. The failure appears to be a test failure in JUnit tests on Java 17, which the maintainer likely determined was unrelated to the PR changes (a common flaky test scenario in the Kafka project).",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

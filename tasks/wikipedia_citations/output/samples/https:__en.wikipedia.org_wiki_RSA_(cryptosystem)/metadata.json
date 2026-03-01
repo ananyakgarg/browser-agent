@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://en.wikipedia.org/wiki/RSA_(cryptosystem)",
+  "input_row": {
+    "article_url": "https://en.wikipedia.org/wiki/RSA_(cryptosystem)"
+  },
+  "extracted_data": {
+    "oldest_citation_claim": "The idea of an asymmetric public-private key cryptosystem is attributed to Whitfield Diffie and Martin Hellman, who published this concept in 1976.",
+    "citation_source_url": "https://ieeexplore.ieee.org/document/1055638",
+    "citation_year": "1976",
+    "source_status": "accessible via Wayback Machine (https://web.archive.org/web/20191122225638/https://ieeexplore.ieee.org/document/1055638); original IEEE link blocked but archived version available",
+    "claim_accuracy_rating": "accurate",
+    "verification_notes": "The citation supports the claim that Diffie and Hellman published the concept of an asymmetric public-private key cryptosystem in 1976. The paper 'New directions in cryptography' was published in IEEE Transactions on Information Theory, Volume 22, Issue 6, November 1976, pages 644-654. The abstract confirms the paper discusses 'new types of cryptographic systems, which minimize the need for secure key distribution channels and supply the equivalent of a written signature,' which aligns with the concept of public-key cryptography. While the direct IEEE link is blocked, the Wayback Machine archive from November 22, 2019 provides access to the full bibliographic details and abstract. The claim accurately represents what the source says - Diffie and Hellman did introduce and publish the concept of asymmetric (public-private key) cryptography in 1976."
+  },
+  "notes": "",
+  "screenshots": []
+}

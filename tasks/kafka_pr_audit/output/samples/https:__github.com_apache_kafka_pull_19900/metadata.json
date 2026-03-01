@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/19900",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/19900"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All checks passed (21 checks total). CI workflow status: Success. Workflows: (1) Pull Request (pull_request_target): Labeler - passed, Add triage label - passed. (2) CI (pull_request) / build: Configure Workflow - passed (0s), Compile and Check (Merge Ref) - passed (11m 29s), Load Test Catalog - passed (17s), JUnit tests Java 17 - passed (2h 9m), JUnit tests Java 17 (new) - passed (14m 47s), JUnit tests Java 17 (flaky) - passed (16m 8s), JUnit tests Java 23 - passed (2h 6m), JUnit tests Java 23 (new) - passed (13m 39s), JUnit tests Java 23 (flaky) - passed (14m 41s), Collate Test Catalog - passed (23s), CI checks completed - passed (0s), Update Test Catalog - passed (0s). (3) Pull Request Reviewed (pull_request_review) - passed. No failed checks. All required checks were met.",
+    "merged_despite_failed_checks": "No. All 21 checks passed successfully. The PR was merged by AndrewJSchofield into apache:trunk on Jun 6, 2025 with no failed required checks.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

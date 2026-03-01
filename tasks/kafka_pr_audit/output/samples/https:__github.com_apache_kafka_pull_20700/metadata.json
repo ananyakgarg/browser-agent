@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/20700",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/20700"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All checks have passed. 21 successful and 2 skipped checks (0 failed). Successful checks (21): Pull Request / Labeler (15s), PR Linter (PR format looks good), Pull Request Reviewed / Save PR Number (pull_request) (7s), Pull Request Reviewed / Save PR Number (pull_request_review) (4s), CI / build / CI checks completed (4s), CI / build / Collate Test Catalog (24s), CI / build / Compile and Check (Merge Ref) (13m), CI / build / Configure Workflow (3s), CI / build / JUnit tests Java 17 (120m), CI / build / JUnit tests Java 17 (flaky) (11m), CI / build / JUnit tests Java 17 (new) (10m), CI / build / JUnit tests Java 25 (119m), CI / build / JUnit tests Java 25 (flaky) (10m), CI / build / JUnit tests Java 25 (new) (9m), CI / build / Load Test Catalog (18s), Gradle Build Scan / Java 17, Gradle Build Scan / Java 17 / Flaky, Gradle Build Scan / Java 17 / New, Gradle Build Scan / Java 25, Gradle Build Scan / Java 25 / Flaky, Gradle Build Scan / Java 25 / New. Skipped checks (2): Pull Request / Add triage label, CI / build / Update Test Catalog. No failed checks. All required checks were met.",
+    "merged_despite_failed_checks": "No. The PR was merged successfully with all checks passing (21 successful, 2 skipped, 0 failed). There were no failed required checks. The PR was merged by AndrewJSchofield on Oct 17, 2025 into apache:trunk.",
+    "jira_ticket_screenshot": "N/A - No KAFKA-XXXXX Jira ticket reference found. The PR title is 'MINOR: Separate share consumer metadata class' which uses the 'MINOR:' prefix convention indicating a minor change without an associated Jira ticket. The PR description also contains no Jira ticket references."
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png"
+  ]
+}

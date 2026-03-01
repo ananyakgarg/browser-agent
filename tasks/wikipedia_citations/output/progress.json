@@ -1,0 +1,42 @@
+{
+  "https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model": {
+    "status": "failed",
+    "attempts": 5,
+    "error": "Agent did not complete within 30 iterations"
+  },
+  "https://en.wikipedia.org/wiki/Monte_Carlo_method": {
+    "status": "failed",
+    "attempts": 5,
+    "error": "Timeout after 600s"
+  },
+  "https://en.wikipedia.org/wiki/PageRank": {
+    "status": "completed",
+    "attempts": 5,
+    "error": "Agent did not complete within 30 iterations"
+  },
+  "https://en.wikipedia.org/wiki/RSA_(cryptosystem)": {
+    "status": "completed",
+    "attempts": 3,
+    "error": "Agent did not complete within 30 iterations"
+  },
+  "https://en.wikipedia.org/wiki/Transformer_(deep_learning_architecture)": {
+    "status": "failed",
+    "attempts": 4,
+    "error": "Timeout after 600s"
+  },
+  "https://en.wikipedia.org/wiki/CRISPR_gene_editing": {
+    "status": "failed",
+    "attempts": 4,
+    "error": "Timeout after 600s"
+  },
+  "https://en.wikipedia.org/wiki/Sarbanes%E2%80%93Oxley_Act": {
+    "status": "failed",
+    "attempts": 4,
+    "error": "Agent did not complete within 30 iterations"
+  },
+  "https://en.wikipedia.org/wiki/Basel_III": {
+    "status": "completed",
+    "attempts": 4,
+    "error": "Agent did not complete within 30 iterations"
+  }
+}

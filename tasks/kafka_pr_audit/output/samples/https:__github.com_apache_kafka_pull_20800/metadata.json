@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/20800",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/20800"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All checks passed (16 checks across 4 workflows). CI workflow (on: pull_request) status: Success. Jobs: build/Configure Workflow (2s) \u2705, build/Compile and Check (Merge Ref) (5m 9s) \u2705, build/Load Test Catalog (18s) \u2705, build/JUnit tests Java 17 (2h 4m) \u2705, build/JUnit tests Java 17 (new) (9m 53s) \u2705, build/JUnit tests Java 17 (flaky) (11m 44s) \u2705, build/JUnit tests Java 25 (1h 58m) \u2705, build/JUnit tests Java 25 (new) (9m 35s) \u2705, build/JUnit tests Java 25 (flaky) (10m 53s) \u2705, build/Collate Test Catalog (22s) \u2705, build/CI checks completed (2s) \u2705, build/Update Test Catalog (0s) \u2705. Additional workflows: Pull Request (pull_request_target) with Labeler and Add triage label jobs \u2705, Pull Request Reviewed (pull_request_review) \u2705, Pull Request Reviewed (pull_request) \u2705. The merge area shows '22 checks passed'. No failed checks. All required checks were met.",
+    "merged_despite_failed_checks": "No. The PR was merged successfully with all checks passing. No failed required checks were present. The CI workflow overall status was 'Success' and all 22 checks passed.",
+    "jira_ticket_screenshot": "N/A - No KAFKA-XXXXX Jira ticket reference found in the PR title ('MINOR: Fix typos in RPC files') or description. The PR is a minor typo fix without an associated Jira ticket."
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/21000",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/21000"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 21 checks passed (Status: Success). CI workflow jobs (all passed): Configure Workflow (4s), Compile and Check (Merge Ref) (4m 15s), Load Test Catalog (16s), JUnit tests Java 17 (2h 9m), JUnit tests Java 17 (new) (10m), JUnit tests Java 17 (flaky) (11m 26s), JUnit tests Java 25 (2h 5m), JUnit tests Java 25 (new) (9m 17s), JUnit tests Java 25 (flaky) (11m 5s), Collate Test Catalog (25s), CI checks completed (3s), Update Test Catalog. Pull Request workflow jobs (passed): Labeler, Add triage label. Pull Request Reviewed workflow (passed). No failed or required-but-failed checks were identified.",
+    "merged_despite_failed_checks": "No. The PR was merged by mjsax on Dec 2, 2025, with all 21 checks passing. No failed required checks were present at the time of merge.",
+    "jira_ticket_screenshot": "N/A - No KAFKA-XXXXX Jira ticket reference found in the PR title ('MINOR: Streams developer guide improvement') or description. The PR uses the 'MINOR:' prefix convention indicating no associated Jira ticket."
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png"
+  ]
+}

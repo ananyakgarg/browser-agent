@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/18650",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/18650"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All checks passed. 8 checks on PR commit (1ef30b9): (1) Pull Request / Labeler - passed, (2) Pull Request / Add triage label - passed, (3) CI / build / Load Test Catalog - passed, (4) CI / build / Compile and Check Java - passed, (5) CI / build / JUnit tests Java 23 - passed, (6) CI / build / JUnit tests Java 17 - passed, (7) CI / build / Update Test Catalog - passed, (8) Pull Request Labeled / Approve CI - passed. The merge commit (7cbfd22) shows '10 checks passed'. No failed checks. All required checks were met.",
+    "merged_despite_failed_checks": "No. The PR was merged with all checks passing (10 checks passed on the merge commit). There were no failed required checks.",
+    "jira_ticket_screenshot": "N/A - No KAFKA-XXXXX Jira ticket reference found in the PR title or description. The PR title is 'MINOR: Improve javadoc for ListShareGroupOffsetsResult' which uses the MINOR prefix instead of a Jira ticket number."
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png"
+  ]
+}

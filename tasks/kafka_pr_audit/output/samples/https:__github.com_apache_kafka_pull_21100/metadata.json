@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/21100",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/21100"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 2 checks have passed. 1) Pull Request / Labeler (pull_request_target) \u2014 Successful in 14s. 2) Pull Request / Add triage label (pull_request_target) \u2014 Successful in 5s. No required checks are defined beyond these workflow checks, and both passed. No failed checks.",
+    "merged_despite_failed_checks": "No. The PR is still Open (not merged). All 2 CI checks passed \u2014 no failed checks exist. The PR has not been merged at all.",
+    "jira_ticket_screenshot": "N/A \u2014 No Jira ticket reference (KAFKA-XXXXX pattern) found in the PR title or description. The PR title uses 'MINOR:' prefix, which indicates no associated Jira ticket."
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png"
+  ]
+}

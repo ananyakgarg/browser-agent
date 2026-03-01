@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/18994",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/18994"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "Overall: 22 of 23 checks passed (19 successful, 2 skipped, 1 failing). PASSED: CI/build/Configure Workflow, Pull Request/Labeler (11s), Pull Request Reviewed/Save PR Number (3s), CI/build/Load Test Catalog (14s), CI/build/Compile and Check (Merge Ref) (11m), CI/build/JUnit tests Java 23 (flaky) (129m), CI/build/JUnit tests Java 23 (new) (130m), CI/build/JUnit tests Java 23 (122m), CI/build/JUnit tests Java 17 (flaky) (130m), CI/build/JUnit tests Java 17 (new) (129m), CI/build/JUnit tests Java 17 (129m), CI/build/CI checks completed, Gradle Build Scan/Java 17, Gradle Build Scan/Java 17/Flaky, Gradle Build Scan/Java 17/New, Gradle Build Scan/Java 23, Gradle Build Scan/Java 23/Flaky, Gradle Build Scan/Java 23/New, PR Linter (PR format looks good!). SKIPPED: Pull Request/Add triage label, CI/build/Update Test Catalog. FAILED: CI/build/Collate Test Catalog (failed after 18s - 'No files were found with the provided path: test-catalog' and 'Process completed with exit code 1'). 6 warnings on JUnit test jobs about unexpected inputs. The CI workflow overall status was Failure, but this was due to a CI infrastructure issue (Collate Test Catalog), not a code quality issue.",
+    "merged_despite_failed_checks": "Yes. The PR was merged by viktorsomogyi on Mar 14, 2025 despite 1 failing check (CI/build/Collate Test Catalog). The failing check was an infrastructure/CI pipeline issue (test catalog artifact upload failure), not related to the actual code changes. The Collate Test Catalog job failed because no test-catalog files were found to upload. All actual code compilation, testing (JUnit tests for Java 17 and Java 23), and linting checks passed successfully. The reviewer (viktorsomogyi) approved the changes and merged the PR, likely considering the Collate Test Catalog failure as a non-blocking CI infrastructure issue.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

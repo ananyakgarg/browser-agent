@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/19000",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/19000"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "7 of 8 checks passed. Summary: 6 successful, 1 failing, 1 skipped. Details: (1) CI / build / Load Test Catalog \u2014 Successful in 13s; (2) Pull Request Reviewed / Reviewed \u2014 Successful in 2s; (3) CI / build / Compile and Check Java \u2014 Successful in 11m; (4) CI / build / JUnit tests Java 23 \u2014 FAILING after 126m; (5) CI / build / JUnit tests Java 17 \u2014 Successful in 133m; (6) CI / build / Update Test Catalog \u2014 Skipped; (7) Gradle Build Scan / Java 17 \u2014 Successful; (8) Gradle Build Scan / Java 23 \u2014 Successful. The page states 'Some checks were not successful'.",
+    "merged_despite_failed_checks": "Yes. The PR was merged by dajac despite 1 failing check (CI / build / JUnit tests Java 23 failed after 126m) and 1 skipped check (CI / build / Update Test Catalog). The merge was done to unblock the Kafka 4.0 release. The page shows 'dajac merged commit 169712d into apache:4.0' with '7 of 8 checks passed', indicating it was merged despite the failed JUnit tests Java 23 check.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

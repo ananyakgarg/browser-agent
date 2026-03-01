@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/18950",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/18950"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 7 checks passed. No failed checks. Checks: 1) build / Load Test Catalog - Passed, 2) Labeler - Passed, 3) Approve CI - Passed, 4) build / Compile and Check Java - Passed, 5) Add triage label - Passed, 6) build / JUnit tests Java 23 - Passed, 7) build / JUnit tests Java 17 - Passed. The Checks tab shows 8 total checks (the 8th being 'build / Update Test Catalog' which was likely skipped/not counted in the merge status). All required checks were met.",
+    "merged_despite_failed_checks": "No. The PR was merged with all 7 checks passing. There were no failed required checks. chia7712 approved and merged after CI checks passed successfully.",
+    "jira_ticket_screenshot": "N/A - No KAFKA-XXXXX Jira ticket reference found in the PR title or description. The PR title is 'MINOR: Fix the missing and updated licenses' and the description is 'Fix the LICENSE warning for #18872 and #18004'. The 'This was referenced' section mentions KAFKA-18773 and KAFKA-18089 from other linked PRs, but these are not direct references in this PR's title or description."
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png"
+  ]
+}

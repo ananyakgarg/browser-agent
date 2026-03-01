@@ -1,0 +1,163 @@
+[
+  {
+    "iteration": 1,
+    "timestamp": 0.0,
+    "usage": {
+      "input_tokens": 2217,
+      "output_tokens": 81
+    },
+    "reasoning": "\n\nI'll start by navigating to the PR page and taking a screenshot.",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://github.com/apache/kafka/pull/20166"
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20166\nTitle: KAFKA-19504: Remove unused metrics reporter initialization in KafkaAdminClient by bbejeck \u00b7 Pull Request #20166 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20166\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/bbejeck\" \"bbejeck\"\n[24] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[25] <a> href=\"/bbejeck/kafka/tree/KAFKA-19504_admin_client_creates_extra_reporter_instance\" \"bbejeck:KAFKA-19504_admin_client_creates_extra_reporter_instance\"\n[26] <button> type=button\n[27] <a> role=tab href=\"/apache/kafka/pull/20166\" \"Conversation14\n\u00a0(14)\"\n[28] <a> role=tab href=\"/apache/kafka/pull/20166/commits\" \"Commit"
+      }
+    ]
+  },
+  {
+    "iteration": 2,
+    "timestamp": 118.2,
+    "usage": {
+      "input_tokens": 7527,
+      "output_tokens": 74
+    },
+    "reasoning": "Let me take the screenshot of the PR page first, then get more details.",
+    "tools": [
+      {
+        "tool": "screenshot",
+        "input": {
+          "filename": "pr_page_screenshot.png"
+        },
+        "result": "Screenshot saved to output/pr_ci_status_and_jira_scrape/samples/https:__github.com_apache_kafka_pull_20166/pr_page_screenshot.png"
+      }
+    ]
+  },
+  {
+    "iteration": 3,
+    "timestamp": 123.55,
+    "usage": {
+      "input_tokens": 9196,
+      "output_tokens": 85
+    },
+    "reasoning": "Good, I can see the PR is merged. Now let me check the CI/checks section for more details. Let me navigate to the checks tab.",
+    "tools": [
+      {
+        "tool": "click",
+        "input": {
+          "element_id": 29
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20166/checks\nTitle: KAFKA-19504: Remove unused metrics reporter initialization in KafkaAdminClient by bbejeck \u00b7 Pull Request #20166 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20166%2Fchec\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <details> \"New issue\"\n[24] <summary> role=button \"New issue\"\n[25] <a> href=\"/bbejeck\" \"bbejeck\"\n[26] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[27] <a> href=\"/bbejeck/kafka/tree/KAFKA-19504_admin_client_creates_extra_reporter_instance\" \"bbejeck:KAFKA-19504_admin_client_creates_extra_reporter_instance\"\n[28] <clipboard-copy> role=button value=\"bbejeck:KAFKA-19504_admin_client_creates_ex"
+      }
+    ]
+  },
+  {
+    "iteration": 4,
+    "timestamp": 159.63,
+    "usage": {
+      "input_tokens": 12129,
+      "output_tokens": 66
+    },
+    "reasoning": "Let me expand the CI section to see the check details.",
+    "tools": [
+      {
+        "tool": "click",
+        "input": {
+          "element_id": 44
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20166/checks\nTitle: KAFKA-19504: Remove unused metrics reporter initialization in KafkaAdminClient by bbejeck \u00b7 Pull Request #20166 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20166%2Fchec\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <details> \"New issue\"\n[24] <summary> role=button \"New issue\"\n[25] <a> href=\"/bbejeck\" \"bbejeck\"\n[26] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[27] <a> href=\"/bbejeck/kafka/tree/KAFKA-19504_admin_client_creates_extra_reporter_instance\" \"bbejeck:KAFKA-19504_admin_client_creates_extra_reporter_instance\"\n[28] <clipboard-copy> role=button value=\"bbejeck:KAFKA-19504_admin_client_creates_ex"
+      }
+    ]
+  },
+  {
+    "iteration": 5,
+    "timestamp": 197.35,
+    "usage": {
+      "input_tokens": 15714,
+      "output_tokens": 84
+    },
+    "reasoning": "Now I can see the CI checks. Let me go back to the conversation tab to see the merge status area and check details (passed/failed).",
+    "tools": [
+      {
+        "tool": "click",
+        "input": {
+          "element_id": 29
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20166/checks\nTitle: KAFKA-19504: Remove unused metrics reporter initialization in KafkaAdminClient by bbejeck \u00b7 Pull Request #20166 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20166%2Fchec\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"https://github.com\" aria-label=\"GitHub Homepage\"\n[24] <a> href=\"https://docs.github.com/site-policy/github-terms/github-terms-of-service\" \"Terms\"\n[25] <a> href=\"https://docs.github.com/site-policy/privacy-policies/github-privacy-statement\" \"Privacy\"\n[26] <a> href=\"https://github.com/security\" \"Security\"\n[27] <a> href=\"https://www.githubstatus.com/\" \"Status\"\n[28] <a> href=\"https://git"
+      }
+    ]
+  },
+  {
+    "iteration": 6,
+    "timestamp": 223.79,
+    "usage": {
+      "input_tokens": 17917,
+      "output_tokens": 81
+    },
+    "reasoning": "Let me navigate to the conversation page to see the merge status section with checks.",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://github.com/apache/kafka/pull/20166"
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20166\nTitle: KAFKA-19504: Remove unused metrics reporter initialization in KafkaAdminClient by bbejeck \u00b7 Pull Request #20166 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20166\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/bbejeck\" \"bbejeck\"\n[24] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[25] <a> href=\"/bbejeck/kafka/tree/KAFKA-19504_admin_client_creates_extra_reporter_instance\" \"bbejeck:KAFKA-19504_admin_client_creates_extra_reporter_instance\"\n[26] <button> type=button\n[27] <a> role=tab href=\"/apache/kafka/pull/20166\" \"Conversation14\n\u00a0(14)\"\n[28] <a> role=tab href=\"/apache/kafka/pull/20166/commits\" \"Commit"
+      }
+    ]
+  },
+  {
+    "iteration": 7,
+    "timestamp": 320.61,
+    "usage": {
+      "input_tokens": 23226,
+      "output_tokens": 85
+    },
+    "reasoning": "Let me scroll down to find the merge status area with the checks summary.",
+    "tools": [
+      {
+        "tool": "scroll",
+        "input": {
+          "direction": "down",
+          "amount": 1500
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20166\nTitle: KAFKA-19504: Remove unused metrics reporter initialization in KafkaAdminClient by bbejeck \u00b7 Pull Request #20166 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20166\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/bbejeck\" \"bbejeck\"\n[24] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[25] <a> href=\"/bbejeck/kafka/tree/KAFKA-19504_admin_client_creates_extra_reporter_instance\" \"bbejeck:KAFKA-19504_admin_client_creates_extra_reporter_instance\"\n[26] <button> type=button\n[27] <a> role=tab href=\"/apache/kafka/pull/20166\" \"Conversation14\n\u00a0(14)\"\n[28] <a> role=tab href=\"/apache/kafka/pull/20166/commits\" \"Commit"
+      }
+    ]
+  },
+  {
+    "iteration": 8,
+    "timestamp": 433.9,
+    "usage": {
+      "input_tokens": 28501,
+      "output_tokens": 75
+    },
+    "reasoning": "Let me look for the \"View details\" button which should show the merge/check status area, and also let me try to see the full text of the page for the merge section.",
+    "tools": [
+      {
+        "tool": "get_text",
+        "input": {},
+        "result": "Skip to content\nNavigation Menu\nPlatform\nSolutions\nResources\nOpen Source\nEnterprise\nPricing\nSign in\nSign up\napache\n/\nkafka\nPublic\nNotifications\nFork 15k\n Star 32.1k\nCode\nPull requests\n306\nActions\nProjects\nSecurity\nInsights\nKAFKA-19504: Remove unused metrics reporter initialization in KafkaAdminClient\n#20166\nMerged\nbbejeck\nmerged 2 commits into\napache:trunk\nfrom\nbbejeck:KAFKA-19504_admin_client_creates_extra_reporter_instance\n+3\n-3\nLines changed: 3 additions & 3 deletions\nConversation14\n\u00a0(14)\nCommits2\n\u00a0(2)\nChecks24\n\u00a0(24)\nFiles changed1\n\u00a0(1)\nMerged\nKAFKA-19504: Remove unused metrics reporter initialization in KafkaAdminClient#20166\nbbejeck\nmerged 2 commits into\napache:trunk\nfrom\nbbejeck:KAFKA-19504_admin_client_creates_extra_reporter_instance\nConversation\nMember\nbbejeck\ncommented\n\u2022 \nedited by github-actions bot \n\nThe AdminClient adds a telemetry reporter to the metrics reporters\nlist in the constructor. The problem is that the reporter was already\nadded in the createInternal method. In the createInternal method\ncall, the clientTelemetryReporter is added to a\nList<MetricReporters> which is passed to the Metrics object, will\nget closed when Metrics.close() is called. But adding a reporter to\nthe reporters list in the constructor is not used by the Metrics\nobject and hence doesn't get closed, causing a memory leak.\n\nAll related tests pass after this change.\n\nReviewers: Apoorv Mittal apoorvmittal10@apache.org, Matthias J. Sax\nmatthias@confluent.io, Chia-Ping Tsai chia7712@gmail.com,\nJhen-Yung Hsu jhenyunghsu@gmail.com\n\nRemove unused metrics reporter initialization logic in KafkaAdminClient\n26d0a52\n github-actions bot added clients small labels \n bbejeck requested review from apoorvmittal10 and mjsax \n bbejeck changed the title KAFKA-19505: Remove unused metrics reporter initialization in KafkaAdminClient KAFKA-19504: Remove unused metrics reporter initialization in KafkaAdminClient \napoorvmittal10 reviewed \nView reviewed changes\nContributor\napoorvmittal10\nleft a comment\n\n"
+      }
+    ]
+  },
+  {
+    "iteration": 9,
+    "timestamp": 439.05,
+    "usage": {
+      "input_tokens": 30796,
+      "output_tokens": 91
+    },
+    "reasoning": "I can see key information: \"41 of 43 checks passed\" and the PR was merged. Let me click the \"View details\" button to see which checks failed.",
+    "tools": [
+      {
+        "tool": "click",
+        "input": {
+          "element_id": 158
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20166\nTitle: KAFKA-19504: Remove unused metrics reporter initialization in KafkaAdminClient by bbejeck \u00b7 Pull Request #20166 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20166\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/bbejeck\" \"bbejeck\"\n[24] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[25] <a> href=\"/bbejeck/kafka/tree/KAFKA-19504_admin_client_creates_extra_reporter_instance\" \"bbejeck:KAFKA-19504_admin_client_creates_extra_reporter_instance\"\n[26] <button> type=button\n[27] <a> role=tab href=\"/apache/kafka/pull/20166\" \"Conversation14\n\u00a0(14)\"\n[28] <a> role=tab href=\"/apache/kafka/pull/20166/commits\" \"Commit"
+      }
+    ]
+  }
+]

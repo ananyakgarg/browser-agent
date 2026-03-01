@@ -1,0 +1,166 @@
+[
+  {
+    "iteration": 1,
+    "timestamp": 0.0,
+    "usage": {
+      "input_tokens": 2217,
+      "output_tokens": 81
+    },
+    "reasoning": "\n\nI'll start by navigating to the PR page and taking a screenshot.",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://github.com/apache/kafka/pull/20400"
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20400\nTitle: MINOR: enhance DescribeClusterResponse ControllerId description by brandboat \u00b7 Pull Request #20400 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20400\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/chia7712\" \"chia7712\"\n[24] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[25] <a> href=\"/brandboat/kafka/tree/minor-rpc-desc\" \"brandboat:minor-rpc-desc\"\n[26] <button> type=button\n[27] <a> role=tab href=\"/apache/kafka/pull/20400\" \"Conversation0\n\u00a0(0)\"\n[28] <a> role=tab href=\"/apache/kafka/pull/20400/commits\" \"Commits1\n\u00a0(1)\"\n[29] <a> role=tab href=\"/apache/kafka/pull/20400/checks\" \"Checks18\n\u00a0(18)\"\n[30] <a> r"
+      }
+    ]
+  },
+  {
+    "iteration": 2,
+    "timestamp": 68.63,
+    "usage": {
+      "input_tokens": 5096,
+      "output_tokens": 77
+    },
+    "reasoning": "Let me take a screenshot of the PR page first, then examine the checks in more detail.",
+    "tools": [
+      {
+        "tool": "screenshot",
+        "input": {
+          "filename": "pr_page_screenshot.png"
+        },
+        "result": "Screenshot saved to output/pr_ci_status_and_jira_scrape/samples/https:__github.com_apache_kafka_pull_20400/pr_page_screenshot.png"
+      }
+    ]
+  },
+  {
+    "iteration": 3,
+    "timestamp": 71.14,
+    "usage": {
+      "input_tokens": 6768,
+      "output_tokens": 84
+    },
+    "reasoning": "Now let me check the detailed checks by clicking on the \"Checks\" tab or the \"View details\" button to see individual check statuses.",
+    "tools": [
+      {
+        "tool": "click",
+        "input": {
+          "element_id": 29
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20400/checks\nTitle: MINOR: enhance DescribeClusterResponse ControllerId description by brandboat \u00b7 Pull Request #20400 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20400%2Fchec\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <details> \"New issue\"\n[24] <summary> role=button \"New issue\"\n[25] <a> href=\"/chia7712\" \"chia7712\"\n[26] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[27] <a> href=\"/brandboat/kafka/tree/minor-rpc-desc\" \"brandboat:minor-rpc-desc\"\n[28] <clipboard-copy> role=button value=\"brandboat:minor-rpc-desc\" aria-label=\"Copy\"\n[29] <a> href=\"/apache/kafka/pull/20400\" \"Conversation 0\"\n[30] <a> href=\"/apache/kafka/pul"
+      }
+    ]
+  },
+  {
+    "iteration": 4,
+    "timestamp": 119.83,
+    "usage": {
+      "input_tokens": 8987,
+      "output_tokens": 60
+    },
+    "reasoning": "Let me get more details about the checks. Let me expand some of the check sections to see their statuses.",
+    "tools": [
+      {
+        "tool": "get_text",
+        "input": {},
+        "result": "Skip to content\nNavigation Menu\nPlatform\nSolutions\nResources\nOpen Source\nEnterprise\nPricing\nSign in\nSign up\napache\n/\nkafka\nPublic\nNotifications\nFork 15k\n Star 32.1k\nCode\nPull requests\n306\nActions\nProjects\nSecurity\nInsights\nMINOR: enhance DescribeClusterResponse ControllerId description #20400\nNew issue\n Merged\nchia7712 merged 1 commit into apache:trunk from brandboat:minor-rpc-desc  \n+1 \u22121 \n Conversation 0\n Commits 1\n Checks 18\n Files changed 1\nMINOR: enhance DescribeClusterResponse ControllerId description\n19355f4 \nSign in for the full log view\nPull Request\non: pull_request_target\nLabeler\nAdd triage label\nPull Request Reviewed\non: pull_request\nCI\non: pull_request\nPull Request Reviewed\non: pull_request\nPull Request Reviewed\non: pull_request\nPull Request Reviewed\non: pull_request_review\nThe logs for this run have expired and are no longer available.\nFooter\n\u00a9 2026 GitHub,\u00a0Inc.\nFooter navigation\nTerms\nPrivacy\nSecurity\nStatus\nCommunity\nDocs\nContact\nManage cookies\nDo not share my personal information"
+      }
+    ]
+  },
+  {
+    "iteration": 5,
+    "timestamp": 123.31,
+    "usage": {
+      "input_tokens": 9365,
+      "output_tokens": 66
+    },
+    "reasoning": "Let me expand the CI section to see individual check details.",
+    "tools": [
+      {
+        "tool": "click",
+        "input": {
+          "element_id": 48
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20400/checks\nTitle: MINOR: enhance DescribeClusterResponse ControllerId description by brandboat \u00b7 Pull Request #20400 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20400%2Fchec\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <details> \"New issue\"\n[24] <summary> role=button \"New issue\"\n[25] <a> href=\"/chia7712\" \"chia7712\"\n[26] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[27] <a> href=\"/brandboat/kafka/tree/minor-rpc-desc\" \"brandboat:minor-rpc-desc\"\n[28] <clipboard-copy> role=button value=\"brandboat:minor-rpc-desc\" aria-label=\"Copy\"\n[29] <a> href=\"/apache/kafka/pull/20400\" \"Conversation 0\"\n[30] <a> href=\"/apache/kafka/pul"
+      }
+    ]
+  },
+  {
+    "iteration": 6,
+    "timestamp": 166.3,
+    "usage": {
+      "input_tokens": 12237,
+      "output_tokens": 110
+    },
+    "reasoning": "Now let me go back to the conversation tab to check the merge status area more carefully. I also need to check the \"View details\" button for merge checks. Let me navigate to the commit's status check page directly.",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://github.com/apache/kafka/pull/20400"
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20400\nTitle: MINOR: enhance DescribeClusterResponse ControllerId description by brandboat \u00b7 Pull Request #20400 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20400\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/chia7712\" \"chia7712\"\n[24] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[25] <a> href=\"/brandboat/kafka/tree/minor-rpc-desc\" \"brandboat:minor-rpc-desc\"\n[26] <button> type=button\n[27] <a> role=tab href=\"/apache/kafka/pull/20400\" \"Conversation0\n\u00a0(0)\"\n[28] <a> role=tab href=\"/apache/kafka/pull/20400/commits\" \"Commits1\n\u00a0(1)\"\n[29] <a> role=tab href=\"/apache/kafka/pull/20400/checks\" \"Checks18\n\u00a0(18)\"\n[30] <a> r"
+      }
+    ]
+  },
+  {
+    "iteration": 7,
+    "timestamp": 248.22,
+    "usage": {
+      "input_tokens": 15144,
+      "output_tokens": 114
+    },
+    "reasoning": "I can see the status checks are still loading. Let me wait a moment and then try to click on the status check details to get more information. The page already shows \"25 checks passed\" next to the merge commit. Let me try clicking \"View details\" to see the check details.",
+    "tools": [
+      {
+        "tool": "click",
+        "input": {
+          "element_id": 53
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20400\nTitle: MINOR: enhance DescribeClusterResponse ControllerId description by brandboat \u00b7 Pull Request #20400 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20400\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/chia7712\" \"chia7712\"\n[24] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[25] <a> href=\"/brandboat/kafka/tree/minor-rpc-desc\" \"brandboat:minor-rpc-desc\"\n[26] <button> type=button\n[27] <a> role=tab href=\"/apache/kafka/pull/20400\" \"Conversation0\n\u00a0(0)\"\n[28] <a> role=tab href=\"/apache/kafka/pull/20400/commits\" \"Commits1\n\u00a0(1)\"\n[29] <a> role=tab href=\"/apache/kafka/pull/20400/checks\" \"Checks18\n\u00a0(18)\"\n[30] <a> r"
+      }
+    ]
+  },
+  {
+    "iteration": 8,
+    "timestamp": 295.52,
+    "usage": {
+      "input_tokens": 19788,
+      "output_tokens": 58
+    },
+    "reasoning": "Now I have all the detailed check information. Let me scroll down to see if there's more information.",
+    "tools": [
+      {
+        "tool": "get_text",
+        "input": {},
+        "result": "Skip to content\nNavigation Menu\nPlatform\nSolutions\nResources\nOpen Source\nEnterprise\nPricing\nSign in\nSign up\napache\n/\nkafka\nPublic\nNotifications\nFork 15k\n Star 32.1k\nCode\nPull requests\n306\nActions\nProjects\nSecurity\nInsights\nMINOR: enhance DescribeClusterResponse ControllerId description\n#20400\nMerged\nchia7712\nmerged 1 commit into\napache:trunk\nfrom\nbrandboat:minor-rpc-desc\n+1\n-1\nLines changed: 1 addition & 1 deletion\nConversation0\n\u00a0(0)\nCommits1\n\u00a0(1)\nChecks18\n\u00a0(18)\nFiles changed1\n\u00a0(1)\nConversation\nMember\nbrandboat\ncommented\n\u2022 \nedited by chia7712 \n\nenhance the description of ControllerId in DescribeClusterResponse.json\n\nReviewers: Chia-Ping Tsai chia7712@gmail.com\n\nMINOR: enhance DescribeClusterResponse ControllerId description\n19355f4\n github-actions bot added clients small labels \nchia7712 approved these changes \nView reviewed changes\nHide details\n chia7712 merged commit ecd5b4c into apache:trunk \n25 checks passed\nbuild / Configure Workflow\nDetails\nLabeler\nDetails\nSave PR Number\nDetails\nSave PR Number\nDetails\nSave PR Number\nDetails\nSave PR Number\nDetails\nbuild / Load Test Catalog\nDetails\nAdd triage label\nDetails\nbuild / Compile and Check (Merge Ref)\nDetails\nbuild / JUnit tests Java 24 (flaky)\nDetails\nbuild / JUnit tests Java 24 (new)\nDetails\nbuild / JUnit tests Java 24\nDetails\nbuild / JUnit tests Java 17 (flaky)\nDetails\nbuild / JUnit tests Java 17 (new)\nDetails\nbuild / JUnit tests Java 17\nDetails\nbuild / Collate Test Catalog\nDetails\nbuild / CI checks completed\nDetails\nbuild / Update Test Catalog\nDetails\nGradle Build Scan / Java 17 The build scan was successfully published\nDetails\nGradle Build Scan / Java 17 / Flaky The build scan was successfully published\nDetails\nGradle Build Scan / Java 17 / New The build scan was successfully published\nDetails\nGradle Build Scan / Java 24 The build scan was successfully published\nDetails\nGradle Build Scan / Java 24 / Flaky The build scan was successfully published\nDetails\nGradle Build Scan / Java 24 / New The build scan was successf"
+      }
+    ]
+  },
+  {
+    "iteration": 9,
+    "timestamp": 299.26,
+    "usage": {
+      "input_tokens": 20663,
+      "output_tokens": 1209
+    },
+    "reasoning": "Excellent! Now I have all the information about the checks. The PR title is \"MINOR: enhance DescribeClusterResponse ControllerId description\" - there's no KAFKA-XXXXX Jira ticket reference in the title. The description says \"enhance the description of ControllerId in DescribeClusterResponse.json\" - also no Jira ticket reference. The PR is tagged as \"MINOR\" which typically means no Jira ticket is needed.\n\nLet me verify there's no KAFKA- reference anywhere by checking the PR description more carefully. The title starts with \"MINOR:\" which is the convention for changes that don't require a Jira ticket.\n\nNow let me compile all the information:\n\n1. **PR Status**: Merged - chia7712 merged commit ecd5b4c into apache:trunk\n2. **CI Check Status**: All 25 checks passed:\n   - build / Configure Workflow \u2705\n   - Labeler \u2705\n   - Save PR Number (x4) \u2705\n   - build / Load Test Catalog \u2705\n   - Add triage label \u2705\n   - build / Compile and Check (Merge Ref) \u2705\n   - build / JUnit tests Java 24 (flaky) \u2705\n   - build / JUnit tests Java 24 (new) \u2705\n   - build / JUnit tests Java 24 \u2705\n   - build / JUnit tests Java 17 (flaky) \u2705\n   - build / JUnit tests Java 17 (new) \u2705\n   - build / JUnit tests Java 17 \u2705\n   - build / Collate Test Catalog \u2705\n   - build / CI checks completed \u2705\n   - build / Update Test Catalog \u2705\n   - Gradle Build Scan / Java 17 \u2705\n   - Gradle Build Scan / Java 17 / Flaky \u2705\n   - Gradle Build Scan / Java 17 / New \u2705\n   - Gradle Build Scan / Java 24 \u2705\n   - Gradle Build Scan / Java 24 / Flaky \u2705\n   - Gradle Build Scan / Java 24 / New \u2705\n   - PR Linter \u2705\n\n3. **Merged despite failed checks**: No - all 25 checks passed\n4. **Jira ticket**: No KAFKA-XXXXX reference found in the PR title or description (it's a MINOR change)\n\nSince there's no Jira ticket reference, I'll note that in the jira_ticket_screenshot field. Let me provide the complete output.",
+    "tools": [
+      {
+        "tool": "complete",
+        "input": {
+          "data": {
+            "pr_page_screenshot": "pr_page_screenshot.png",
+            "ci_check_status": "All 25 checks passed. Checks: build/Configure Workflow (passed), Labeler (passed), Save PR Number x4 (all passed), build/Load Test Catalog (passed), Add triage label (passed), build/Compile and Check (Merge Ref) (passed), build/JUnit tests Java 24 (flaky) (passed), build/JUnit tests Java 24 (new) (passed), build/JUnit tests Java 24 (passed), build/JUnit tests Java 17 (flaky) (passed), build/JUnit tests Java 17 (new) (passed), build/JUnit tests Java 17 (passed), build/Collate Test Catalog (passed), build/CI checks completed (passed), build/Update Test Catalog (passed), Gradle Build Scan/Java 17 (passed), Gradle Build Scan/Java 17/Flaky (passed), Gradle Build Scan/Java 17/New (passed), Gradle Build Scan/Java 24 (passed), Gradle Build Scan/Java 24/Flaky (passed), Gradle Build Scan/Java 24/New (passed), PR Linter (passed - 'PR format looks good!'). No failed checks. All required checks were met.",
+            "merged_despite_failed_checks": "No. The PR was merged with all 25 checks passing. No failed required checks were present at the time of merge.",
+            "jira_ticket_screenshot": "N/A - No Jira ticket reference (KAFKA-XXXXX pattern) found in the PR title or description. The PR is prefixed with 'MINOR:' indicating it is a minor change that does not require a Jira ticket."
+          },
+          "notes": "The PR #20400 is titled \"MINOR: enhance DescribeClusterResponse ControllerId description\" and was merged by chia7712 on Aug 24, 2025. All 25 CI checks passed successfully. There is no KAFKA-XXXXX Jira ticket reference in the PR title or description - it uses the \"MINOR:\" prefix convention which indicates no Jira ticket is needed for this type of change. Therefore, no Jira ticket screenshot could be taken."
+        },
+        "result": "TASK COMPLETE"
+      }
+    ]
+  }
+]

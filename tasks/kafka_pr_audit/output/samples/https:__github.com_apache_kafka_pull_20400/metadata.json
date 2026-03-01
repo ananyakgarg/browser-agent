@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/20400",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/20400"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 25 checks passed. Checks: build/Configure Workflow (passed), Labeler (passed), Save PR Number x4 (all passed), build/Load Test Catalog (passed), Add triage label (passed), build/Compile and Check (Merge Ref) (passed), build/JUnit tests Java 24 (flaky) (passed), build/JUnit tests Java 24 (new) (passed), build/JUnit tests Java 24 (passed), build/JUnit tests Java 17 (flaky) (passed), build/JUnit tests Java 17 (new) (passed), build/JUnit tests Java 17 (passed), build/Collate Test Catalog (passed), build/CI checks completed (passed), build/Update Test Catalog (passed), Gradle Build Scan/Java 17 (passed), Gradle Build Scan/Java 17/Flaky (passed), Gradle Build Scan/Java 17/New (passed), Gradle Build Scan/Java 24 (passed), Gradle Build Scan/Java 24/Flaky (passed), Gradle Build Scan/Java 24/New (passed), PR Linter (passed - 'PR format looks good!'). No failed checks. All required checks were met.",
+    "merged_despite_failed_checks": "No. The PR was merged with all 25 checks passing. No failed required checks were present at the time of merge.",
+    "jira_ticket_screenshot": "N/A - No Jira ticket reference (KAFKA-XXXXX pattern) found in the PR title or description. The PR is prefixed with 'MINOR:' indicating it is a minor change that does not require a Jira ticket."
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png"
+  ]
+}

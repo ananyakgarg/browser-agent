@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/18700",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/18700"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "7 of 9 checks passed. PASSED: (1) build / Load Test Catalog, (2) Labeler, (3) Add triage label, (4) build / Compile and Check Java, (5) build / Update Test Catalog, (6) Gradle Build Scan / Java 17, (7) Gradle Build Scan / Java 23. FAILED: (1) build / JUnit tests Java 17 - Process completed with exit code 1 (test failures: CooperativeConsumerCoordinatorTest, ConfigCommandIntegrationTest, TransactionsTest, ClientQuotasRequestTest), (2) build / JUnit tests Java 23 - Process completed with exit code 1 (test failures: CooperativeConsumerCoordinatorTest, ConfigCommandIntegrationTest, TransactionsTest, ClientQuotasRequestTest). The failures appear to be pre-existing flaky tests unrelated to the PR changes. The CI workflow overall status was Failure due to the 2 JUnit test job failures. The Pull Request workflow (Labeler, Add triage label) passed successfully.",
+    "merged_despite_failed_checks": "Yes. The PR was merged by mjsax on Feb 4, 2025 (commit 7719b5f into apache:trunk) despite 2 of 9 checks failing (build / JUnit tests Java 17 and build / JUnit tests Java 23). The test failures were unrelated flaky tests (e.g., CooperativeConsumerCoordinatorTest, SharePartitionManagerTest, ConfigCommandIntegrationTest, TransactionsTest, ClientQuotasRequestTest) not caused by this PR's changes. The author documented the failures in PR comments, and the reviewer (lucasbru) approved the changes.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

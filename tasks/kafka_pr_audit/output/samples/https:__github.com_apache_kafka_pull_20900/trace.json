@@ -1,0 +1,314 @@
+[
+  {
+    "iteration": 1,
+    "timestamp": 0.0,
+    "usage": {
+      "input_tokens": 2217,
+      "output_tokens": 81
+    },
+    "reasoning": "\n\nI'll start by navigating to the PR page and taking a screenshot.",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://github.com/apache/kafka/pull/20900"
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20900\nTitle: KAFKA-19845: 2/N Additional share consumers tests. by smjn \u00b7 Pull Request #20900 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20900\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/AndrewJSchofield\" \"AndrewJSchofield\"\n[24] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[25] <a> href=\"/smjn/kafka/tree/KAFKA-19845-2\" \"smjn:KAFKA-19845-2\"\n[26] <button> type=button\n[27] <a> role=tab href=\"/apache/kafka/pull/20900\" \"Conversation1\n\u00a0(1)\"\n[28] <a> role=tab href=\"/apache/kafka/pull/20900/commits\" \"Commits3\n\u00a0(3)\"\n[29] <a> role=tab href=\"/apache/kafka/pull/20900/checks\" \"Checks19\n\u00a0(19)\"\n[30] <a> role=tab href=\""
+      }
+    ]
+  },
+  {
+    "iteration": 2,
+    "timestamp": 39.66,
+    "usage": {
+      "input_tokens": 7408,
+      "output_tokens": 69
+    },
+    "reasoning": "Let me take a screenshot of the PR page first.",
+    "tools": [
+      {
+        "tool": "screenshot",
+        "input": {
+          "filename": "pr_page_screenshot.png"
+        },
+        "result": "Screenshot saved to output/pr_ci_status_and_jira_scrape/samples/https:__github.com_apache_kafka_pull_20900/pr_page_screenshot.png"
+      }
+    ]
+  },
+  {
+    "iteration": 3,
+    "timestamp": 42.16,
+    "usage": {
+      "input_tokens": 9072,
+      "output_tokens": 77
+    },
+    "reasoning": "Now let me check the CI/checks section. Let me navigate to the Checks tab to see the details.",
+    "tools": [
+      {
+        "tool": "click",
+        "input": {
+          "element_id": 29
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20900/checks\nTitle: KAFKA-19845: 2/N Additional share consumers tests. by smjn \u00b7 Pull Request #20900 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20900%2Fchec\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <details> \"New issue\"\n[24] <summary> role=button \"New issue\"\n[25] <a> href=\"/AndrewJSchofield\" \"AndrewJSchofield\"\n[26] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[27] <a> href=\"/smjn/kafka/tree/KAFKA-19845-2\" \"smjn:KAFKA-19845-2\"\n[28] <clipboard-copy> role=button value=\"smjn:KAFKA-19845-2\" aria-label=\"Copy\"\n[29] <a> href=\"/apache/kafka/pull/20900\" \"Conversation 1\"\n[30] <a> href=\"/apache/kafka/pull/20900/commits\" \"Co"
+      }
+    ]
+  },
+  {
+    "iteration": 4,
+    "timestamp": 118.06,
+    "usage": {
+      "input_tokens": 11292,
+      "output_tokens": 55
+    },
+    "reasoning": "Let me get more details. Let me expand the CI section to see check statuses.",
+    "tools": [
+      {
+        "tool": "get_text",
+        "input": {},
+        "result": "Skip to content\nNavigation Menu\nPlatform\nSolutions\nResources\nOpen Source\nEnterprise\nPricing\nSign in\nSign up\napache\n/\nkafka\nPublic\nNotifications\nFork 15k\n Star 32.1k\nCode\nPull requests\n306\nActions\nProjects\nSecurity\nInsights\nKAFKA-19845: 2/N Additional share consumers tests. #20900\nNew issue\n Merged\nAndrewJSchofield merged 3 commits into apache:trunk from smjn:KAFKA-19845-2  \n+123 \u22120 \n Conversation 1\n Commits 3\n Checks 19\n Files changed 1\nadd metric validation\n871eadc \nSign in for the full log view\nPull Request\non: pull_request_target\nLabeler\nAdd triage label\nPull Request Reviewed\non: pull_request\nPull Request\non: pull_request_target\nCI\non: pull_request\nPull Request Reviewed\non: pull_request_review\nPull Request Reviewed\non: pull_request\nThe logs for this run have expired and are no longer available.\nFooter\n\u00a9 2026 GitHub,\u00a0Inc.\nFooter navigation\nTerms\nPrivacy\nSecurity\nStatus\nCommunity\nDocs\nContact\nManage cookies\nDo not share my personal information"
+      }
+    ]
+  },
+  {
+    "iteration": 5,
+    "timestamp": 121.55,
+    "usage": {
+      "input_tokens": 11659,
+      "output_tokens": 91
+    },
+    "reasoning": "The checks page shows the workflow names but not the individual check statuses. Let me click on the CI workflow to see details, and also let me expand some of the check sections.",
+    "tools": [
+      {
+        "tool": "click",
+        "input": {
+          "element_id": 52
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20900/checks\nTitle: KAFKA-19845: 2/N Additional share consumers tests. by smjn \u00b7 Pull Request #20900 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20900%2Fchec\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <details> \"New issue\"\n[24] <summary> role=button \"New issue\"\n[25] <a> href=\"/AndrewJSchofield\" \"AndrewJSchofield\"\n[26] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[27] <a> href=\"/smjn/kafka/tree/KAFKA-19845-2\" \"smjn:KAFKA-19845-2\"\n[28] <clipboard-copy> role=button value=\"smjn:KAFKA-19845-2\" aria-label=\"Copy\"\n[29] <a> href=\"/apache/kafka/pull/20900\" \"Conversation 1\"\n[30] <a> href=\"/apache/kafka/pull/20900/commits\" \"Co"
+      }
+    ]
+  },
+  {
+    "iteration": 6,
+    "timestamp": 165.68,
+    "usage": {
+      "input_tokens": 14564,
+      "output_tokens": 122
+    },
+    "reasoning": "I can see the checks listed but the text doesn't show pass/fail status icons. Let me go back to the conversation tab and look at the merge status area which typically shows the check statuses more clearly. Let me also check the CI action run directly.",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://github.com/apache/kafka/actions/runs/19428982170"
+        },
+        "result": "URL: https://github.com/apache/kafka/actions/runs/19428982170\nTitle: KAFKA-19845: 2/N Additional share consumers tests. \u00b7 apache/kafka@871eadc \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Factions%2Fruns%2F19\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/apache/kafka/actions/workflows/ci.yml\" \"CI\"\n[24] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Factions%2Fruns%2F19\" \"Sign in to view logs\"\n[25] <a> href=\"/apache/kafka/actions/runs/19428982170\" \"Summary\"\n[26] <button> type=button\n[27] <button> type=button \"build\"\n[28] <a> href=\"/apache/kafka/actions/runs/19428982170/usage\" \"Usage\"\n[29] <a> href=\"/apache/kafka/actions/runs/19428982170/workflow\" \"Workflow"
+      }
+    ]
+  },
+  {
+    "iteration": 7,
+    "timestamp": 185.35,
+    "usage": {
+      "input_tokens": 18903,
+      "output_tokens": 82
+    },
+    "reasoning": "The CI workflow run shows **Status: Success**. Now let me click \"Show all jobs\" to see all CI job statuses.",
+    "tools": [
+      {
+        "tool": "click",
+        "input": {
+          "element_id": 40
+        },
+        "result": "URL: https://github.com/apache/kafka/actions/runs/19428982170\nTitle: KAFKA-19845: 2/N Additional share consumers tests. \u00b7 apache/kafka@871eadc \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Factions%2Fruns%2F19\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/apache/kafka/actions/workflows/ci.yml\" \"CI\"\n[24] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Factions%2Fruns%2F19\" \"Sign in to view logs\"\n[25] <a> href=\"/apache/kafka/actions/runs/19428982170\" \"Summary\"\n[26] <button> type=button\n[27] <button> type=button \"build\"\n[28] <a> href=\"/apache/kafka/actions/runs/19428982170/usage\" \"Usage\"\n[29] <a> href=\"/apache/kafka/actions/runs/19428982170/workflow\" \"Workflow"
+      }
+    ]
+  },
+  {
+    "iteration": 8,
+    "timestamp": 196.63,
+    "usage": {
+      "input_tokens": 23631,
+      "output_tokens": 107
+    },
+    "reasoning": "The CI workflow status is **Success** with all jobs completed. Now let me go back to the PR conversation page to check the merge status area more carefully, including any status checks displayed near the merge button.",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://github.com/apache/kafka/pull/20900"
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20900\nTitle: KAFKA-19845: 2/N Additional share consumers tests. by smjn \u00b7 Pull Request #20900 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20900\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/AndrewJSchofield\" \"AndrewJSchofield\"\n[24] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[25] <a> href=\"/smjn/kafka/tree/KAFKA-19845-2\" \"smjn:KAFKA-19845-2\"\n[26] <button> type=button\n[27] <a> role=tab href=\"/apache/kafka/pull/20900\" \"Conversation1\n\u00a0(1)\"\n[28] <a> role=tab href=\"/apache/kafka/pull/20900/commits\" \"Commits3\n\u00a0(3)\"\n[29] <a> role=tab href=\"/apache/kafka/pull/20900/checks\" \"Checks19\n\u00a0(19)\"\n[30] <a> role=tab href=\""
+      }
+    ]
+  },
+  {
+    "iteration": 9,
+    "timestamp": 219.78,
+    "usage": {
+      "input_tokens": 28847,
+      "output_tokens": 88
+    },
+    "reasoning": "Now let me scroll down to find the merge status area at the bottom of the conversation.",
+    "tools": [
+      {
+        "tool": "scroll",
+        "input": {
+          "direction": "down",
+          "amount": 1500
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20900\nTitle: KAFKA-19845: 2/N Additional share consumers tests. by smjn \u00b7 Pull Request #20900 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20900\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/AndrewJSchofield\" \"AndrewJSchofield\"\n[24] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[25] <a> href=\"/smjn/kafka/tree/KAFKA-19845-2\" \"smjn:KAFKA-19845-2\"\n[26] <button> type=button\n[27] <a> role=tab href=\"/apache/kafka/pull/20900\" \"Conversation1\n\u00a0(1)\"\n[28] <a> role=tab href=\"/apache/kafka/pull/20900/commits\" \"Commits3\n\u00a0(3)\"\n[29] <a> role=tab href=\"/apache/kafka/pull/20900/checks\" \"Checks19\n\u00a0(19)\"\n[30] <a> role=tab href=\""
+      }
+    ]
+  },
+  {
+    "iteration": 10,
+    "timestamp": 285.28,
+    "usage": {
+      "input_tokens": 34088,
+      "output_tokens": 105
+    },
+    "reasoning": "I can see the merge status area now says \"Merged\". Let me look for the merge commit details and the status area. Let me check for the merge event more carefully.",
+    "tools": [
+      {
+        "tool": "scroll",
+        "input": {
+          "direction": "down",
+          "amount": 500
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20900\nTitle: KAFKA-19845: 2/N Additional share consumers tests. by smjn \u00b7 Pull Request #20900 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20900\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> href=\"/AndrewJSchofield\" \"AndrewJSchofield\"\n[24] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[25] <a> href=\"/smjn/kafka/tree/KAFKA-19845-2\" \"smjn:KAFKA-19845-2\"\n[26] <button> type=button\n[27] <a> role=tab href=\"/apache/kafka/pull/20900\" \"Conversation1\n\u00a0(1)\"\n[28] <a> role=tab href=\"/apache/kafka/pull/20900/commits\" \"Commits3\n\u00a0(3)\"\n[29] <a> role=tab href=\"/apache/kafka/pull/20900/checks\" \"Checks19\n\u00a0(19)\"\n[30] <a> role=tab href=\""
+      }
+    ]
+  },
+  {
+    "iteration": 11,
+    "timestamp": 333.27,
+    "usage": {
+      "input_tokens": 39346,
+      "output_tokens": 164
+    },
+    "reasoning": "I can see the PR is merged. Let me look at the merge area more carefully. The page seems to have a \"Merged\" badge at the top and the merge commit 81d86e5. Let me now look at the commit status for the final commit (871eadc) to get check details. Let me navigate to the commit status page.",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://github.com/apache/kafka/pull/20900/commits/871eadca62ffde4efac6ae4f03a067155869e486"
+        },
+        "result": "URL: https://github.com/apache/kafka/pull/20900/commits/871eadca62ffde4efac6ae4f03a067155869e486\nTitle: KAFKA-19845: 2/N Additional share consumers tests. by smjn \u00b7 Pull Request #20900 \u00b7 apache/kafka \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fpull%2F20900%2Fcomm\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <details> \"New issue\"\n[24] <summary> role=button \"New issue\"\n[25] <a> href=\"/AndrewJSchofield\" \"AndrewJSchofield\"\n[26] <a> href=\"/apache/kafka/tree/trunk\" \"apache:trunk\"\n[27] <a> href=\"/smjn/kafka/tree/KAFKA-19845-2\" \"smjn:KAFKA-19845-2\"\n[28] <clipboard-copy> role=button value=\"smjn:KAFKA-19845-2\" aria-label=\"Copy\"\n[29] <a> href=\"/apache/kafka/pull/20900\" \"Conversation 1\"\n[30] <a> h"
+      }
+    ]
+  },
+  {
+    "iteration": 12,
+    "timestamp": 376.37,
+    "usage": {
+      "input_tokens": 43331,
+      "output_tokens": 117
+    },
+    "reasoning": "Let me now check the commit status directly through the GitHub API-style URL to see the check statuses for the final commit (871eadc).",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://github.com/apache/kafka/commit/871eadca62ffde4efac6ae4f03a067155869e486/status"
+        },
+        "result": "URL: https://github.com/apache/kafka/commit/871eadca62ffde4efac6ae4f03a067155869e486/status\nTitle: Page not found \u00b7 GitHub \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fcommit%2F871eadca62\" \"Sign in\"\n[10] <input> type=text name=\"login\"\n[11] <input> type=password name=\"password\"\n[12] <a> href=\"/password_reset\" \"Forgot password?\"\n[13] <input> type=submit name=\"commit\" value=\"Sign in\"\n[14] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fcommit%2F871eadca62\" \"or continue with other methods\"\n[15] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2Fapache%2Fkafka%2Fc\" \"Sign up\"\n[16] <button> type=button\n[17] <input> type=text name=\"q\"\n[18] <button> type=submit \"Search\"\n[19] <a> href=\"https://support.github.com?tags=dotcom-404\" \"Contact Support\"\n[20] <a> href=\"https://githubstatus.com\" \"GitHub Status\"\n[21] <a> href=\"https://twitter.com/githubstatus\" \"@githubstatus\"\n[22] <a> href=\"/\" aria-label=\"Go to GitHub homepage\"\n[23] <a> href=\"https://github.com/newsletter\" \"Subscribe\"\n[24] <a> href=\"/features\" \"Features\"\n[25] <a> href=\"/enterprise\" \"Enterprise\"\n[26] <a> href=\"/features/copilot\" \"Copilot\"\n[27] <a> href=\"/features/ai\" \"AI\"\n[28] <a> href=\"/security\" \"Security\"\n[29] <a> href=\"/pricing\" \"Pricing\"\n[30] <a> href=\"/team\" \"Team\"\n[31] <a> href=\"https://resources.github.com\" \"Resources\"\n[32] <a> href=\"https://github.com/github/roadmap\" \"Roadmap\"\n[33] <a> href=\"/resources/articles/devops-tools-comparison\" \"Compare GitHub\""
+      }
+    ]
+  },
+  {
+    "iteration": 13,
+    "timestamp": 387.8,
+    "usage": {
+      "input_tokens": 45475,
+      "output_tokens": 112
+    },
+    "reasoning": "That URL doesn't work. Let me go back to the PR and look at the status checks summary more carefully by using the GitHub API.",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://github.com/apache/kafka/commit/871eadca62ffde4efac6ae4f03a067155869e486"
+        },
+        "result": "URL: https://github.com/apache/kafka/commit/871eadca62ffde4efac6ae4f03a067155869e486\nTitle: add metric validation \u00b7 apache/kafka@871eadc \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"#start-of-content\" \"Skip to content\"\n[1] <a> href=\"/\" aria-label=\"Homepage\"\n[2] <button> type=button \"Platform\"\n[3] <button> type=button \"Solutions\"\n[4] <button> type=button \"Resources\"\n[5] <button> type=button \"Open Source\"\n[6] <button> type=button \"Enterprise\"\n[7] <a> href=\"https://github.com/pricing\" \"Pricing\"\n[8] <button> type=button placeholder=\"Search or jump to...\" \"Search or jump to...\" aria-label=\"Search or jump to\u2026\"\n[9] <a> href=\"/login?return_to=https%3A%2F%2Fgithub.com%2Fapache%2Fkafka%2Fcommit%2F871eadca62\" \"Sign in\"\n[10] <a> href=\"/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F\" \"Sign up\"\n[11] <button> type=button\n[12] <a> href=\"/apache\" \"apache\"\n[13] <a> href=\"/apache/kafka\" \"kafka\"\n[14] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Notifications\" aria-label=\"You must be signed in to change notification settings\"\n[15] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Fork 15k\"\n[16] <a> href=\"/login?return_to=%2Fapache%2Fkafka\" \"Star 32.1k\" aria-label=\"You must be signed in to star a repository\"\n[17] <a> href=\"/apache/kafka\" \"Code\"\n[18] <a> href=\"/apache/kafka/pulls\" \"Pull requests\n306\"\n[19] <a> href=\"/apache/kafka/actions\" \"Actions\"\n[20] <a> href=\"/apache/kafka/projects\" \"Projects\"\n[21] <a> href=\"/apache/kafka/security\" \"Security\"\n[22] <a> href=\"/apache/kafka/pulse\" \"Insights\"\n[23] <a> type=button href=\"/apache/kafka/tree/871eadca62ffde4efac6ae4f03a067155869e486\" \"Browse files\"\n[24] <a> href=\"/smjn\"\n[25] <a> href=\"/apache/kafka/commits?author=smjn\" \"smjn\" aria-label=\"commits by smjn\"\n[26] <button> type=button \"22 / 23\" aria-label=\"Status checks: success\"\n[27] <a> href=\"/apache/kafka/commit/b785a50f27eb172936dd40c5ca45b007c6e1a6dd\" \"b785a50\"\n[28] <button> type=button\n[29] <input> type=text placeholder=\"Filter files\u2026\" aria-"
+      }
+    ]
+  },
+  {
+    "iteration": 14,
+    "timestamp": 418.35,
+    "usage": {
+      "input_tokens": 48608,
+      "output_tokens": 88
+    },
+    "reasoning": "I can see important information: \"22 / 23\" status checks with a \"success\" label. Let me click on that status check button to see details.",
+    "tools": [
+      {
+        "tool": "click",
+        "input": {
+          "element_id": 26
+        },
+        "result": "URL: https://github.com/apache/kafka/commit/871eadca62ffde4efac6ae4f03a067155869e486\nTitle: add metric validation \u00b7 apache/kafka@871eadc \u00b7 GitHub\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <span>\n[1] <button> type=button\n[2] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[3] <a> href=\"/apache/kafka/actions/runs/19428982009/job/55583089401\" \"Details\"\n[4] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[5] <a> href=\"https://develocity.apache.org/s/h6uyxsqdpjtc2\" \"Details\"\n[6] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[7] <a> href=\"https://develocity.apache.org/s/5aheom6ocqz7a\" \"Details\"\n[8] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[9] <a> href=\"https://develocity.apache.org/s/l7hxkmnikfnla\" \"Details\"\n[10] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[11] <a> href=\"https://develocity.apache.org/s/v4cbyvsoa2av4\" \"Details\"\n[12] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[13] <a> href=\"https://develocity.apache.org/s/3vi6kxilkr3ti\" \"Details\"\n[14] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[15] <a> href=\"https://develocity.apache.org/s/izjtuwhyscdwq\" \"Details\"\n[16] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[17] <a> href=\"/apache/kafka/actions/runs/19428982009/job/55583089427\" \"Details\"\n[18] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[19] <a> href=\"https://github.com/apache/kafka/actions/runs/19459920645\" \"Details\"\n[20] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[21] <a> href=\"/apache/kafka/actions/runs/19459912336/job/55681457312\" \"Details\"\n[22] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[23] <a> href=\"/apache/kafka/actions/runs/19459899980/job/55681419458\" \"Details\"\n[24] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[25] <a> href=\"/apache/kafka/actions/runs/19428982170/job/55585897838\" \"Details\"\n[26] <a> href=\"/apps/github-actions\" aria-label=\"Avatar\"\n[27] <a> href=\"/apache/kafka/actions/runs/19428982170/job/55585897888\" \"Details\"\n[28] <a> href=\"/apps/github-actions\" aria"
+      }
+    ]
+  },
+  {
+    "iteration": 15,
+    "timestamp": 434.54,
+    "usage": {
+      "input_tokens": 52815,
+      "output_tokens": 177
+    },
+    "reasoning": "Excellent! Now I have all the check details. Let me summarize:\n\n- **All checks have passed**: 22 successful and 1 skipped\n- The aria-label says \"22 successful and 1 skipped checks\"\n\nThe detailed list shows all 22 checks passed and 1 (CI / build / Update Test Catalog) was skipped. No failed checks.\n\nNow let me navigate to the Jira ticket. The PR title references KAFKA-19845.",
+    "tools": [
+      {
+        "tool": "navigate",
+        "input": {
+          "url": "https://issues.apache.org/jira/browse/KAFKA-19845"
+        },
+        "result": "URL: https://issues.apache.org/jira/browse/KAFKA-19845\nTitle: [KAFKA-19845] Share consumer changes to support renew ack. - ASF Jira\nTabs open: 1\n\n=== Interactive Elements ===\n[0] <a> href=\"/jira/login.jsp?os_destination=%2Fbrowse%2FKAFKA-19845\" \"Log in\"\n[1] <a> href=\"#main\" \"Skip to main content\"\n[2] <a> href=\"#sidebar\" \"Skip to sidebar\"\n[3] <button> role=button href=\"#app-switcher\" \"Linked Applications\"\n[4] <a> href=\"https://issues.apache.org/jira/secure/MyJiraHome.jspa\" aria-label=\"Go to home page\"\n[5] <a> href=\"/jira/secure/Dashboard.jspa\" \"Dashboards\"\n[6] <a> href=\"/jira/browse/KAFKA\" \"Projects\"\n[7] <a> href=\"/jira/issues/\" \"Issues\"\n[8] <input> type=text name=\"searchString\" placeholder=\"Search\"\n[9] <a> href=\"https://docs.atlassian.com/jira/jcore-docs-0820/\" \"Help\"\n[10] <a> href=\"/jira/login.jsp?os_destination=%2Fbrowse%2FKAFKA-19845\" \"Log In\"\n[11] <a> href=\"https://selfserve.apache.org/jira-account.html\" \"Self serve sign up page\"\n[12] <a> href=\"https://apache.org/security/#reporting-a-vulnerability\" \"privately\"\n[13] <button>\n[14] <a> href=\"/jira/browse/KAFKA\" \"Kafka\"\n[15] <a> href=\"/jira/browse/KAFKA-19742\" \"KAFKA-19742 Acquisition lock timeout renewal in share consumer explicit mode\"\n[16] <a> href=\"/jira/browse/KAFKA-19845\" \"KAFKA-19845\"\n[17] <a> href=\"#\" \"Export\"\n[18] <button> aria-label=\"Details\"\n[19] <a> href=\"/jira/issues/?jql=project+%3D+KAFKA+AND+fixVersion+%3D+4.2.0\" \"4.2.0\"\n[20] <button> aria-label=\"Issue Links\"\n[21] <a> href=\"/jira/browse/KAFKA-19842\" \"KAFKA-19842\"\n[22] <a> href=\"https://github.com/apache/kafka/pull/20817\" \"GitHub Pull Request #20817\"\n[23] <a> href=\"https://github.com/apache/kafka/pull/20838\" \"GitHub Pull Request #20838\"\n[24] <a> href=\"https://github.com/apache/kafka/pull/20900\" \"GitHub Pull Request #20900\"\n[25] <button> aria-label=\"Activity\"\n[26] <a> href=\"/jira/browse/KAFKA-19845?page=com.atlassian.jira.plugin.system.issuetabpanels:al\" \"All\"\n[27] <a> \"Comments\"\n[28] <a> href=\"/jira/browse/KAFKA-19845?page=com.atlassian.jira.plugin.sy"
+      }
+    ]
+  },
+  {
+    "iteration": 16,
+    "timestamp": 443.98,
+    "usage": {
+      "input_tokens": 54946,
+      "output_tokens": 78
+    },
+    "reasoning": "I can see the Jira ticket page. Now let me take a screenshot of it.",
+    "tools": [
+      {
+        "tool": "screenshot",
+        "input": {
+          "filename": "jira_ticket_screenshot.png"
+        },
+        "result": "Screenshot saved to output/pr_ci_status_and_jira_scrape/samples/https:__github.com_apache_kafka_pull_20900/jira_ticket_screenshot.png"
+      }
+    ]
+  },
+  {
+    "iteration": 17,
+    "timestamp": 448.52,
+    "usage": {
+      "input_tokens": 56620,
+      "output_tokens": 892
+    },
+    "reasoning": "Now I have all the information I need. Let me compile my findings and complete the task.\n\nHere's what I found:\n\n1. **PR Page**: PR #20900 \"KAFKA-19845: 2/N Additional share consumers tests.\" - Status: **Merged** by AndrewJSchofield on Nov 18, 2025\n\n2. **CI Check Status**: All checks passed. 22 successful, 1 skipped (CI / build / Update Test Catalog). The detailed checks are:\n   - All CI/build checks passed (Configure Workflow, Compile and Check, Load Test Catalog, JUnit tests Java 17, JUnit tests Java 17 (flaky), JUnit tests Java 17 (new), JUnit tests Java 25, JUnit tests Java 25 (flaky), JUnit tests Java 25 (new), Collate Test Catalog, CI checks completed)\n   - Pull Request workflows passed (Labeler, Add triage label)\n   - Pull Request Reviewed checks passed\n   - Gradle Build Scan checks passed\n   - PR Linter passed\n   - Only CI / build / Update Test Catalog was skipped\n\n3. **Merged despite failed checks**: No - all checks passed (22 successful, 1 skipped, 0 failed)\n\n4. **Jira ticket**: KAFKA-19845 - \"Share consumer changes to support renew ack.\" - Status: RESOLVED, Resolution: Fixed",
+    "tools": [
+      {
+        "tool": "complete",
+        "input": {
+          "data": {
+            "pr_page_screenshot": "pr_page_screenshot.png",
+            "ci_check_status": "All checks passed. 22 successful, 1 skipped, 0 failed. Successful checks: Pull Request / Add triage label, Pull Request / Labeler, Gradle Build Scan (Java 17, Java 17/Flaky, Java 17/New, Java 25, Java 25/Flaky, Java 25/New), PR Linter, Pull Request Reviewed / Save PR Number (pull_request), Pull Request Reviewed / Save PR Number (pull_request_review), CI / build / CI checks completed, CI / build / Collate Test Catalog, CI / build / Compile and Check (Merge Ref), CI / build / Configure Workflow, CI / build / JUnit tests Java 17, CI / build / JUnit tests Java 17 (flaky), CI / build / JUnit tests Java 17 (new), CI / build / JUnit tests Java 25, CI / build / JUnit tests Java 25 (flaky), CI / build / JUnit tests Java 25 (new), CI / build / Load Test Catalog. Skipped: CI / build / Update Test Catalog. Overall CI status: Success. No required checks failed.",
+            "merged_despite_failed_checks": "No. The PR was merged with all checks passing (22 successful, 1 skipped, 0 failed). No required checks failed. The CI workflow overall status was 'Success'.",
+            "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+          },
+          "notes": "PR #20900 references Jira ticket KAFKA-19845 in its title. The PR was merged by AndrewJSchofield on Nov 18, 2025 into apache:trunk. All 22 CI checks passed successfully, with only 1 check (CI / build / Update Test Catalog) being skipped. The Jira ticket KAFKA-19845 is titled \"Share consumer changes to support renew ack.\" with status RESOLVED (Fixed), assigned to Andrew Schofield, Fix Version 4.2.0."
+        },
+        "result": "TASK COMPLETE"
+      }
+    ]
+  }
+]

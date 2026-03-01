@@ -1,0 +1,9 @@
+{
+  "model": "claude-opus-4-6",
+  "total_input_tokens": 321649,
+  "total_output_tokens": 1980,
+  "total_tokens": 323629,
+  "api_calls": 13,
+  "iterations": 13,
+  "elapsed_sec": 559.74
+}

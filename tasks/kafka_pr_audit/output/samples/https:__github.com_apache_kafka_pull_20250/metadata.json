@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/20250",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/20250"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 26 checks passed. The PR had 20 workflow runs comprising 26 total check jobs, all successful. Key CI checks include: Pull Request (Labeler, Add triage label) - passed; CI on pull_request (build/Configure Workflow, build/Load Test Catalog, build/Compile and Check (Merge Ref), build/JUnit tests Java 23, build/JUnit tests Java 23 (flaky), build/JUnit tests Java 23 (new), build/JUnit tests Java 17, build/JUnit tests Java 17 (flaky), build/JUnit tests Java 17 (new), build/Collate Test Catalog, build/CI checks completed, build/Update Test Catalog) - all passed; Pull Request Reviewed (multiple runs) - all passed; Pull Request Labeled - passed. No failed checks. All required checks were met.",
+    "merged_despite_failed_checks": "No. The PR was merged with all 26 checks passing. There were no failed required checks. lucasbru merged the PR on Jul 29, 2025 after approving the changes.",
+    "jira_ticket_screenshot": "N/A - No KAFKA-XXXXX Jira ticket reference found in the PR title or description. The PR title starts with 'MINOR:' which is the Apache Kafka convention for changes that do not have an associated Jira ticket."
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png"
+  ]
+}

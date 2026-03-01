@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/17867",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/17867"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "The Checks tab shows 0 checks with the message 'Workflow runs completed with no jobs'. No CI/check runs are recorded on this PR \u2014 no passed checks, no failed checks, and no required checks are displayed. The PR was approved by reviewer cmccabe with 'LGTM', and the author CalvinConfluent indicated they had a 'green build' (likely verified externally). The PR was merged by cmccabe on Nov 26, 2024.",
+    "merged_despite_failed_checks": "No. There are no failed checks recorded. The PR has 0 checks on the Checks tab (workflow runs completed with no jobs). The PR was merged after reviewer approval without any visible CI check failures on GitHub.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

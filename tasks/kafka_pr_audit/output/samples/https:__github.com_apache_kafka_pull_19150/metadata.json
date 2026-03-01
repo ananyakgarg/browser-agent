@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/19150",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/19150"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "1 check failed: 'continuous-integration/jenkins/pr-merge' \u2014 This commit failed tests or other validations (status: failure). No GitHub Actions workflow checks ran (Checks tab shows 0 checks). The failed Jenkins check was the only CI check on the PR. The test failures (TransactionsWithTieredStoreTest, ConsumerBounceTest, PurgeRepartitionTopicIntegrationTest, CoordinatorTest) were determined to be unrelated to the PR changes. The PR had the 'ci-approved' label added by reviewer junrao, and junrao approved the code changes.",
+    "merged_despite_failed_checks": "Yes. The PR was merged by junrao on Apr 1, 2025 despite the 'continuous-integration/jenkins/pr-merge' check failing. The reviewer (junrao) asked if the test failures were related, and the author (jeqo) confirmed they were unrelated and had tested all failing tests locally. junrao then proceeded to merge the PR with the comment '@jeqo : Thanks for the reply. Merging this PR.'",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

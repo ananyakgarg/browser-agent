@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/20100",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/20100"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "2 checks passed, 0 failed. (1) 'Save PR Number' - Passed \u2713 (GitHub Actions). (2) 'PR Linter' - Passed \u2713 with message 'PR format looks good!' (GitHub Actions). All checks passed successfully; no required checks failed.",
+    "merged_despite_failed_checks": "No. The PR was merged with all 2 CI checks passing. No failed or required checks were bypassed.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

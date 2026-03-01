@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/20200",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/20200"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 23 checks passed. CI workflow status: Success (total duration 1h 59m 16s). Detailed check results: Pull Request workflow (pull_request_target) - Labeler: passed, Add triage label: passed. CI workflow (pull_request) - build/Configure Workflow: passed (2s), build/Compile and Check (Merge Ref): passed (7m 41s), build/Load Test Catalog: passed (13s), build/JUnit tests Java 17: passed (1h 50m), build/JUnit tests Java 17 (new): passed (9m 12s), build/JUnit tests Java 17 (flaky): passed (10m 34s), build/JUnit tests Java 23: passed (1h 47m), build/JUnit tests Java 23 (new): passed (8m 51s), build/JUnit tests Java 23 (flaky): passed (9m 53s), build/Collate Test Catalog: passed (19s), build/CI checks completed: passed (3s), build/Update Test Catalog: passed (0s). Pull Request Reviewed (pull_request): passed. Pull Request Reviewed (pull_request_review): passed. No failed checks. All required checks were met.",
+    "merged_despite_failed_checks": "No. The PR was merged with all 23 checks passing successfully. No failed required checks were present at the time of merge. frankvicky approved and merged commit c162d2e into apache:trunk on Jul 20, 2025.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

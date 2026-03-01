@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/19312",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/19312"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All checks failed. 1 failing check: 'continuous-integration/jenkins/pr-merge' \u2014 'This commit failed tests or other validations'. No GitHub Actions workflow checks ran (Checks tab shows 0 checks). The check was not marked as a required status check (the PR was still mergeable by a maintainer despite the failure).",
+    "merged_despite_failed_checks": "Yes. The PR was merged by mjsax on Mar 31, 2025, despite the 'continuous-integration/jenkins/pr-merge' check failing with 'This commit failed tests or other validations'. The merge was performed with 1 check failed, indicating the maintainer (mjsax) overrode or bypassed the failed CI check to merge the PR.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/19550",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/19550"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "23 of 24 checks passed. Failed check: 'PR Linter' \u2014 failed with message 'Pull Request is approved, but no Reviewers found in commit body'. Passed checks (23): build / Configure Workflow, Labeler, Save PR Number (x3), build / Load Test Catalog, Add triage label, build / Compile and Check (Merge Ref), build / JUnit tests Java 23 (flaky), build / JUnit tests Java 23 (new), build / JUnit tests Java 23, build / JUnit tests Java 17 (flaky), build / JUnit tests Java 17 (new), build / JUnit tests Java 17, build / Collate Test Catalog, build / CI checks completed, build / Update Test Catalog, Gradle Build Scan / Java 17, Gradle Build Scan / Java 17 / Flaky, Gradle Build Scan / Java 17 / New, Gradle Build Scan / Java 23, Gradle Build Scan / Java 23 / Flaky, Gradle Build Scan / Java 23 / New. The PR Linter failure is not a required/blocking check.",
+    "merged_despite_failed_checks": "Yes \u2014 the PR was merged by bbejeck despite the PR Linter check failing. However, the PR Linter is not a required check for merging in the apache/kafka repository, so no required checks were violated. The merge was legitimate with 23 of 24 checks passing; the only failure was the non-required PR Linter which flagged that no 'Reviewers' field was found in the commit body.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

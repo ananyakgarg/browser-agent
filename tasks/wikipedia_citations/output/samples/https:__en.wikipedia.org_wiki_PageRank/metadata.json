@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://en.wikipedia.org/wiki/PageRank",
+  "input_row": {
+    "article_url": "https://en.wikipedia.org/wiki/PageRank"
+  },
+  "extracted_data": {
+    "oldest_citation_claim": "In 1895, Edmund Landau suggested using it for determining the winner of a chess tournament.",
+    "citation_source_url": "No URL provided - bibliographic reference only",
+    "citation_year": "1895",
+    "source_status": "No online source available",
+    "claim_accuracy_rating": "unsupported",
+    "verification_notes": "The oldest citation on the PageRank Wikipedia page is reference [12] from 1895 by Edmund Landau titled 'Zur relativen Wertbemessung der Turnierresultate' (On the relative valuation of tournament results) published in a German mathematical journal. The citation supports the claim that Landau suggested using the eigenvalue problem for determining chess tournament winners in 1895. However, no URL link is provided in the Wikipedia citation - it is only a bibliographic reference to a 129-year-old German academic paper. Without access to the actual source document, the claim cannot be verified. The citation appears to be a proper academic reference format but the actual source content is not accessible online to confirm whether it accurately represents what Landau wrote about chess tournaments and eigenvalue problems."
+  },
+  "notes": "",
+  "screenshots": []
+}

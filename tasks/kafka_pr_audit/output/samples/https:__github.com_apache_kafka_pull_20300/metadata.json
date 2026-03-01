@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/20300",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/20300"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 14 checks passed (Status: Success). Two workflows ran on the latest commit (1b0c71d): (1) 'Pull Request' workflow (pull_request_target): Labeler - passed, Add triage label - passed. (2) 'CI' workflow (pull_request): Configure Workflow - passed (3s), Compile and Check (Merge Ref) - passed (6m 16s), Load Test Catalog - passed (17s), JUnit tests Java 17 - passed (1h 49m), JUnit tests Java 17 (new) - passed (7m 22s), JUnit tests Java 17 (flaky) - passed (8m 4s), JUnit tests Java 25 - passed (1h 52m), JUnit tests Java 25 (new) - passed (6m 54s), JUnit tests Java 25 (flaky) - passed (7m 56s), Collate Test Catalog - passed (18s), CI checks completed - passed (3s), Update Test Catalog - passed (0s). Total CI duration: 2h 3m 38s. No failed checks. No required checks failed.",
+    "merged_despite_failed_checks": "No. The PR has NOT been merged at all \u2014 it is still in 'Open' status. All CI checks on the latest commit passed successfully (overall Status: Success). There are no failed required checks. The PR is awaiting review and merge.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

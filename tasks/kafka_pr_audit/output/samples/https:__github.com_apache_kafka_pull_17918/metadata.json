@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/17918",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/17918"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "No CI checks were recorded for this PR. The Checks tab shows 'Checks 0' with 'Workflow runs completed with no jobs'. There are no passed, failed, or pending checks. The PR received an approval review from dajac (LGTM) and was merged by lianetm into apache:trunk on Nov 26, 2024.",
+    "merged_despite_failed_checks": "No. The PR was merged with zero CI checks recorded (no checks ran at all, so there were no failed required checks). It was merged based on reviewer approval (dajac approved) without any CI check results.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

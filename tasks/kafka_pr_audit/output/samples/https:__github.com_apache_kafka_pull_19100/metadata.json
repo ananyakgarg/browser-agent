@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/19100",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/19100"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 42 checks passed. The CI workflow status was 'Success'. Key checks included: Pull Request workflow (Labeler, Add triage label - all passed), CI workflow (Configure Workflow, Load Test Catalog, Compile and Check (Merge Ref), JUnit tests Java 23, JUnit tests Java 23 (new), JUnit tests Java 23 (flaky), JUnit tests Java 17, JUnit tests Java 17 (new), JUnit tests Java 17 (flaky), Collate Test Catalog, Update Test Catalog - all passed), and multiple Pull Request Reviewed workflows - all passed. No failed or pending checks were found.",
+    "merged_despite_failed_checks": "No. The PR was merged with all 42 checks passing. No failed required checks were present at the time of merge. The CI workflow completed with Status: Success.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}

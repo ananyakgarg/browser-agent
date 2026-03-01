@@ -1,0 +1,16 @@
+{
+  "sample_id": "https://en.wikipedia.org/wiki/Basel_III",
+  "input_row": {
+    "article_url": "https://en.wikipedia.org/wiki/Basel_III"
+  },
+  "extracted_data": {
+    "oldest_citation_claim": "The Basel III requirements were published by the Basel Committee on Banking Supervision in 2010",
+    "citation_source_url": "https://www.bis.org/press/p100912.pdf",
+    "citation_year": "2010",
+    "source_status": "active",
+    "claim_accuracy_rating": "accurate",
+    "verification_notes": "The source is a press release dated September 12, 2010, from the Bank for International Settlements titled 'Group of Governors and Heads of Supervision announces higher global minimum capital standards.' The press release confirms that on September 12, 2010, the Group of Governors and Heads of Supervision, the oversight body of the Basel Committee on Banking Supervision, announced a substantial strengthening of existing capital requirements and fully endorsed Basel III reforms. The document details the specific Basel III capital requirements including: raising minimum common equity from 2% to 4.5%, introducing a capital conservation buffer of 2.5%, and implementing countercyclical buffers. The source directly supports the Wikipedia claim that Basel III requirements were published by the Basel Committee on Banking Supervision in 2010. Both the PDF and HTML (.htm) versions of the source are accessible and functional."
+  },
+  "notes": "",
+  "screenshots": []
+}

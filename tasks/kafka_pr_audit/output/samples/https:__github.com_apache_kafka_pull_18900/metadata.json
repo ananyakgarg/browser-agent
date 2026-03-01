@@ -1,0 +1,17 @@
+{
+  "sample_id": "https://github.com/apache/kafka/pull/18900",
+  "input_row": {
+    "pr_url": "https://github.com/apache/kafka/pull/18900"
+  },
+  "extracted_data": {
+    "pr_page_screenshot": "pr_page_screenshot.png",
+    "ci_check_status": "All 9 checks passed. Passed checks: (1) build / Load Test Catalog, (2) Labeler, (3) Add triage label, (4) build / Compile and Check Java, (5) build / JUnit tests Java 23, (6) build / JUnit tests Java 17, (7) build / Update Test Catalog, (8) Gradle Build Scan / Java 17 - The build scan was successfully published, (9) Gradle Build Scan / Java 23 - The build scan was successfully published. No failed checks. All required checks were met.",
+    "merged_despite_failed_checks": "No. The PR was merged with all 9 checks passing. There were no failed required checks. chia7712 merged commit d23a617 into apache:trunk on Feb 24, 2025 after all checks passed successfully.",
+    "jira_ticket_screenshot": "jira_ticket_screenshot.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "pr_page_screenshot.png",
+    "jira_ticket_screenshot.png"
+  ]
+}
