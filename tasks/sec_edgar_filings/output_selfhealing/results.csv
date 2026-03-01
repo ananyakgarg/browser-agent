@@ -1,0 +1,5 @@
+sample_id,filing_date,filing_url,cik_number,company_full_name,screenshot_path
+Apple Inc,2025-10-31,https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/000032019325000079-index.htm,0000320193,Apple Inc.,output/sec_filing_scrape/samples/Apple Inc/apple_10k_filing.png
+JPMorgan Chase & Co,2026-02-13,https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/0001628280-26-008131-index.htm,0000019617,JPMORGAN CHASE & CO,output/sec_filing_scrape/samples/JPMorgan Chase & Co/JPMORGAN_CHASE_CO_10-K_filing.png
+Nvidia Corp,2026-02-25,https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/0001045810-26-000021-index.htm,0001045810,NVIDIA CORP,output/sec_filing_scrape/samples/Nvidia Corp/NVIDIA_CORP_10-K_filing.png
+Tesla Inc,2026-01-29,https://www.sec.gov/Archives/edgar/data/1318605/000162828026003952/0001628280-26-003952-index.htm,0001318605,"Tesla, Inc.",output/sec_filing_scrape/samples/Tesla Inc/Tesla_Inc_10-K_filing.png

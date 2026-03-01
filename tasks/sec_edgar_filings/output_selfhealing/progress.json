@@ -1,0 +1,18 @@
+{
+  "Apple Inc": {
+    "status": "completed",
+    "attempts": 1
+  },
+  "Tesla Inc": {
+    "status": "completed",
+    "attempts": 1
+  },
+  "JPMorgan Chase & Co": {
+    "status": "completed",
+    "attempts": 1
+  },
+  "Nvidia Corp": {
+    "status": "completed",
+    "attempts": 1
+  }
+}

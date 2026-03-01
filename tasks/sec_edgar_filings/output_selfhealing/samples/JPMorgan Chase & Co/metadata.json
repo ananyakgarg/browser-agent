@@ -1,0 +1,19 @@
+{
+  "sample_id": "JPMorgan Chase & Co",
+  "input_row": {
+    "company_name": "JPMorgan Chase & Co",
+    "filing_type": "10-K"
+  },
+  "extracted_data": {
+    "filing_date": "2026-02-13",
+    "filing_url": "https://www.sec.gov/Archives/edgar/data/19617/000162828026008131/0001628280-26-008131-index.htm",
+    "cik_number": "0000019617",
+    "company_full_name": "JPMORGAN CHASE & CO",
+    "screenshot_path": "output/sec_filing_scrape/samples/JPMorgan Chase & Co/JPMORGAN_CHASE_CO_10-K_filing.png"
+  },
+  "notes": "",
+  "screenshots": [
+    "JPMORGAN_CHASE_CO_10-K_filing.png"
+  ],
+  "playbook_used": true
+}

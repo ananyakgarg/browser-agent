@@ -1,0 +1,20 @@
+{
+  "sample_id": "Apple Inc",
+  "input_row": {
+    "company_name": "Apple Inc",
+    "filing_type": "10-K"
+  },
+  "extracted_data": {
+    "filing_date": "2025-10-31",
+    "filing_url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/000032019325000079-index.htm",
+    "cik_number": "0000320193",
+    "company_full_name": "Apple Inc.",
+    "screenshot_path": "output/sec_filing_scrape/samples/Apple Inc/apple_10k_filing.png",
+    "playbook": "1. Use http_request to fetch https://data.sec.gov/submissions/CIK{CIK_PADDED}.json with headers User-Agent: 'ResearchBot contact@example.com' - this is the EDGAR REST API that allows programmatic access without browser blocking. 2. Parse the JSON response: data['name'] gives company full name, data['cik'] gives CIK. 3. Search data['filings']['recent']['accessionNumber'] list for the target accession number (format: XXXXXXXXXX-YY-NNNNNN). 4. Use the index found to look up data['filings']['recent']['filingDate'][idx] for the filing date and data['filings']['recent']['form'][idx] to confirm form type. 5. Construct the filing URL as: https://www.sec.gov/Archives/edgar/data/{CIK_NO_LEADING_ZEROS}/{ACCESSION_NO_DASHES}/{ACCESSION_WITH_DASHES}-index.htm. 6. For screenshots: SEC.gov blocks browser automation with 403 errors. Navigate to the page via browser - if blocked, take screenshot of the block page and note data was extracted via API. The data.sec.gov API (not www.sec.gov) works reliably for data extraction. Key gotcha: the CIK in the JSON URL must be zero-padded to 10 digits (CIK0000320193.json), but in the filing URL path use the non-padded numeric form (320193)."
+  },
+  "notes": "",
+  "screenshots": [
+    "apple_10k_filing.png"
+  ],
+  "playbook_used": false
+}
