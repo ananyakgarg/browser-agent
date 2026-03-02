@@ -1,0 +1,5 @@
+repo_url,code_string
+https://github.com/numpy/numpy,"def linspace(start stop num"
+https://github.com/numpy/numpy,"def percentile(a q axis"
+https://github.com/numpy/numpy,"def corrcoef(x y rowvar"
+https://github.com/pandas-dev/pandas,"def _cython_agg_general"

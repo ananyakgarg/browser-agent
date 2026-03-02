@@ -1,0 +1,9 @@
+repo_url,code_string
+https://github.com/pandas-dev/pandas,"def rolling_mean"
+https://github.com/scipy/scipy,"def minimize"
+https://github.com/numpy/numpy,"def fft"
+https://github.com/scikit-learn/scikit-learn,"def fit_predict"
+https://github.com/pytorch/pytorch,"def cross_entropy"
+https://github.com/apache/kafka,"def sendProducerData"
+https://github.com/pandas-dev/pandas,"def _get_merge_result"
+https://github.com/numpy/numpy,"def solve"
