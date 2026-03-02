@@ -414,13 +414,23 @@ _SAVE_SITE_WORKAROUND_SCHEMA = {
             "workaround": {
                 "type": "object",
                 "description": (
-                    "Key-value pairs describing the workaround. Common keys: "
+                    "Legacy workaround format. Common keys: "
                     "blocks_headless (bool), needs_stealth (bool), needs_headers (object), "
-                    "rate_limited (bool), needs_auth (bool), workaround (string description)"
+                    "rate_limited (bool), needs_auth (bool), workaround (string description). "
+                    "This gets converted into a versioned strategy rule pack."
+                ),
+            },
+            "rule_pack": {
+                "type": "object",
+                "description": (
+                    "Preferred format. Versioned strategy rule pack with keys: "
+                    "preconditions(domain/task_types/error_signatures), actions "
+                    "(ordered tool steps), guardrails(max_attempts/timeout_sec/abort_conditions), "
+                    "metadata(version/confidence/sample_count/notes)."
                 ),
             },
         },
-        "required": ["domain", "workaround"],
+        "required": [],
     },
 }
 
@@ -642,22 +652,35 @@ class BrowserToolProvider(ToolProvider):
         """Auto-apply known workarounds from site memory before navigation."""
         applied = []
         try:
-            from urllib.parse import urlparse
-            domain = urlparse(url).netloc
-            for d in [domain, ".".join(domain.split(".")[-2:])]:
-                mem = _site_memory.get(d)
-                if not mem:
+            actions, rule = _site_memory.get_auto_actions_for_url(url)
+            for action in actions:
+                if action.get("tool") != "configure_browser":
                     continue
-                if mem.get("needs_stealth"):
+                payload = action.get("input", {})
+                action_name = payload.get("action")
+                value = payload.get("value", "")
+
+                if action_name == "enable_stealth":
                     await self.context.add_init_script(_STEALTH_SCRIPT)
                     applied.append("stealth mode")
-                if mem.get("needs_headers"):
-                    headers = mem["needs_headers"]
-                    if isinstance(headers, dict):
+                elif action_name == "set_headers":
+                    headers = value
+                    if isinstance(headers, str):
+                        try:
+                            headers = json.loads(headers)
+                        except json.JSONDecodeError:
+                            headers = {}
+                    if isinstance(headers, dict) and headers:
                         await self.context.set_extra_http_headers(headers)
                         applied.append(f"custom headers ({list(headers.keys())})")
-                if applied:
-                    break  # applied from first matching domain
+                elif action_name == "set_user_agent" and value:
+                    await self.context.add_init_script(
+                        f"Object.defineProperty(navigator, 'userAgent', {{get: () => '{value}'}});"
+                    )
+                    applied.append("user-agent override")
+
+            if rule and applied:
+                applied.append(f"rule={rule.get('rule_id')}")
         except Exception as e:
             logger.debug(f"Auto-apply workarounds error: {e}")
         return applied
@@ -1003,11 +1026,22 @@ class BrowserToolProvider(ToolProvider):
         return f"Unknown action: {action}"
 
     async def _handle_save_site_workaround(self, tool_input: dict[str, Any]) -> str:
-        domain = tool_input["domain"]
-        workaround = tool_input["workaround"]
         try:
-            _site_memory.save_workaround(domain, workaround)
-            return f"Workaround saved for {domain}. Future agents will auto-apply this."
+            rule_pack = tool_input.get("rule_pack")
+            if isinstance(rule_pack, dict):
+                rule_id = _site_memory.save_rule(rule_pack)
+                return f"Strategy rule pack saved as {rule_id}. Future agents will auto-apply matching actions."
+
+            domain = tool_input.get("domain")
+            workaround = tool_input.get("workaround")
+            if not domain or not isinstance(workaround, dict):
+                return "Error: provide either rule_pack OR both domain and workaround."
+
+            rule_id = _site_memory.save_workaround(domain, workaround)
+            return (
+                f"Workaround saved for {domain} as rule {rule_id}. "
+                f"Future agents will auto-apply this strategy."
+            )
         except Exception as e:
             return f"Failed to save workaround: {e}"
 
