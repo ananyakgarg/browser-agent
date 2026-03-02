@@ -7,7 +7,164 @@ import logging
 from pathlib import Path
 from typing import Any
 
+import anthropic
+
+from distill import build_trace_text
+
 logger = logging.getLogger(__name__)
+
+JUDGE_MODEL = "claude-sonnet-4-6"
+
+JUDGE_SYSTEM = """\
+You are a judge evaluating a browser automation agent's execution trace and output.
+
+You will receive:
+1. The original task instructions the agent was given
+2. The agent's full execution trace (every tool call, result, and reasoning)
+3. The agent's final output data (the fields it extracted)
+4. The list of required output columns
+
+Evaluate the agent on these 4 dimensions. For EACH dimension, write 1-2 sentences \
+of concrete reasoning BEFORE giving a score (1-10).
+
+**Correctness** (weight: 40%): Did the agent successfully complete the task as \
+described in the instructions? Compare what was asked to what was delivered. \
+Did it accomplish the actual goal, or did it go off track, skip steps, or \
+produce results that don't satisfy the task requirements?
+
+**Completeness** (weight: 25%): Are all required fields filled with meaningful data? \
+Empty strings, "N/A", "unknown", or placeholder values count against completeness.
+
+**Methodology** (weight: 20%): Did the agent take a reasonable path to the answer? \
+Did it recover well from failures? Did it verify findings before completing? \
+Excessive loops or brute-force approaches score lower.
+
+**Evidence quality** (weight: 15%): Are the screenshots, diffs, and explanations \
+substantive? Could a human reviewer verify the conclusion from the evidence provided? \
+Vague explanations or missing evidence score lower.
+
+After scoring all dimensions, write an overall assessment in `overall_reasoning` \
+(2-3 sentences) and compute `overall_score` (0-100) using the weights above: \
+overall_score = correctness*4 + completeness*2.5 + methodology*2 + evidence*1.5
+
+You MUST include all 6 fields in the judgment tool call: correctness, completeness, \
+methodology, evidence, overall_reasoning, and overall_score.\
+"""
+
+JUDGE_TOOL = {
+    "name": "judgment",
+    "description": "Submit the structured evaluation of the agent's work.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "correctness": {
+                "type": "object",
+                "properties": {
+                    "reasoning": {"type": "string"},
+                    "score": {"type": "integer", "minimum": 1, "maximum": 10},
+                },
+                "required": ["reasoning", "score"],
+            },
+            "completeness": {
+                "type": "object",
+                "properties": {
+                    "reasoning": {"type": "string"},
+                    "score": {"type": "integer", "minimum": 1, "maximum": 10},
+                },
+                "required": ["reasoning", "score"],
+            },
+            "methodology": {
+                "type": "object",
+                "properties": {
+                    "reasoning": {"type": "string"},
+                    "score": {"type": "integer", "minimum": 1, "maximum": 10},
+                },
+                "required": ["reasoning", "score"],
+            },
+            "evidence": {
+                "type": "object",
+                "properties": {
+                    "reasoning": {"type": "string"},
+                    "score": {"type": "integer", "minimum": 1, "maximum": 10},
+                },
+                "required": ["reasoning", "score"],
+            },
+            "overall_reasoning": {"type": "string"},
+            "overall_score": {"type": "integer", "minimum": 0, "maximum": 100},
+        },
+        "required": [
+            "correctness", "completeness", "methodology",
+            "evidence", "overall_reasoning", "overall_score",
+        ],
+    },
+}
+
+
+def llm_judge(
+    trace_path: Path,
+    audit_path: Path,
+    result_data: dict[str, Any] | None,
+    csv_columns: list[str],
+    task_instructions: str,
+) -> dict[str, Any]:
+    """Score a pioneer trace using an LLM that reasons about output quality.
+
+    Falls back to score_trace() if the LLM call fails.
+    """
+    if result_data is None:
+        # Nothing to judge — use math scorer
+        return score_trace(trace_path, audit_path, result_data, csv_columns)
+
+    trace_text = build_trace_text(trace_path)
+
+    user_parts = [
+        f"## Task Instructions\n{task_instructions}",
+        f"## Execution Trace\n{trace_text}",
+        f"## Final Output Data\n{json.dumps(result_data, indent=2, default=str)}",
+        f"## Required Output Columns\n{json.dumps(csv_columns)}",
+    ]
+    user_msg = "\n\n".join(user_parts)
+
+    try:
+        client = anthropic.Anthropic(max_retries=3)
+        response = client.messages.create(
+            model=JUDGE_MODEL,
+            max_tokens=4096,
+            system=JUDGE_SYSTEM,
+            tools=[JUDGE_TOOL],
+            tool_choice={"type": "tool", "name": "judgment"},
+            messages=[{"role": "user", "content": user_msg}],
+        )
+
+        if response.stop_reason == "max_tokens":
+            raise RuntimeError("Judge response truncated (max_tokens)")
+
+        for block in response.content:
+            if block.type == "tool_use" and block.name == "judgment":
+                judgment = block.input
+                logger.debug(f"Raw LLM judgment keys: {list(judgment.keys())}")
+                if "overall_score" not in judgment:
+                    logger.warning(
+                        f"LLM judge missing 'overall_score'. Keys: {list(judgment.keys())}. "
+                        f"Raw: {json.dumps(judgment, indent=2)[:500]}"
+                    )
+                    raise KeyError("overall_score")
+                # Add metadata from audit
+                audit = json.loads(audit_path.read_text()) if audit_path.exists() else {}
+                judgment["total_tokens"] = audit.get("total_tokens", 0)
+                judgment["elapsed_sec"] = audit.get("elapsed_sec", 0)
+                judgment["iterations"] = len(
+                    json.loads(trace_path.read_text()) if trace_path.exists() else []
+                )
+                judgment["completed"] = True
+                judgment["score"] = judgment["overall_score"]
+                return judgment
+
+        logger.warning("LLM judge returned no tool use, falling back to math scorer")
+    except Exception as e:
+        logger.warning(f"LLM judge failed ({e}), falling back to math scorer")
+
+    return score_trace(trace_path, audit_path, result_data, csv_columns)
 
 
 def score_trace(
@@ -113,12 +270,29 @@ def format_judgment(candidates: list[dict[str, Any]], winner_idx: int) -> str:
     for i, c in enumerate(candidates):
         s = c["score"]
         marker = " << WINNER" if i == winner_idx else ""
-        lines.append(
-            f"  Pioneer {c['pioneer_id']}: score={s['score']}/100 "
-            f"completed={s['completed']} fields={s.get('field_coverage', 0):.0%} "
-            f"iterations={s['iterations']} loops={s['loop_nudges']}"
-            f"{marker}"
-        )
+
+        # Handle both LLM judgment and math score formats
+        if "overall_reasoning" in s:
+            # LLM judge format
+            dims = []
+            for dim in ("correctness", "completeness", "methodology", "evidence"):
+                if dim in s:
+                    dims.append(f"{dim}={s[dim]['score']}/10")
+            lines.append(
+                f"  Pioneer {c['pioneer_id']}: score={s['score']}/100 "
+                f"{' '.join(dims)} iterations={s.get('iterations', '?')}"
+                f"{marker}"
+            )
+            if marker:
+                lines.append(f"    Reasoning: {s['overall_reasoning']}")
+        else:
+            # Math score fallback format
+            lines.append(
+                f"  Pioneer {c['pioneer_id']}: score={s['score']}/100 "
+                f"completed={s['completed']} fields={s.get('field_coverage', 0):.0%} "
+                f"iterations={s['iterations']} loops={s['loop_nudges']}"
+                f"{marker}"
+            )
 
     winner = candidates[winner_idx]
     lines.append(f"\nWinner: Pioneer {winner['pioneer_id']} (score {winner['score']['score']}/100)")
