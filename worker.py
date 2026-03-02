@@ -159,6 +159,8 @@ async def run_worker(
     pioneer_mode: bool = False,
     playbook: str | None = None,
     system_prompt_override: str | None = None,
+    skill_prompt_fragments: str | None = None,
+    tool_allowlist: set[str] | None = None,
 ) -> dict[str, Any]:
     """
     Run the LLM agent loop for a single sample.
@@ -175,8 +177,10 @@ async def run_worker(
     COMPACTION_BETA = "compact-2026-01-12"
     COMPACTION_TRIGGER_TOKENS = 50_000
 
-    # Build system prompt — augment for pioneer mode
+    # Build system prompt — augment with skill fragments and/or pioneer mode
     system_prompt = system_prompt_override or SYSTEM_PROMPT
+    if skill_prompt_fragments:
+        system_prompt += "\n\n" + skill_prompt_fragments
     if pioneer_mode:
         system_prompt += PIONEER_ADDENDUM
 
@@ -184,7 +188,11 @@ async def run_worker(
     if playbook:
         instructions = FOLLOWER_PREAMBLE.format(playbook=playbook) + instructions
 
-    tools = registry.get_tool_schemas()
+    tools = (
+        registry.get_filtered_tool_schemas(tool_allowlist)
+        if tool_allowlist
+        else registry.get_tool_schemas()
+    )
     user_prompt = build_user_prompt(instructions, csv_columns, row)
 
     messages: list[dict[str, Any]] = [

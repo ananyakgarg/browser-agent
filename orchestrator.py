@@ -23,10 +23,11 @@ from compiler import compile_results
 from config import TaskConfig, TaskSpec
 from distill import distill_playbook
 from http_tools import HttpToolProvider
-from judge import score_trace, pick_winner, format_judgment
+from judge import score_trace, llm_judge, pick_winner, format_judgment
 from progress import ProgressTracker, SampleStatus
 from tool_registry import ToolRegistry
 from validator import validate_sample, write_metadata
+from skills import get_skill_registry, log_skill_selection, log_skill_outcome
 from worker import run_worker
 
 logger = logging.getLogger(__name__)
@@ -37,7 +38,7 @@ PLAN_MODEL = "claude-sonnet-4-6"
 # Planning call — replaces the JSON task spec
 # ---------------------------------------------------------------------------
 
-PLAN_SYSTEM = """\
+_PLAN_SYSTEM_BASE = """\
 You are a planning assistant for a browser automation system. You split work \
 into two phases:
 
@@ -66,19 +67,70 @@ the real website in the browser, not an API response rendered to HTML.
 - The browser agent has a real Chrome user-agent and can access most sites.
 
 ## Your decisions
-1. sample_column — which CSV column identifies each sample
+1. sample_column — which CSV column **uniquely** identifies each sample. \
+Every value in this column MUST be distinct across all rows. If no single \
+column has unique values, prefer a column like 'sample_id' or 'id'. \
+NEVER pick a column with duplicate values (e.g. repo_url when multiple rows \
+share the same repo).
 2. output_columns — fields to extract (add _evidence columns for any judgments)
 3. resolve_instructions — simple lookups to speed up browser work (leave \
 empty if the browser can navigate directly)
-4. per_sample_instructions — the main task steps using {column_name} and \
-{resolved_key} templates. Include ALL task logic here.
+4. per_sample_instructions — the main task steps using {{column_name}} and \
+{{resolved_key}} templates. Include ALL task logic here.
+
+## CRITICAL: Respect the instruction's output fields
+If the instruction specifies "Output fields:" or lists required fields, you \
+MUST include ALL of them in output_columns (use the exact names given). \
+Do NOT rename them, do NOT drop any, do NOT substitute your own column names. \
+You may ADD extra columns (like _evidence companions) but never remove any \
+that the instruction explicitly lists.
+
+## CRITICAL: Preserve ALL task logic
+The per_sample_instructions MUST include EVERY step, conditional branch, and \
+decision point from the original instruction. If the instruction says \
+"if X then do Y, else do Z", that MUST appear in per_sample_instructions. \
+Do NOT simplify, summarize, or drop any logic. The browser agent needs the \
+complete task description to do its job correctly.
 
 ## Grounding rule
 For any output column requiring judgment (ratings, flags, yes/no), add a \
 companion _evidence column requiring verbatim extracted data from the source.
-
-Call the task_plan tool with your decisions.\
 """
+
+_PLAN_SKILL_SECTION = """
+## Skill selection
+Select which skills the worker agents should use.  Available skills:
+{skill_descriptions}
+
+Guidelines:
+- Select **code_analysis** when the task involves inspecting source code, tracing \
+dependencies, reading git history, or assessing code changes.
+- Select **browser_navigation** when the task requires interacting with web pages \
+(clicking, filling forms, taking screenshots, reading page content).
+- Select **data_extraction** when the primary goal is pulling structured data from \
+APIs or web pages without heavy browser interaction.
+- You may select MULTIPLE skills — their tools and guidance are combined.
+- Set confidence 0.0–1.0 reflecting how central the skill is to the task.
+- If unsure, select the skills that seem most relevant — extra tools don't hurt much, \
+but missing a key skill means the worker lacks critical guidance.
+
+Include your skill selections in the `required_skills` field of the task_plan tool call.
+"""
+
+
+def _build_plan_system(use_skills: bool) -> str:
+    """Build the PLAN_SYSTEM prompt, optionally with skill selection."""
+    base = _PLAN_SYSTEM_BASE
+    if use_skills:
+        registry = get_skill_registry()
+        base += _PLAN_SKILL_SECTION.format(
+            skill_descriptions=registry.describe_for_planner(),
+        )
+    base += "\nCall the task_plan tool with your decisions."
+    return base
+
+# Keep a module-level constant for backward compat (no-skills path)
+PLAN_SYSTEM = _build_plan_system(use_skills=False)
 
 PLAN_TOOL = {
     "name": "task_plan",
@@ -92,12 +144,15 @@ PLAN_TOOL = {
             },
             "sample_column": {
                 "type": "string",
-                "description": "The CSV column that identifies each sample.",
+                "description": "The CSV column that UNIQUELY identifies each sample. Must have distinct values for every row.",
             },
             "output_columns": {
                 "type": "array",
                 "items": {"type": "string"},
-                "description": "List of field names to extract per sample.",
+                "description": "ALL output fields per sample. If the instruction lists 'Output fields:' "
+                "use those EXACT names. Then add a column for every judgment/decision the instruction "
+                "asks for, plus _evidence companion columns for any judgment columns. "
+                "NEVER drop fields that the instruction explicitly requests.",
             },
             "resolve_instructions": {
                 "type": "string",
@@ -111,9 +166,23 @@ PLAN_TOOL = {
             },
             "per_sample_instructions": {
                 "type": "string",
-                "description": "Instructions for the BROWSER phase. Use {column_name} and {resolved_key} templates. "
-                "Assume all API lookups are already done. Go directly to target URLs. "
-                "Focus only on: screenshots, clicks, downloads, form fills, visual interaction.",
+                "description": "The COMPLETE task instructions for the browser agent. Use {column_name} and "
+                "{resolved_key} templates. Include ALL logic from the user's instruction — every step, "
+                "every conditional branch, every judgment call. The browser agent is intelligent and "
+                "can reason, analyze diffs, assess materiality, and make decisions. Do NOT simplify "
+                "or drop any steps from the original instruction.",
+            },
+            "required_skills": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "name": {"type": "string"},
+                        "confidence": {"type": "number"},
+                    },
+                    "required": ["name", "confidence"],
+                },
+                "description": "Skills the worker agents should use (only when skill selection is enabled).",
             },
         },
         "required": ["task_name", "sample_column", "output_columns", "resolve_instructions", "per_sample_instructions"],
@@ -134,21 +203,50 @@ def _csv_preview(csv_path: str, max_rows: int = 3) -> tuple[list[str], list[dict
     return headers, rows
 
 
-def plan_task(instruction: str, csv_path: str) -> dict[str, Any]:
+def _extract_output_fields(instruction: str) -> list[str]:
+    """Extract explicit output field names from an instruction like 'Output fields: a, b, c'."""
+    for line in instruction.splitlines():
+        stripped = line.strip()
+        if stripped.lower().startswith("output fields:") or stripped.lower().startswith("output_fields:"):
+            fields_str = stripped.split(":", 1)[1].strip()
+            return [f.strip() for f in fields_str.split(",") if f.strip()]
+    return []
+
+
+def plan_task(instruction: str, csv_path: str, use_skills: bool = False) -> dict[str, Any]:
     """Make one LLM call to turn a natural-language instruction into a structured plan."""
+    # If instruction is a file path, read its contents
+    if Path(instruction).is_file():
+        instruction = Path(instruction).read_text(encoding="utf-8")
     headers, preview_rows = _csv_preview(csv_path)
+
+    # Extract explicit output fields if the instruction lists them
+    output_fields_hint = ""
+    for line in instruction.splitlines():
+        stripped = line.strip()
+        if stripped.lower().startswith("output fields:") or stripped.lower().startswith("output_fields:"):
+            fields_str = stripped.split(":", 1)[1].strip()
+            output_fields_hint = (
+                f"\n\n## REQUIRED output fields (from instruction)\n"
+                f"The instruction explicitly lists these output fields: {fields_str}\n"
+                f"You MUST include ALL of these as output_columns (use exact names). "
+                f"You may add _evidence companion columns but NEVER drop or rename these fields."
+            )
+            break
 
     user_msg = (
         f"## User instruction\n{instruction}\n\n"
         f"## CSV columns\n{headers}\n\n"
         f"## First rows\n```json\n{json.dumps(preview_rows, indent=2)}\n```"
+        f"{output_fields_hint}"
     )
 
+    plan_system = _build_plan_system(use_skills=use_skills)
     client = anthropic.Anthropic(max_retries=10)
     response = client.messages.create(
         model=PLAN_MODEL,
-        max_tokens=2048,
-        system=PLAN_SYSTEM,
+        max_tokens=8192,
+        system=plan_system,
         tools=[PLAN_TOOL],
         tool_choice={"type": "tool", "name": "task_plan"},
         messages=[{"role": "user", "content": user_msg}],
@@ -164,6 +262,15 @@ def plan_task(instruction: str, csv_path: str) -> dict[str, Any]:
                     f"Planning call chose sample_column='{plan['sample_column']}' "
                     f"but CSV columns are: {headers}"
                 )
+            # Validate sample_column has unique values
+            col = plan["sample_column"]
+            values = [r[col] for r in csv.DictReader(open(csv_path, encoding="utf-8-sig"))]
+            if len(values) != len(set(values)):
+                dupes = [v for v in set(values) if values.count(v) > 1]
+                raise ValueError(
+                    f"sample_column='{col}' has duplicate values: {dupes}. "
+                    f"Choose a column with unique values per row. Available: {headers}"
+                )
             # Ensure required keys exist (model may truncate on long resolve_instructions)
             if "per_sample_instructions" not in plan:
                 raise RuntimeError(
@@ -171,6 +278,21 @@ def plan_task(instruction: str, csv_path: str) -> dict[str, Any]:
                     "This usually means resolve_instructions was too long. "
                     f"Plan keys received: {list(plan.keys())}"
                 )
+            # Enforce explicit output fields from instruction
+            required_fields = _extract_output_fields(instruction)
+            if required_fields:
+                existing = set(plan.get("output_columns", []))
+                missing = [f for f in required_fields if f not in existing]
+                if missing:
+                    logger.warning(
+                        f"Planner dropped required output fields: {missing}. Adding them."
+                    )
+                    plan["output_columns"] = list(plan.get("output_columns", [])) + missing
+            # Append original instruction to per_sample_instructions so no logic is lost
+            plan["per_sample_instructions"] += (
+                "\n\n---\n## ORIGINAL TASK INSTRUCTION (for reference — follow ALL steps)\n"
+                + instruction
+            )
             return plan
 
     raise RuntimeError("Planning call did not return a task_plan tool use")
@@ -325,6 +447,17 @@ async def process_sample(
 
             instructions = spec.render_instructions(enriched_row)
 
+            # Resolve skills → tool filtering + prompt injection
+            skill_prompt_fragments: str | None = None
+            tool_allowlist: set[str] | None = None
+            if spec.required_skills:
+                skill_registry = get_skill_registry()
+                resolved_skills = skill_registry.resolve_skills(spec.required_skills)
+                if resolved_skills:
+                    skill_prompt_fragments = skill_registry.build_prompt_fragments(resolved_skills)
+                    tool_allowlist = skill_registry.build_tool_allowlist(resolved_skills)
+                    log_skill_selection(spec.output_dir, sample_id, spec.required_skills, resolved_skills)
+
             data = await asyncio.wait_for(
                 run_worker(
                     registry=registry,
@@ -336,9 +469,19 @@ async def process_sample(
                     model_override=model_override,
                     pioneer_mode=pioneer_mode,
                     playbook=playbook,
+                    skill_prompt_fragments=skill_prompt_fragments,
+                    tool_allowlist=tool_allowlist,
                 ),
                 timeout=spec.config.timeout_per_sample_sec,
             )
+
+            # Log skill outcome
+            if spec.required_skills and resolved_skills:
+                log_skill_outcome(
+                    spec.output_dir, sample_id,
+                    skills_used=[s.name for s in resolved_skills],
+                    success=True,
+                )
 
             # Write metadata with playbook flag
             metadata_extra = {"playbook_used": playbook is not None}
@@ -402,6 +545,16 @@ async def run_pioneer_tournament(
     enriched_row = {**pioneer_row, **resolved}
     instructions = spec.render_instructions(enriched_row)
 
+    # Log skill selection for this tournament sample
+    if spec.required_skills:
+        skill_registry = get_skill_registry()
+        tournament_resolved = skill_registry.resolve_skills(spec.required_skills)
+        if tournament_resolved:
+            log_skill_selection(
+                spec.output_dir, pioneer_id,
+                spec.required_skills, tournament_resolved,
+            )
+
     # Each pioneer gets its own output dir
     pioneer_dirs = []
     for i in range(num_pioneers):
@@ -440,6 +593,16 @@ async def run_pioneer_tournament(
             registry.register(CodeAnalysisProvider())
             registry.register(HttpToolProvider())
 
+            # Resolve skills for pioneer
+            p_skill_fragments: str | None = None
+            p_tool_allowlist: set[str] | None = None
+            if spec.required_skills:
+                skill_registry = get_skill_registry()
+                p_resolved = skill_registry.resolve_skills(spec.required_skills)
+                if p_resolved:
+                    p_skill_fragments = skill_registry.build_prompt_fragments(p_resolved)
+                    p_tool_allowlist = skill_registry.build_tool_allowlist(p_resolved)
+
             data = await asyncio.wait_for(
                 run_worker(
                     registry=registry,
@@ -450,6 +613,8 @@ async def run_pioneer_tournament(
                     max_iterations=spec.config.max_iterations,
                     model_override=model_override,
                     pioneer_mode=True,
+                    skill_prompt_fragments=p_skill_fragments,
+                    tool_allowlist=p_tool_allowlist,
                 ),
                 timeout=spec.config.timeout_per_sample_sec,
             )
@@ -468,7 +633,7 @@ async def run_pioneer_tournament(
     pioneer_tasks = [_run_one_pioneer(i) for i in range(num_pioneers)]
     results = await asyncio.gather(*pioneer_tasks, return_exceptions=True)
 
-    # Score each pioneer
+    # Score each pioneer with LLM judge
     candidates = []
     for i, result in enumerate(results):
         if isinstance(result, Exception):
@@ -478,7 +643,15 @@ async def run_pioneer_tournament(
 
         trace_path = pioneer_dirs[i] / "trace.json"
         audit_path = pioneer_dirs[i] / "audit.json"
-        score = score_trace(trace_path, audit_path, result_data, spec.csv_columns)
+        score = llm_judge(
+            trace_path, audit_path, result_data, spec.csv_columns,
+            task_instructions=spec.per_sample_instructions,
+        )
+
+        # Save judgment to pioneer dir
+        judgment_out = pioneer_dirs[i] / "judgment.json"
+        with open(judgment_out, "w") as f:
+            json.dump(score, f, indent=2)
 
         candidates.append({
             "pioneer_id": i,
@@ -507,6 +680,14 @@ async def run_pioneer_tournament(
 
     winner = candidates[winner_idx]
     winner_result = winner["result"]
+
+    # Log skill outcome for the tournament
+    if spec.required_skills and tournament_resolved:
+        log_skill_outcome(
+            spec.output_dir, pioneer_id,
+            skills_used=[s.name for s in tournament_resolved],
+            success=winner_result is not None,
+        )
 
     if winner_result is None:
         logger.warning("All pioneers failed — no playbook available")
@@ -552,13 +733,14 @@ async def run_orchestrator(
     num_pioneers: int = 1,
     max_iterations: int = 30,
     browserbase: bool = False,
+    use_skills: bool = False,
 ):
     """Plan the task, then dispatch workers."""
     start = time.time()
 
     # 1. Planning call
-    logger.info("Running planning call...")
-    plan = plan_task(instruction, csv_path)
+    logger.info("Running planning call..." + (" (skills enabled)" if use_skills else ""))
+    plan = plan_task(instruction, csv_path, use_skills=use_skills)
 
     # 2. Build TaskSpec from plan + CLI args
     task_name = plan["task_name"]
@@ -569,6 +751,7 @@ async def run_orchestrator(
         sample_id_column=plan["sample_column"],
         csv_columns=plan["output_columns"],
         resolve_instructions=plan.get("resolve_instructions", ""),
+        required_skills=plan.get("required_skills", []) if use_skills else [],
         config=TaskConfig(max_workers=max_workers, num_pioneers=num_pioneers, max_iterations=max_iterations),
         output_dir_override=output_dir_override,
     )
@@ -658,10 +841,23 @@ async def run_orchestrator(
                     )
 
                     if isinstance(pioneer_result, dict):
+                        # Judge the single pioneer
+                        trace_path = spec.sample_dir(pioneer_id) / "trace.json"
+                        audit_path = spec.sample_dir(pioneer_id) / "audit.json"
+                        judgment = llm_judge(
+                            trace_path, audit_path, pioneer_result, spec.csv_columns,
+                            task_instructions=spec.per_sample_instructions,
+                        )
+                        judgment_out = spec.sample_dir(pioneer_id) / "judgment.json"
+                        with open(judgment_out, "w") as f:
+                            json.dump(judgment, f, indent=2)
+                        logger.info(f"Pioneer judged: {judgment.get('overall_score', '?')}/100")
+                        if "overall_reasoning" in judgment:
+                            logger.info(f"  Reasoning: {judgment['overall_reasoning']}")
+
                         raw_playbook = pioneer_result.pop("playbook", None)
                         if raw_playbook:
                             logger.info("Pioneer succeeded — distilling playbook...")
-                            trace_path = spec.sample_dir(pioneer_id) / "trace.json"
                             playbook_text = distill_playbook(
                                 original_instructions=spec.per_sample_instructions,
                                 trace_path=trace_path,

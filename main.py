@@ -96,6 +96,11 @@ def main():
         help="Use Browserbase cloud browsers with session replay",
     )
     parser.add_argument(
+        "--skills",
+        action="store_true",
+        help="Enable SkillRegistry: planner selects skills that filter tools and inject guidance into worker prompts",
+    )
+    parser.add_argument(
         "--verbose", "-v",
         action="store_true",
         help="Enable verbose logging",
@@ -157,6 +162,7 @@ def main():
         num_pioneers=args.pioneers,
         max_iterations=args.max_iterations,
         browserbase=args.browserbase,
+        use_skills=args.skills,
     ))
 
 
