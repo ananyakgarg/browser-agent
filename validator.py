@@ -10,6 +10,63 @@ from typing import Any
 logger = logging.getLogger(__name__)
 
 
+def _is_meaningful(value: Any) -> bool:
+    if value is None:
+        return False
+    text = str(value).strip()
+    if not text:
+        return False
+    if text.lower() in {"n/a", "na", "unknown", "none", "null"}:
+        return False
+    return True
+
+
+def evaluate_output_validity(
+    sample_dir: Path,
+    csv_columns: list[str],
+    data: dict[str, Any],
+) -> dict[str, Any]:
+    """Return deterministic validity metrics for a sample output."""
+    errors: list[str] = []
+
+    # Schema coverage
+    missing = [col for col in csv_columns if col not in data]
+    present = len(csv_columns) - len(missing)
+    schema_pass_rate = (present / len(csv_columns)) if csv_columns else 1.0
+    if missing:
+        errors.append(f"Missing output columns: {missing}")
+
+    # Evidence coverage
+    evidence_cols = [c for c in csv_columns if "evidence" in c.lower()]
+    evidence_present = sum(1 for c in evidence_cols if _is_meaningful(data.get(c)))
+    evidence_rate = (evidence_present / len(evidence_cols)) if evidence_cols else 1.0
+
+    # Screenshot validity
+    screenshots = list(sample_dir.glob("*.png"))
+    non_empty = [s for s in screenshots if s.stat().st_size > 0]
+    screenshot_validity = 1.0 if non_empty else 0.0
+    if not non_empty:
+        errors.append("No non-empty screenshots found")
+
+    # Metadata presence
+    meta_path = sample_dir / "metadata.json"
+    metadata_exists = meta_path.exists()
+    if not metadata_exists:
+        errors.append("metadata.json not found")
+
+    return {
+        "errors": errors,
+        "missing_columns": missing,
+        "schema_pass_rate": round(schema_pass_rate, 4),
+        "required_evidence_columns": evidence_cols,
+        "required_evidence_present": round(evidence_rate, 4),
+        "screenshots_total": len(screenshots),
+        "screenshots_non_empty": len(non_empty),
+        "screenshot_validity": screenshot_validity,
+        "metadata_exists": metadata_exists,
+    }
+
+
 def validate_sample(
     sample_dir: Path,
     csv_columns: list[str],
@@ -23,25 +80,7 @@ def validate_sample(
     2. At least one screenshot exists and is non-empty
     3. metadata.json written
     """
-    errors: list[str] = []
-
-    # Check all required columns present
-    missing = [col for col in csv_columns if col not in data]
-    if missing:
-        errors.append(f"Missing output columns: {missing}")
-
-    # Check at least one screenshot
-    screenshots = list(sample_dir.glob("*.png"))
-    non_empty = [s for s in screenshots if s.stat().st_size > 0]
-    if not non_empty:
-        errors.append("No non-empty screenshots found")
-
-    # Check metadata.json
-    meta_path = sample_dir / "metadata.json"
-    if not meta_path.exists():
-        errors.append("metadata.json not found")
-
-    return errors
+    return evaluate_output_validity(sample_dir, csv_columns, data)["errors"]
 
 
 def write_metadata(

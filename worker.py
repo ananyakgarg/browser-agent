@@ -11,6 +11,7 @@ from typing import Any
 
 import anthropic
 
+from telemetry import LearningTelemetry, hash_tool_input
 from tool_registry import ToolRegistry
 
 logger = logging.getLogger(__name__)
@@ -127,6 +128,38 @@ unexpected happens or a step fails.
 """
 
 
+def _classify_error_code(text: str) -> str | None:
+    lowered = text.lower()
+    if "timeout" in lowered:
+        return "timeout"
+    if "403" in lowered or "forbidden" in lowered:
+        return "http_403"
+    if "429" in lowered or "too many requests" in lowered:
+        return "http_429"
+    if "captcha" in lowered or "cloudflare" in lowered or "automated tool" in lowered:
+        return "bot_detection"
+    if "not found" in lowered:
+        return "not_found"
+    if "unknown tool" in lowered:
+        return "unknown_tool"
+    if "invalid" in lowered:
+        return "invalid_input"
+    if "error" in lowered or "failed" in lowered:
+        return "runtime_error"
+    return None
+
+
+def _classify_tool_result(tool_name: str, result: str) -> tuple[str, bool, str | None]:
+    if tool_name == "complete":
+        return "complete", True, None
+    err = _classify_error_code(result)
+    if err:
+        if err in {"http_403", "http_429", "bot_detection"}:
+            return "blocked_or_rate_limited", False, err
+        return "tool_error", False, err
+    return "tool_success", True, None
+
+
 def build_user_prompt(instructions: str, csv_columns: list[str], row: dict[str, Any]) -> str:
     """Build the initial user message for the worker."""
     cols = ", ".join(f'"{c}"' for c in csv_columns)
@@ -159,6 +192,10 @@ async def run_worker(
     pioneer_mode: bool = False,
     playbook: str | None = None,
     system_prompt_override: str | None = None,
+    run_id: str | None = None,
+    sample_id: str | None = None,
+    phase: str = "browser",
+    telemetry: LearningTelemetry | None = None,
 ) -> dict[str, Any]:
     """
     Run the LLM agent loop for a single sample.
@@ -170,6 +207,7 @@ async def run_worker(
     """
     client = anthropic.Anthropic(max_retries=25)
     model = model_override or MODEL
+    resolved_sample_id = sample_id or str(row.get("sample_id") or row.get("id") or "unknown")
 
     # Compaction beta — Claude auto-summarizes old context when it gets large
     COMPACTION_BETA = "compact-2026-01-12"
@@ -304,6 +342,7 @@ async def run_worker(
 
     for iteration in range(max_iterations):
         logger.info(f"  Iteration {iteration + 1}/{max_iterations}")
+        iter_start = time.time()
         step: dict[str, Any] = {
             "iteration": iteration + 1,
             "timestamp": round(time.time() - start_time, 2),
@@ -329,6 +368,18 @@ async def run_worker(
             trace.append(step)
             _save_trace()
             _save_audit()
+            if telemetry and run_id:
+                await telemetry.log_step_event(
+                    run_id=run_id,
+                    sample_id=resolved_sample_id,
+                    phase=phase,
+                    iteration=iteration + 1,
+                    result_type="api_error",
+                    success=False,
+                    error_code="anthropic_api_error",
+                    latency_ms=int((time.time() - iter_start) * 1000),
+                    payload={"error": str(e)[:500]},
+                )
             raise
 
         api_calls += 1
@@ -370,6 +421,18 @@ async def run_worker(
             trace.append(step)
             _save_trace()
             _save_audit()
+            if telemetry and run_id:
+                await telemetry.log_step_event(
+                    run_id=run_id,
+                    sample_id=resolved_sample_id,
+                    phase=phase,
+                    iteration=iteration + 1,
+                    result_type="no_tool_call",
+                    success=response.stop_reason in {"compaction", "end_turn"},
+                    error_code=None if response.stop_reason in {"compaction", "end_turn"} else "no_tool_call",
+                    latency_ms=int((time.time() - iter_start) * 1000),
+                    payload={"stop_reason": response.stop_reason},
+                )
 
             if response.stop_reason == "end_turn":
                 logger.warning("  Agent ended without calling complete tool. Prompting to complete.")
@@ -390,6 +453,7 @@ async def run_worker(
             tool_name = tool_use.name
             tool_input = tool_use.input
             tool_id = tool_use.id
+            tool_start = time.time()
 
             logger.info(f"  Tool: {tool_name}({json.dumps(tool_input, default=str)[:120]})")
 
@@ -410,6 +474,31 @@ async def run_worker(
                 trace.append(step)
                 _save_trace()
                 _save_audit()
+                if telemetry and run_id:
+                    await telemetry.log_tool_event(
+                        run_id=run_id,
+                        sample_id=resolved_sample_id,
+                        phase=phase,
+                        iteration=iteration + 1,
+                        tool_name=tool_name,
+                        tool_input_hash=hash_tool_input(tool_input),
+                        result_type="complete",
+                        success=True,
+                        error_code=None,
+                        latency_ms=int((time.time() - tool_start) * 1000),
+                        payload={"notes": notes[:500], "keys": list(data.keys())},
+                    )
+                    await telemetry.log_step_event(
+                        run_id=run_id,
+                        sample_id=resolved_sample_id,
+                        phase=phase,
+                        iteration=iteration + 1,
+                        result_type="complete",
+                        success=True,
+                        error_code=None,
+                        latency_ms=int((time.time() - iter_start) * 1000),
+                        payload={"stop_reason": "complete"},
+                    )
 
                 # No auto-screenshot on complete — agent takes them only when needed
                 return data
@@ -425,6 +514,22 @@ async def run_worker(
             except Exception as e:
                 result = f"Error executing {tool_name}: {e}"
                 logger.error(f"  {result}")
+
+            result_type, success, error_code = _classify_tool_result(tool_name, result)
+            if telemetry and run_id:
+                await telemetry.log_tool_event(
+                    run_id=run_id,
+                    sample_id=resolved_sample_id,
+                    phase=phase,
+                    iteration=iteration + 1,
+                    tool_name=tool_name,
+                    tool_input_hash=hash_tool_input(tool_input),
+                    result_type=result_type,
+                    success=success,
+                    error_code=error_code,
+                    latency_ms=int((time.time() - tool_start) * 1000),
+                    payload={"result_preview": result[:500]},
+                )
 
             # Save truncated result to trace (full page state is too verbose)
             tool_trace["result"] = result[:2000]
@@ -491,6 +596,35 @@ async def run_worker(
                 "content": "\n\n".join(nudges),
             })
 
+        if telemetry and run_id:
+            await telemetry.log_step_event(
+                run_id=run_id,
+                sample_id=resolved_sample_id,
+                phase=phase,
+                iteration=iteration + 1,
+                result_type="tool_iteration",
+                success=True,
+                error_code=None,
+                latency_ms=int((time.time() - iter_start) * 1000),
+                payload={
+                    "tool_count": len(step_tools),
+                    "loop_nudge": bool(step.get("loop_nudge")),
+                    "budget_warning": bool(step.get("budget_warning")),
+                },
+            )
+
     _save_trace()
     _save_audit()
+    if telemetry and run_id:
+        await telemetry.log_step_event(
+            run_id=run_id,
+            sample_id=resolved_sample_id,
+            phase=phase,
+            iteration=max_iterations,
+            result_type="max_iterations_exceeded",
+            success=False,
+            error_code="max_iterations",
+            latency_ms=int((time.time() - start_time) * 1000),
+            payload={"max_iterations": max_iterations},
+        )
     raise RuntimeError(f"Agent did not complete within {max_iterations} iterations")
