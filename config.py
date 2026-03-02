@@ -25,6 +25,7 @@ class TaskSpec:
     sample_id_column: str
     csv_columns: list[str]
     resolve_instructions: str = ""
+    required_skills: list[dict[str, Any]] = field(default_factory=list)
     config: TaskConfig = field(default_factory=TaskConfig)
     storage_state_path: str | None = None
     output_dir_override: str | None = None

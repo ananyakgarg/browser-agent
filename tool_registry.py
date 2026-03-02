@@ -125,6 +125,23 @@ class ToolRegistry:
         schemas.append(COMPLETE_TOOL_SCHEMA)
         return schemas
 
+    def get_filtered_tool_schemas(self, allowlist: set[str]) -> list[dict[str, Any]]:
+        """Return only schemas whose names are in *allowlist*.
+
+        Filtering is schema-level only (what Claude sees).  ``execute()``
+        still dispatches any tool — this prevents hard failures from
+        incomplete allowlists.  Returns all schemas when *allowlist* is empty.
+        """
+        if not allowlist:
+            return self.get_tool_schemas()
+        schemas: list[dict[str, Any]] = []
+        for p in self._providers:
+            for schema in p.get_tool_schemas():
+                if schema["name"] in allowlist:
+                    schemas.append(schema)
+        schemas.append(COMPLETE_TOOL_SCHEMA)
+        return schemas
+
     async def execute(self, tool_name: str, tool_input: dict[str, Any]) -> str:
         for p in self._providers:
             if p.handles(tool_name):
