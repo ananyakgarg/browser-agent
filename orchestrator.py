@@ -15,6 +15,7 @@ import os
 import anthropic
 from playwright.async_api import async_playwright
 
+from auth import find_storage_state, validate_storage_state
 from browser_tools import create_browser_provider
 from code_analysis import CodeAnalysisProvider
 from code_tools import CodeToolProvider
@@ -590,10 +591,23 @@ async def run_orchestrator(
     rows = read_csv_rows(spec.input_csv, spec.sample_id_column)
     logger.info(f"Loaded {len(rows)} rows from {spec.input_csv}")
 
-    # 3b. Load session state if provided (from login.py)
+    # 3b. Load session state — explicit path or auto-discover
     if session_state_path and Path(session_state_path).exists():
         spec.storage_state_path = session_state_path
         logger.info(f"Using session state from {session_state_path}")
+    else:
+        auto_path = find_storage_state()
+        if auto_path:
+            info = validate_storage_state(auto_path)
+            if info["valid"]:
+                spec.storage_state_path = str(auto_path)
+                logger.info(
+                    f"Auto-discovered auth state: {auto_path} "
+                    f"({info['cookie_count']} cookies, "
+                    f"{len(info['domains'])} domains)"
+                )
+                for w in info["warnings"]:
+                    logger.warning(f"  Auth: {w}")
 
     all_ids = [str(r[spec.sample_id_column]) for r in rows]
     id_to_row = {str(r[spec.sample_id_column]): r for r in rows}
