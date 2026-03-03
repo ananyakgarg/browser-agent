@@ -51,3 +51,31 @@ def compile_results(output_dir: Path, csv_columns: list[str]) -> Path:
 
     logger.info(f"Compiled {len(rows)} results to {results_path}")
     return results_path
+
+
+def append_result_row(
+    output_dir: Path,
+    csv_columns: list[str],
+    sample_id: str,
+    data: dict[str, str],
+) -> Path:
+    """Append a single result row to results.csv incrementally.
+
+    Creates the file with headers if it doesn't exist yet.
+    """
+    results_path = output_dir / "results.csv"
+    fieldnames = ["sample_id"] + csv_columns
+
+    write_header = not results_path.exists()
+
+    row = {"sample_id": sample_id}
+    for col in csv_columns:
+        row[col] = str(data.get(col, ""))
+
+    with open(results_path, "a", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        if write_header:
+            writer.writeheader()
+        writer.writerow(row)
+
+    return results_path

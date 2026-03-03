@@ -96,6 +96,26 @@ def main():
         help="Use Browserbase cloud browsers with session replay",
     )
     parser.add_argument(
+        "--agent",
+        action="store_true",
+        help="Use the agentic orchestrator (LLM agent loop) instead of the fixed pipeline",
+    )
+    parser.add_argument(
+        "--dashboard",
+        action="store_true",
+        help="Launch live web dashboard for monitoring (requires --agent)",
+    )
+    parser.add_argument(
+        "--profile-dir",
+        default=None,
+        help="Path to Chrome profile directory for authenticated sessions",
+    )
+    parser.add_argument(
+        "--direct-profile",
+        action="store_true",
+        help="Use the Chrome profile directly instead of copying per worker",
+    )
+    parser.add_argument(
         "--skills",
         action="store_true",
         help="Enable SkillRegistry: planner selects skills that filter tools and inject guidance into worker prompts",
@@ -152,18 +172,36 @@ def main():
     # Resolve auth state: explicit --auth-state > legacy --session > auto-discover
     auth_state = args.auth_state or args.session_legacy
 
-    asyncio.run(run_orchestrator(
-        instruction=args.instruction,
-        csv_path=args.csv,
-        max_workers=args.workers,
-        output_dir_override=args.output_dir,
-        session_state_path=auth_state,
-        model_override=args.model,
-        num_pioneers=args.pioneers,
-        max_iterations=args.max_iterations,
-        browserbase=args.browserbase,
-        use_skills=args.skills,
-    ))
+    if args.agent:
+        from orchestrator_agent import run_orchestrator_agent
+
+        asyncio.run(run_orchestrator_agent(
+            instruction=args.instruction,
+            csv_path=args.csv,
+            max_workers=args.workers,
+            output_dir_override=args.output_dir,
+            session_state_path=auth_state,
+            model_override=args.model,
+            num_pioneers=args.pioneers,
+            max_iterations=args.max_iterations,
+            browserbase=args.browserbase,
+            dashboard=args.dashboard,
+            profile_dir=args.profile_dir,
+            direct_profile=args.direct_profile,
+        ))
+    else:
+        asyncio.run(run_orchestrator(
+            instruction=args.instruction,
+            csv_path=args.csv,
+            max_workers=args.workers,
+            output_dir_override=args.output_dir,
+            session_state_path=auth_state,
+            model_override=args.model,
+            num_pioneers=args.pioneers,
+            max_iterations=args.max_iterations,
+            browserbase=args.browserbase,
+            use_skills=args.skills,
+        ))
 
 
 if __name__ == "__main__":
